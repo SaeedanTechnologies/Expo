@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material'
 import MyButton from '../../page/components/MyButton'
 import { useNavigate } from 'react-router'
 
-const AddEvent = () => {
+const SignUpForm = () => {
     const navigate = useNavigate()
 
     return (
@@ -12,7 +12,7 @@ const AddEvent = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '80vh', // Full viewport height
+            height: '120vh', // Full viewport height
         }}>
             <Box sx={{
                 display: 'flex',
@@ -29,7 +29,7 @@ const AddEvent = () => {
                     textAlign: 'center'
 
                 }}>
-                    Add Event
+                    Sign Up As a Participant
                 </Typography>
                 <Typography sx={{
                     color: '#949494',
@@ -40,13 +40,15 @@ const AddEvent = () => {
                     Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
                 </Typography>
                 <Box>
-                    <MyTextField label="Event Name" placeholder="Please Write Convention Name " />
+                    <MyTextField label="Name" placeholder="Enter Your Name " />
+                    <MyTextField label="Email" placeholder="Enter Your Email " />
+                    <MyTextField label="Skill" placeholder="Enter Your Skill " />
                 </Box>
-                <MyButton onClick={() => navigate('/admin/add-content')} text="Next" />
+                <MyButton onClick={() => navigate('/admin/welcome')} text="Submit" />
             </Box>
 
         </Box>
     )
 }
 
-export default AddEvent
+export default SignUpForm
