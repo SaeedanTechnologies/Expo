@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 
-const index = () => {
+function AdminHome() {
     return (
-        <div>index</div>
-    )
+        <div>
+            {/* <h1>Admin Home</h1> */}
+            <Outlet />
+        </div>
+    );
 }
 
-export default index
+export default AdminHome;
