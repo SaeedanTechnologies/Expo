@@ -2,11 +2,10 @@ import React from 'react'
 import MyTextField from '../../page/components/MyTextField'
 import { Box, Typography } from '@mui/material'
 import MyButton from '../../page/components/MyButton'
-import { useNavigate } from 'react-router'
+import { Navigate, useNavigate } from 'react-router'
 
-const AddEvent = () => {
+const AddRegistration = () => {
     const navigate = useNavigate()
-
     return (
         <Box sx={{
             display: 'flex',
@@ -20,7 +19,7 @@ const AddEvent = () => {
                 gap: '20px',
                 // alignItems: 'center',
                 justifyContent: 'center',
-                width: '400px',
+                width: '500px',
                 margin: '0 auto'
             }}>
                 <Typography sx={{
@@ -29,7 +28,7 @@ const AddEvent = () => {
                     textAlign: 'center'
 
                 }}>
-                    Add Event
+                    Add Registration
                 </Typography>
                 <Typography sx={{
                     color: '#949494',
@@ -39,14 +38,18 @@ const AddEvent = () => {
                 }}>
                     Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
                 </Typography>
-                <Box>
-                    <MyTextField label="Event Name" placeholder="Please Write Convention Name " />
+                <Box sx={{ display: 'flex', gap: '10px' }}>
+                    <MyTextField label="Start Contest Time" placeholder="5:30 PM" />
+                    <MyTextField label="End Contest Time" placeholder="6:30 PM" />
                 </Box>
-                <MyButton onClick={() => navigate('/admin/add-content')} text="Next" />
+                <Box>
+                    <MyTextField label="Max Contestant" placeholder="e.g 100" />
+                </Box>
+                <MyButton onClick={() => navigate('/admin/add-participant')} text="Next" />
             </Box>
 
         </Box>
     )
 }
 
-export default AddEvent
+export default AddRegistration;

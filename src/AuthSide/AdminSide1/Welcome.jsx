@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { MdOutlineWavingHand } from "react-icons/md";
 import { useNavigate } from 'react-router';
+import MyButton from '../../page/components/MyButton';
 
 const Welcome = () => {
     const navigate = useNavigate()
@@ -10,7 +11,7 @@ const Welcome = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '100vh', // Full viewport height
+            height: '80vh', // Full viewport height
         }}>
             <Box sx={{
                 display: 'flex',
@@ -18,7 +19,7 @@ const Welcome = () => {
                 gap: '20px',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                width: '500px',
+                width: '400px',
                 margin: '0 auto'
             }}>
                 <Typography sx={{
@@ -53,6 +54,7 @@ const Welcome = () => {
                         <Typography sx={{ fontSize: '18px', fontWeight: 700 }}>Add Event</Typography>
                         <Typography sx={{ fontSize: '13px', color: '#949494' }}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores necessitatibus magni explicabo!</Typography>
                     </Box>
+
                 </Box>
             </Box>
         </Box>

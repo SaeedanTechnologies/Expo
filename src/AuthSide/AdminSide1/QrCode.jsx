@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material'
 import MyButton from '../../page/components/MyButton'
 import { useNavigate } from 'react-router'
 
-const AddEvent = () => {
+const QrCode = () => {
     const navigate = useNavigate()
 
     return (
@@ -12,7 +12,7 @@ const AddEvent = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '80vh', // Full viewport height
+            height: '100vh',
         }}>
             <Box sx={{
                 display: 'flex',
@@ -29,7 +29,7 @@ const AddEvent = () => {
                     textAlign: 'center'
 
                 }}>
-                    Add Event
+                    QR Code
                 </Typography>
                 <Typography sx={{
                     color: '#949494',
@@ -39,14 +39,16 @@ const AddEvent = () => {
                 }}>
                     Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
                 </Typography>
-                <Box>
-                    <MyTextField label="Event Name" placeholder="Please Write Convention Name " />
+                <img src="/qrCode.png" alt="" style={{ height: '50vh' }} />
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}>
+                    <MyButton text="Save" sx={{ width: '100%' }} bgColor="#D37476" />
+                    <MyButton onClick={() => navigate('/admin/signUp')} text="Next" sx={{ width: '100%' }} />
+
                 </Box>
-                <MyButton onClick={() => navigate('/admin/add-content')} text="Next" />
             </Box>
 
         </Box>
     )
 }
 
-export default AddEvent
+export default QrCode

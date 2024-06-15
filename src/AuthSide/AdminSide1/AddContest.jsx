@@ -2,11 +2,10 @@ import React from 'react'
 import MyTextField from '../../page/components/MyTextField'
 import { Box, Typography } from '@mui/material'
 import MyButton from '../../page/components/MyButton'
-import { useNavigate } from 'react-router'
+import { Navigate, useNavigate } from 'react-router'
 
-const AddEvent = () => {
+const AddContent = () => {
     const navigate = useNavigate()
-
     return (
         <Box sx={{
             display: 'flex',
@@ -29,7 +28,7 @@ const AddEvent = () => {
                     textAlign: 'center'
 
                 }}>
-                    Add Event
+                    Add Contest
                 </Typography>
                 <Typography sx={{
                     color: '#949494',
@@ -40,13 +39,13 @@ const AddEvent = () => {
                     Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
                 </Typography>
                 <Box>
-                    <MyTextField label="Event Name" placeholder="Please Write Convention Name " />
+                    <MyTextField label="Contest Name" placeholder="Please Write Your contest Name " />
                 </Box>
-                <MyButton onClick={() => navigate('/admin/add-content')} text="Next" />
+                <MyButton onClick={() => navigate('/admin/add-registration')} text="Next" />
             </Box>
 
         </Box>
     )
 }
 
-export default AddEvent
+export default AddContent
