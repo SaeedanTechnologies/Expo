@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Avatar,
   Box,
   Typography,
   Avatar

@@ -22,6 +22,8 @@ import IframeLink from "./AuthSide/AdminSideJudge/IframeLink";
 import ParticipantPage from "./AuthSide/AdminSideJudge/ParticipantPage";
 import AllRecords from "./AuthSide/AdminSideJudge/AllRecords";
 
+import AllRecord from "./AuthSide/AdminSideJudge/AdminSideScreen/AllRecord";
+import JugedRole from "./AuthSide/AdminSideJudge/AdminSideScreen/JugedRole";
 export default function Router() {
     let element = useRoutes([
         {
@@ -110,6 +112,14 @@ export default function Router() {
         {
             path: 'all-records',
             element: <AllRecords />
+        },
+        {
+            path: 'all_record',
+            element: <AllRecord />,
+        },
+        {
+            path: 'judge_role',
+            element: <JugedRole />,
         },
     ]);
     return element;

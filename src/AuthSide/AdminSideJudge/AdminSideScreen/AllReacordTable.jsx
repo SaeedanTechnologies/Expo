@@ -15,10 +15,10 @@ import {
 
 
 
-const DynTable2 = ({ data }) => {
+const AllReacordTable = ({ data }) => {
   console.log(data, "KLKK")
   return (
-    <Box sx={{ padding: '0rem', minHeight: '20vh', width: '50%' }}>
+    <Box sx={{ padding: '0rem', minHeight: '20vh', width: '50%', marginBottom:'33px' }}>
       <TableContainer component={Paper} sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
         <Table>
           <TableHead sx={{ background: '#F3F6F9' }}>
@@ -74,4 +74,4 @@ const DynTable2 = ({ data }) => {
   );
 };
 
-export default DynTable2;
+export default AllReacordTable;
