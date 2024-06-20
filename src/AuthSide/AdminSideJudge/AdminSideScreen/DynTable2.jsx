@@ -13,12 +13,7 @@ import {
   Button
 } from '@mui/material';
 
-// Sample data
-const rows = [
-  { position: 1, name: 'Alice', score: 95 },
-  { position: 2, name: 'Bob', score: 90 },
-  { position: 3, name: 'Charlie', score: 85 }
-];
+
 
 const DynTable2 = ({ data }) => {
   console.log(data, "KLKK")

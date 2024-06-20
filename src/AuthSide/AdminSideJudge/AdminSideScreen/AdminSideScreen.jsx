@@ -10,9 +10,9 @@ import imgfrm2 from "../../../assets/adim-screen/imagfram2.png"
 import imgfrm3 from "../../../assets/adim-screen/imagfram1.png"
 const AdminSideScreen = () => {
   const data = [
-    { image: img1, img: imgfrm1, score: 95 },
-    { image: img2, img: imgfrm1, score: 90 },
-    { image: img3, img: imgfrm1, score: 85 }
+    { image: img1, img: imgfrm1,name:'usma', score: 95 },
+    { image: img2, img: imgfrm1, name:'ali', score: 90 },
+    { image: img3, img: imgfrm1, name:'Abdullah', score: 85 }
   ];
 
   return (
