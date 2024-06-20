@@ -30,7 +30,7 @@ const AdminSideScreen = () => {
       }}
     >
       <Container>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop:'12px' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop:'12px', padding:'1rem 20%' }}>
           <Typography
             variant='h4'
             sx={{
