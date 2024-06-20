@@ -10,9 +10,9 @@ import imgfrm2 from "../../../assets/adim-screen/imagfram2.png"
 import imgfrm3 from "../../../assets/adim-screen/imagfram1.png"
 const AdminSideScreen = () => {
   const data = [
-    { image: img1, img: imgfrm1, score: 95 },
-    { image: img2, img: imgfrm1, score: 90 },
-    { image: img3, img: imgfrm1, score: 85 }
+    { position: 1, img: imgfrm1, score: 95, color: "#f44336" },
+    { position: 2, img: imgfrm1, score: 90, color: "#f44336" },
+    { position: 3, img: imgfrm1, score: 85, color: "#f44336" }
   ];
 
   return (
