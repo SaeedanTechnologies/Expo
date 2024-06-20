@@ -10,10 +10,11 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const Navbar = () => {
+  const location = useLocation()
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -23,6 +24,11 @@ const Navbar = () => {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+  const isHidden = location.pathname === "/participant-page";
+
+  if (isHidden) {
+    return null;
+  }
 
   return (
     <>
