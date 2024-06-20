@@ -14,7 +14,8 @@ import AddRegistration from "./AuthSide/AdminSide1/RegistrationTime";
 import AddParticipant from "./AuthSide/AdminSide1/AddParticipant";
 import QrCode from "./AuthSide/AdminSide1/QrCode";
 import SignUpForm from "./AuthSide/AdminSide1/SignUpForm";
-
+import AdminSideScreen from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminSideScreen";
+import AdminSideScreen2 from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminSideScreen2";
 export default function Router() {
     let element = useRoutes([
         {
@@ -53,6 +54,7 @@ export default function Router() {
                     path: 'signUp',
                     element: <SignUpForm />,
                 },
+               
             ]
         },
         {
@@ -74,6 +76,14 @@ export default function Router() {
         {
             path: 'admin-operator',
             element: <AdminOperator />
+        },
+        {
+            path: 'admin_side_screen1',
+            element: <AdminSideScreen />,
+        },
+        {
+            path: 'admin_side_screen2',
+            element: <AdminSideScreen2 />,
         },
     ]);
     return element;
