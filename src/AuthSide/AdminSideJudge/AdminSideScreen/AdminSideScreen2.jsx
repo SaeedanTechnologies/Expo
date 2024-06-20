@@ -80,14 +80,15 @@ const AdminSideScreen2 = () => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              flexWrap: 'wrap', // Allow wrapping for small screens
-              gap: '16px' // Space between items
+              flexWrap: 'wrap', 
+              gap: '16px' ,
+              marginBottom:'33px'
             }}
           >
-          <Box sx={{ marginRight: { xs: '0px', md: '33px' } }}>
+          <Box sx={{ marginRight: { xs: '0px', md: '150px' },marginTop:{xs:'0px',md:'-84px'} }}>
           <img src={Group1} alt='Group 1' />
         </Box>
-        <Box sx={{ marginLeft: '44px' }}>
+        <Box sx={{ marginLeft: {xs:'0px', md:'84px'}, marginTop:{xs:'0px',md:'-84px'} }}>
           <img src={Group2} alt='Group 2' />
         </Box>
         
