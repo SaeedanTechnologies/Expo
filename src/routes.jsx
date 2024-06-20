@@ -1,7 +1,7 @@
-import { useRoutes } from "react-router";
+import { useRoutes, Navigate } from "react-router";
 import Landing from "./page/landing/Landing";
 import AdminHome from "./AuthSide/AdminSide1";
-import Welcome from "./AuthSide/AdminSide1/Welcome"
+import Welcome from "./AuthSide/AdminSide1/Welcome";
 import AddEvent from "./AuthSide/AdminSide1/AddEvent";
 import AddJudgeMain from "./AuthSide/AdminSideJudge/AddJudges/AddJudgeMain";
 import CreateScoreCard from "./AuthSide/AdminSideJudge/CreateScoreCard";
@@ -17,7 +17,10 @@ import SignUpForm from "./AuthSide/AdminSide1/SignUpForm";
 
 export default function Router() {
     let element = useRoutes([
-
+        {
+            path: '/',
+            element: <Navigate to="/admin/welcome" replace />,
+        },
         {
             path: '/admin',
             element: <AdminHome />,
@@ -50,14 +53,12 @@ export default function Router() {
                     path: 'signUp',
                     element: <SignUpForm />,
                 },
-
             ]
         },
         {
             path: 'add-judges',
             element: <AddJudgeMain />,
         },
-
         {
             path: 'create-score-card',
             element: <CreateScoreCard />
@@ -74,8 +75,6 @@ export default function Router() {
             path: 'admin-operator',
             element: <AdminOperator />
         },
-
-
-    ])
-    return element
+    ]);
+    return element;
 }

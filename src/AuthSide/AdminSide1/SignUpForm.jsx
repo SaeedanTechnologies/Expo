@@ -44,7 +44,7 @@ const SignUpForm = () => {
                     <MyTextField label="Email" placeholder="Enter Your Email " />
                     <MyTextField label="Skill" placeholder="Enter Your Skill " />
                 </Box>
-                <MyButton onClick={() => navigate('/admin/welcome')} text="Submit" />
+                <MyButton onClick={() => navigate('/add-judges')} text="Submit" />
             </Box>
 
         </Box>
