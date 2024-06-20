@@ -3,6 +3,7 @@ import { Box, Typography, Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/system';
 import { useDropzone } from 'react-dropzone';
+import { useNavigate } from 'react-router';
 
 const UploadBox = styled(Box)(({ theme }) => ({
   border: '2px dashed #d32f2f',
@@ -29,10 +30,11 @@ const UploadVideo = () => {
       })));
     }
   });
-
+const navigate = useNavigate()
   const handleUpload = () => {
     // Handle the upload functionality here
-    alert('Files uploaded: ' + files.map(file => file.name).join(', '));
+    // alert('Files uploaded: ' + files.map(file => file.name).join(', '));
+    navigate('/admin-operator')
   };
 
   const thumbs = files.map(file => (

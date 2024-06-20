@@ -16,6 +16,12 @@ import QrCode from "./AuthSide/AdminSide1/QrCode";
 import SignUpForm from "./AuthSide/AdminSide1/SignUpForm";
 import AdminSideScreen from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminSideScreen";
 import AdminSideScreen2 from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminSideScreen2";
+import AdminOperator2 from "./AuthSide/AdminSideJudge/AdminOperator2";
+import AdminOperator3 from "./AuthSide/AdminSideJudge/AdminOperator3";
+import IframeLink from "./AuthSide/AdminSideJudge/IframeLink";
+import ParticipantPage from "./AuthSide/AdminSideJudge/ParticipantPage";
+import AllRecords from "./AuthSide/AdminSideJudge/AllRecords";
+
 export default function Router() {
     let element = useRoutes([
         {
@@ -54,7 +60,7 @@ export default function Router() {
                     path: 'signUp',
                     element: <SignUpForm />,
                 },
-               
+
             ]
         },
         {
@@ -84,6 +90,26 @@ export default function Router() {
         {
             path: 'admin_side_screen2',
             element: <AdminSideScreen2 />,
+        },
+            {
+            path: 'admin-operator2',
+            element: <AdminOperator2 />
+        },
+        {
+            path: 'admin-operator3',
+            element: <AdminOperator3 />
+        },
+        {
+            path: 'iframe',
+            element: <IframeLink />
+        },
+        {
+            path: 'participant-page',
+            element: <ParticipantPage />
+        },
+        {
+            path: 'all-records',
+            element: <AllRecords />
         },
     ]);
     return element;

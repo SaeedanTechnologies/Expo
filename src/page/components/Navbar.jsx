@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
-
-import { Box, Button, Drawer, FormControl, MenuItem, Select, Typography, IconButton, Avatar } from "@mui/material";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Drawer,
+  FormControl,
+  MenuItem,
+  Select,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const Navbar = () => {
+  const location = useLocation()
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -14,6 +24,11 @@ const Navbar = () => {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+  const isHidden = location.pathname === "/participant-page";
+
+  if (isHidden) {
+    return null;
+  }
 
   return (
     <Box sx={{ backgroundColor: "white", padding: "0rem 5%", display: "flex", justifyContent: "space-between", alignItems: "center", position: "static", top: 0, zIndex: 10000000, boxShadow: "1px 1px 1px #ededed" }}>
