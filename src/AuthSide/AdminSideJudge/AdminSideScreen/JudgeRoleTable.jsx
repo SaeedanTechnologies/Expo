@@ -39,7 +39,7 @@ const JudgeRoleTable = ({ data }) => {
                 sx={{
                   borderBottom: 'white',
                   color: '#949494',
-                  borderBottom: (index + 1) % 3 === 0 ? '1px solid #949494' : 'none'
+                  border: (index + 0) % 2 === 0 ? '1px solid red' : 'none'
                 }}>
                 <TableCell sx={{ color: 'black', borderBottom: 'white' }}> <img src={row.image} alt={row.name} style={{ width: '50px', height: '50px' }} /></TableCell>
                 <TableCell sx={{ color: 'black', borderBottom: 'white' }}> <Typography sx={{ display: 'flex' }}><Typography><Avatar src={row.img} alt={`Avatar ${index}`} /></Typography><Typography sx={{ padding: '8px' }}>{row.url}</Typography></Typography></TableCell>
@@ -48,32 +48,7 @@ const JudgeRoleTable = ({ data }) => {
             ))}
           </TableBody>
         </Table>
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
-          <Button
-            sx={{
-              width: '50%', // Adjust width here to match the table's width
-              height: '36px',
-              backgroundColor: '#D37476',
-              padding: '6px 49px',
-              borderRadius: '4px 0px 0px 0px',
-            }}
-          >
-            Send Transfer
-          </Button>
-          <Button
-            sx={{
-              width: '50%', // Adjust width here to match the table's width
-              height: '36px',
-              marginLeft: '12px',
-              background: 'linear-gradient(180deg, #D90B0F 0%, #8F1B1E 100%)',
-              padding: '6px 49px',
-              borderRadius: '0px 4px 0px 0px',
-              color: 'white',
-            }}
-          >
-            Send Transfer
-          </Button>
-        </Box>
+      
       </TableContainer>
     </Box>
   );

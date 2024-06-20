@@ -48,7 +48,7 @@ const JugedRole = () => {
             marginBottom: '1rem'
           }}
         >
-        All Records
+        Contest Name
         </Typography>
         <Typography
           variant='h6'

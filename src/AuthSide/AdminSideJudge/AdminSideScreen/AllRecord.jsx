@@ -9,6 +9,7 @@ import imgfrm1 from "../../../assets/adim-screen/imagfram1.png"
 import imgfrm2 from "../../../assets/adim-screen/imagfram2.png"
 import imgfrm3 from "../../../assets/adim-screen/imagfram1.png"
 import JudgeRoleTable from './JudgeRoleTable'
+import AllReacordTable from './AllReacordTable'
 const AllRecord = () => {
     const data = [
         { image: img1, img: imgfrm1,name:'usma', score: 95 },
@@ -66,7 +67,7 @@ const AllRecord = () => {
           >
             Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br></br>sit amet consectetur lorem ipsum dolor sit amet.
           </Typography>
-          <JudgeRoleTable data={data}/>
+          <AllReacordTable data={data}/>
         </Box>
       </Container>
     </Box>
