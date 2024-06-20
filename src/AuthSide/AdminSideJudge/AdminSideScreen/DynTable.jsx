@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Avatar,
   Box,
   Typography
 } from '@mui/material';
@@ -36,7 +37,7 @@ const DynTable = ({ data }) => {
             {data?.map((row, index) => (
               <TableRow key={index} sx={{ color: '#fff',borderBottom: '1px solid red'  }}>
                 <TableCell sx={{ color: '#fff',borderBottom: '1px solid red'  }} > <img src={row.image} alt={row.name} style={{ width: '50px', height: '50px' }} /></TableCell>
-                <TableCell sx={{ color: '#fff',borderBottom: '1px solid red' }}><img src={row.img} alt={row.name} style={{ width: '50px', height: '50px' }} /></TableCell>
+                <TableCell sx={{ color: '#fff',borderBottom: '1px solid red' }}> <Typography sx={{display:'flex'}}><Typography><Avatar src={row.name} alt={`Avatar ${index}`} /></Typography><Typography sx={{padding:'8px'}}>{row.name}</Typography></Typography></TableCell>
                 <TableCell sx={{ color: '#fff' ,borderBottom: '1px solid red'}}>{row.score}</TableCell>
               </TableRow>
             ))}

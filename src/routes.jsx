@@ -16,6 +16,8 @@ import QrCode from "./AuthSide/AdminSide1/QrCode";
 import SignUpForm from "./AuthSide/AdminSide1/SignUpForm";
 import AdminSideScreen from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminSideScreen";
 import AdminSideScreen2 from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminSideScreen2";
+import AllRecord from "./AuthSide/AdminSideJudge/AdminSideScreen/AllRecord";
+import JugedRole from "./AuthSide/AdminSideJudge/AdminSideScreen/JugedRole";
 export default function Router() {
     let element = useRoutes([
         {
@@ -84,6 +86,14 @@ export default function Router() {
         {
             path: 'admin_side_screen2',
             element: <AdminSideScreen2 />,
+        },
+        {
+            path: 'all_record',
+            element: <AllRecord />,
+        },
+        {
+            path: 'judge_role',
+            element: <JugedRole />,
         },
     ]);
     return element;
