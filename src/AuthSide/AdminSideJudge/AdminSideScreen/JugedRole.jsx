@@ -41,7 +41,7 @@ const JugedRole = () => {
           sx={{
             color: 'black',
             fontFamily: 'Roboto',
-            fontSize: {xs:"22px", md:'36px'},
+            fontSize: {xs:"22px", md:'46px'},
             fontWeight: 800,
             lineHeight: '36px',
             textAlign: 'center',

@@ -14,7 +14,7 @@ import {
 
 const JudgeRoleTable = ({ data }) => {
   return (
-    <Box sx={{ padding: '1rem', minHeight: '20vh', width: '100%', maxWidth: '600px', margin: 'auto' }}>
+    <Box sx={{ padding: '1rem', minHeight: '20vh', width: '100%', maxWidth: '500px', margin: 'auto' }}>
       <TableContainer component={Paper} sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
         <Table>
           <TableHead sx={{ background: '#F3F6F9' }}>
@@ -28,11 +28,14 @@ const JudgeRoleTable = ({ data }) => {
               <TableRow
                 key={index}
                 sx={{
-                  borderBottom: '1px solid #e0e0e0',
-                  '&:nth-of-type(odd)': {
-                    backgroundColor: '#f9f9f9',
-                  },
+                  borderBottom: 'none',
+                  ...(index < 2 && {
+                    border: '1px solid #D90B0F',
+                  marginBottom:'2px'
+                  }),
                 }}
+                
+                
               >
                 <TableCell sx={{ color: 'black', borderBottom: 'none' }}>
                   <img src={row.image} alt={`Image ${index}`} style={{ width: '50px', height: '50px' }} />
