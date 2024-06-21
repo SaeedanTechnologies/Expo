@@ -40,8 +40,7 @@ const AdminSideScreen2 = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: { xs: '5px', md: '7px' } ,
-
+            padding: { xs: '5px', md: '7px' },
           }}
         >
           <Typography
@@ -81,17 +80,16 @@ const AdminSideScreen2 = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               flexWrap: 'wrap',
-              gap: '16px' ,
-              marginBottom:'33px'
+              gap: '16px',
+              marginBottom: '33px'
             }}
           >
-          <Box sx={{ marginRight: { xs: '0px', md: '150px' },marginTop:{xs:'0px',md:'-84px'} }}>
-          <img src={Group1} alt='Group 1' />
-        </Box>
-        <Box sx={{ marginLeft: {xs:'0px', md:'84px'}, marginTop:{xs:'0px',md:'-84px'} }}>
-          <img src={Group2} alt='Group 2' />
-        </Box>
-
+            <Box sx={{ marginRight: { xs: '0px', md: '150px' }, marginTop: { xs: '0px', md: '-84px' } }}>
+              <img src={Group1} alt='Group 1' style={{ width: '100%', maxWidth: '200px' }} /> {/* Ensure image is responsive */}
+            </Box>
+            <Box sx={{ marginLeft: { xs: '0px', md: '84px' }, marginTop: { xs: '0px', md: '-84px' } }}>
+              <img src={Group2} alt='Group 2' style={{ width: '100%', maxWidth: '200px' }} /> {/* Ensure image is responsive */}
+            </Box>
           </Box>
           <DynTable data={data} />
         </Box>
