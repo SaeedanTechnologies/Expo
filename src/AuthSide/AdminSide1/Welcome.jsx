@@ -11,7 +11,8 @@ const Welcome = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '80vh', // Full viewport height
+            height: '80vh',
+            padding:'1rem 2%'
         }}>
             <Box sx={{
                 display: 'flex',

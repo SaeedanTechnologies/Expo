@@ -54,7 +54,9 @@ const AddParticipant = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: '100vh',
+                minHeight: '80vh',
+                padding:'0rem 5%'
+
             }}
         >
             <Box
@@ -92,6 +94,7 @@ const AddParticipant = () => {
                         display: 'flex',
                         height: '100%',
                         gap: '20px',
+                        flexWrap:'wrap'
                     }}
                 >
                     <Box
