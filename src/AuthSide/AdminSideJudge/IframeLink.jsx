@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, IconButton, InputAdornment, Box, Typography, useTheme, Button } from '@mui/material';
+import { TextField, IconButton, InputAdornment, Box, Typography, useTheme, Button, useMediaQuery } from '@mui/material';
 // import FileCopyIcon from '@mui/icons-material/FileCopy';
 // import LinkIcon from '@mui/icons-material/Link';
 import LinkIcon from '@mui/icons-material/Link';
@@ -20,6 +20,8 @@ const IframeLink = () => {
   const handleNext = ()=>{
     navigate('/participant-page')
   }
+
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   return (
 
 
@@ -27,7 +29,7 @@ const IframeLink = () => {
 
 
     <Box sx={{
-padding:'2rem 30%'
+padding:isSmall ? '2rem 10%':'2rem 30%'
     }}>
 
 <Typography variant='h1' sx={{fontWeight:700, fontSize:'2rem', textAlign:'center'}}>Iframe Link</Typography>

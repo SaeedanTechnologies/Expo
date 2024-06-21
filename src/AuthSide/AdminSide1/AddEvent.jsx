@@ -12,7 +12,8 @@ const AddEvent = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '80vh', // Full viewport height
+            minHeight: '80vh', // Full viewport height
+        padding:'1rem 10%'
         }}>
             <Box sx={{
                 display: 'flex',
