@@ -24,6 +24,7 @@ import AllRecords from "./AuthSide/AdminSideJudge/AllRecords";
 
 import AllRecord from "./AuthSide/AdminSideJudge/AdminSideScreen/AllRecord";
 import JugedRole from "./AuthSide/AdminSideJudge/AdminSideScreen/JugedRole";
+import JudgePanelReg from "./AuthSide/JudgePanel/JudgePanelReg";
 export default function Router() {
     let element = useRoutes([
         {
@@ -120,6 +121,10 @@ export default function Router() {
         {
             path: 'judge_role',
             element: <JugedRole />,
+        },
+        {
+            path: 'judge_panel_screen1',
+            element: <JudgePanelReg />,
         },
     ]);
     return element;
