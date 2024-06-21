@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, useTheme, useMediaQuery } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/system';
 import { useDropzone } from 'react-dropzone';
@@ -45,6 +45,8 @@ const navigate = useNavigate()
     </PreviewBox>
   ));
 
+  const theme = useTheme()
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   return (
     <Box
       sx={{
@@ -52,11 +54,11 @@ const navigate = useNavigate()
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '80vh',
-    padding:'0rem 30%'
+        minHeight: '80vh',
+    padding: isSmall ? '0rem 10%':'0rem 30%'
       }}
     >
-      <Typography variant="h4" fontWeight={600} gutterBottom>
+      <Typography variant="h4" fontWeight={600} gutterBottom sx={{textAlign:'center'}}>
         Upload Photo Or Video
       </Typography>
       <Typography variant="body1" gutterBottom>

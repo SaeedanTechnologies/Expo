@@ -7,8 +7,8 @@ const CustomTextField = styled(TextField)(({ txtColor, bgColor, borderColor, bor
     backgroundColor: bgColor || 'white',
     borderColor: borderColor || '#ccc',
     borderRadius: borderRadius || '4px',
-    padding: padding || '8px',
-    width: "97%",
+    padding: padding || '6px 0px',
+    width: "100%",
     '& .MuiOutlinedInput-root': {
         '& fieldset': {
             borderColor: borderColor || '#ccc',
