@@ -25,6 +25,10 @@ import AllRecords from "./AuthSide/AdminSideJudge/AllRecords";
 import AllRecord from "./AuthSide/AdminSideJudge/AdminSideScreen/AllRecord";
 import JugedRole from "./AuthSide/AdminSideJudge/AdminSideScreen/JugedRole";
 import JudgePanelReg from "./AuthSide/JudgePanel/JudgePanelReg";
+import JudgePanelReg2 from "./AuthSide/JudgePanel/JudgePanelReg2";
+import JudgeAllParticepent from "./AuthSide/JudgePanel/JudgeAllParticepent";
+import JudgeAdminPanelParticipant from "./AuthSide/JudgePanel/JudgeAdminPanelParticipant";
+import LoginAdminPanel from "./AuthSide/JudgePanel/LoginAdminPanel";
 export default function Router() {
     let element = useRoutes([
         {
@@ -125,6 +129,22 @@ export default function Router() {
         {
             path: 'judge_panel_screen1',
             element: <JudgePanelReg />,
+        },
+        {
+            path: 'judge_panel_screen2',
+            element: <JudgePanelReg2 />,
+        },
+        {
+            path: 'judge_all_particeipent',
+            element: <JudgeAllParticepent />,
+        },
+        {
+            path: 'judge_admin_panel_participant',
+            element: <JudgeAdminPanelParticipant />,
+        },
+        {
+            path: 'login_admin_panel_participant',
+            element: <LoginAdminPanel />,
         },
     ]);
     return element;
