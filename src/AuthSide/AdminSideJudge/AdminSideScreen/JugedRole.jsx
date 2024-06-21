@@ -42,6 +42,7 @@ const JugedRole = () => {
             color: 'black',
             fontFamily: 'Roboto',
             fontSize: '46px',
+            
             fontWeight: 800,
             lineHeight: '36px',
             textAlign: 'center',
