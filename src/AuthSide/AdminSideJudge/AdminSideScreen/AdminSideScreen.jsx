@@ -1,18 +1,16 @@
-import { Box, Container, Typography } from '@mui/material'
-import React from 'react'
-import DynTable from './DynTable'
-import img1 from "../../../assets/adim-screen/image1.png"
-import img2 from "../../../assets/adim-screen/image2.png"
-import img3 from "../../../assets/adim-screen/image2.png"
-import imagebackground from "../../../assets/adim-screen/imageback.png"
-import imgfrm1 from "../../../assets/adim-screen/imagfram1.png"
-import imgfrm2 from "../../../assets/adim-screen/imagfram2.png"
-import imgfrm3 from "../../../assets/adim-screen/imagfram1.png"
+import { Box, Container, Typography } from '@mui/material';
+import React from 'react';
+import DynTable from './DynTable';
+import imgfrm1 from "../../../assets/adim-screen/imagfram1.png";
+import imgfrm2 from "../../../assets/adim-screen/imagfram2.png";
+import imgfrm3 from "../../../assets/adim-screen/imagfram1.png";
+import imagebackground from "../../../assets/adim-screen/imageback.png";
+
 const AdminSideScreen = () => {
   const data = [
-    { image: img1, img: imgfrm1,name:'usma', score: 95 },
-    { image: img2, img: imgfrm1, name:'ali', score: 90 },
-    { image: img3, img: imgfrm1, name:'Abdullah', score: 85 }
+    { position: 1, img: imgfrm1, name: 'Participant 1', score: 95 },
+    { position: 2, img: imgfrm2, name: 'Participant 2', score: 90 },
+    { position: 3, img: imgfrm3, name: 'Participant 3', score: 85 }
   ];
 
   return (
@@ -30,26 +28,26 @@ const AdminSideScreen = () => {
       }}
     >
       <Container>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop:'12px' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop:'12px', padding:'1rem' }}>
           <Typography
             variant='h4'
             sx={{
               color: 'white',
               fontFamily: 'Roboto',
-              fontSize: '46px',
+              fontSize: { xs: '32px', md: '46px' },
               fontWeight: 800,
               lineHeight: '36px',
               textAlign: 'center',
               marginBottom: '1rem'
             }}
           >
-            Results
+            Results 
           </Typography>
           <Typography
             variant='h6'
             sx={{
               fontFamily: "Roboto",
-              fontSize: '20px',
+              fontSize: { xs: '16px', md: '20px' },
               fontWeight: '400',
               lineHeight: '28px',
               textAlign: 'center',
@@ -57,7 +55,7 @@ const AdminSideScreen = () => {
               color:'white'
             }}
           >
-            Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br></br>sit amet consectetur lorem ipsum dolor sit amet.
+            Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit <br></br> amet consectetur lorem ipsum dolor sit amet.
           </Typography>
           <DynTable data={data} />
         </Box>

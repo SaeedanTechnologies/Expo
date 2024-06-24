@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router';
 
 const judges = [
   { name: 'M Hamza', image: '/path/to/hamza.jpg', score: 45, isCurrent: true },
-  { name: 'M Ruhan', image: '/path/to/ruhan.jpg', isCurrent: false },
-  { name: 'M Salam', image: '/path/to/salam.jpg', isCurrent: false },
-  { name: 'M Muaz', image: '/path/to/muaz.jpg', isCurrent: false },
-  { name: 'M Yasin', image: '/path/to/yasin.jpg', isCurrent: false },
+  { name: 'M Ruhan', image: '/path/to/ruhan.jpg', score: 45, isCurrent: true },
+  { name: 'M Salam', image: '/path/to/salam.jpg', score: 45, isCurrent: true },
+  { name: 'M Muaz', image: '/path/to/muaz.jpg', score: 45, isCurrent: true},
+  { name: 'M Yasin', image: '/path/to/yasin.jpg', score: 45, isCurrent: true},
 
 ];
 
@@ -21,12 +21,12 @@ const StyledAvatar = styled(Avatar)(({ theme, isCurrent }) => ({
   margin: theme.spacing(1),
 }));
 
-const AdminOperator = () => {
+const AdminOperator3 = () => {
   const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
-const navigate = useNavigate()
-const handleClick = ()=>{
-  navigate('/admin-operator2')
-}
+  const navigate = useNavigate()
+  const handleiFrame = ()=>{
+    navigate('/iframe')
+  }
   return (
     <Box
       sx={{
@@ -93,32 +93,20 @@ const handleClick = ()=>{
           width: '100%',
           maxWidth: 500,
         }}
+        gap={3}
       >
+    <Button variant="contained"  sx={{width:'100%', textTransform:'none', backgroundColor:'#f5c0c1', color:'black', fontWeight:600 }}
+    onClick={handleiFrame}
 
-     <Box sx={{
-       display: 'flex',
-          alignItems: 'center',
-
-          justifyContent:'space-between',
-     }}>
-     <Avatar src={participant.image} alt={participant.name} sx={{ marginRight: 2 }} />
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="body1" sx={{fontSize:'0.9rem', fontWeight:600}}>{participant.name}</Typography>
-          <Typography variant="body2" color="textSecondary" sx={{fontSize:'0.8rem', color:'red', fontWeight:600}}>
-            Singer
-          </Typography>
-        </Box>
-     </Box>
-        <Button variant="contained" color="primary"
-        // disabled
-onClick={handleClick}
-
-         sx={{textTransform:'none'}}>
-          Now Judge Ruhan
+    >
+          Copy iframe link
+        </Button>
+        <Button variant="contained" color="primary" sx={{width:'100%', textTransform:'none'}}>
+          Now Judge Hamza
         </Button>
       </Box>
     </Box>
   );
 };
 
-export default AdminOperator;
+export default AdminOperator3;

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, useTheme, useMediaQuery } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/system';
 import { useDropzone } from 'react-dropzone';
+import { useNavigate } from 'react-router';
 
 const UploadBox = styled(Box)(({ theme }) => ({
   border: '2px dashed #d32f2f',
@@ -29,10 +30,11 @@ const UploadVideo = () => {
       })));
     }
   });
-
+const navigate = useNavigate()
   const handleUpload = () => {
     // Handle the upload functionality here
-    alert('Files uploaded: ' + files.map(file => file.name).join(', '));
+    // alert('Files uploaded: ' + files.map(file => file.name).join(', '));
+    navigate('/admin-operator')
   };
 
   const thumbs = files.map(file => (
@@ -43,6 +45,8 @@ const UploadVideo = () => {
     </PreviewBox>
   ));
 
+  const theme = useTheme()
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   return (
     <Box
       sx={{
@@ -50,11 +54,11 @@ const UploadVideo = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '80vh',
-    padding:'0rem 30%'
+        minHeight: '80vh',
+    padding: isSmall ? '0rem 10%':'0rem 30%'
       }}
     >
-      <Typography variant="h4" fontWeight={600} gutterBottom>
+      <Typography variant="h4" fontWeight={600} gutterBottom sx={{textAlign:'center'}}>
         Upload Photo Or Video
       </Typography>
       <Typography variant="body1" gutterBottom>

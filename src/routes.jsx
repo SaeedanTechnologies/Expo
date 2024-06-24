@@ -16,8 +16,19 @@ import QrCode from "./AuthSide/AdminSide1/QrCode";
 import SignUpForm from "./AuthSide/AdminSide1/SignUpForm";
 import AdminSideScreen from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminSideScreen";
 import AdminSideScreen2 from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminSideScreen2";
+import AdminOperator2 from "./AuthSide/AdminSideJudge/AdminOperator2";
+import AdminOperator3 from "./AuthSide/AdminSideJudge/AdminOperator3";
+import IframeLink from "./AuthSide/AdminSideJudge/IframeLink";
+import ParticipantPage from "./AuthSide/AdminSideJudge/ParticipantPage";
+import AllRecords from "./AuthSide/AdminSideJudge/AllRecords";
+
 import AllRecord from "./AuthSide/AdminSideJudge/AdminSideScreen/AllRecord";
 import JugedRole from "./AuthSide/AdminSideJudge/AdminSideScreen/JugedRole";
+import JudgePanelReg from "./AuthSide/JudgePanel/JudgePanelReg";
+import JudgePanelReg2 from "./AuthSide/JudgePanel/JudgePanelReg2";
+import JudgeAllParticepent from "./AuthSide/JudgePanel/JudgeAllParticepent";
+import JudgeAdminPanelParticipant from "./AuthSide/JudgePanel/JudgeAdminPanelParticipant";
+import LoginAdminPanel from "./AuthSide/JudgePanel/LoginAdminPanel";
 export default function Router() {
     let element = useRoutes([
         {
@@ -56,7 +67,7 @@ export default function Router() {
                     path: 'signUp',
                     element: <SignUpForm />,
                 },
-               
+
             ]
         },
         {
@@ -87,6 +98,26 @@ export default function Router() {
             path: 'admin_side_screen2',
             element: <AdminSideScreen2 />,
         },
+            {
+            path: 'admin-operator2',
+            element: <AdminOperator2 />
+        },
+        {
+            path: 'admin-operator3',
+            element: <AdminOperator3 />
+        },
+        {
+            path: 'iframe',
+            element: <IframeLink />
+        },
+        {
+            path: 'participant-page',
+            element: <ParticipantPage />
+        },
+        {
+            path: 'all-records',
+            element: <AllRecords />
+        },
         {
             path: 'all_record',
             element: <AllRecord />,
@@ -94,6 +125,26 @@ export default function Router() {
         {
             path: 'judge_role',
             element: <JugedRole />,
+        },
+        {
+            path: 'judge_panel_screen1',
+            element: <JudgePanelReg />,
+        },
+        {
+            path: 'judge_panel_screen2',
+            element: <JudgePanelReg2 />,
+        },
+        {
+            path: 'judge_all_particeipent',
+            element: <JudgeAllParticepent />,
+        },
+        {
+            path: 'judge_admin_panel_participant',
+            element: <JudgeAdminPanelParticipant />,
+        },
+        {
+            path: 'login_admin_panel_participant',
+            element: <LoginAdminPanel />,
         },
     ]);
     return element;

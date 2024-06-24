@@ -8,10 +8,10 @@ import {
   TextField,
   Typography,
   Avatar,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
-const steps = ['Judge 1', 'Judge 2', 'Judge 3', 'Judge 4'];
 
 const AddJudgeMain = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -27,7 +27,7 @@ const AddJudgeMain = () => {
 
   const handleNext = () => {
     localStorage.setItem('judges', JSON.stringify(judges));
-    if (activeStep === steps.length - 1) {
+    if (activeStep === judges.length - 1) {
       navigate('/create-score-card');
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -35,26 +35,10 @@ const AddJudgeMain = () => {
   };
 
   const handleAddNewJudge = () => {
-    const newJudges = [...judges];
-    // Ensure the current step's data is saved before proceeding
-    newJudges[activeStep] = {
-      name: judges[activeStep]?.name || '',
-      email: judges[activeStep]?.email || '',
-      photo: judges[activeStep]?.photo || ''
-    };
-
-    // Add a new judge at the next step if it doesn't already exist
-    if (!newJudges[activeStep + 1]) {
-      newJudges[activeStep + 1] = { name: '', email: '', photo: '' };
-    }
-
+    const newJudges = [...judges, { name: '', email: '', photo: '' }];
     setJudges(newJudges);
-    localStorage.setItem('judges', JSON.stringify(newJudges)); // Save updated state
-
-    // Move to the next step
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setActiveStep(newJudges.length - 1);
   };
-
 
   const handleChange = (index, field, value) => {
     const newJudges = [...judges];
@@ -72,39 +56,44 @@ const AddJudgeMain = () => {
     reader.readAsDataURL(event.target.files[0]);
   };
 
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Box sx={{ padding: '2rem 30%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <Box sx={{ padding: isSmall ? '2rem 8%' : '2rem 30%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <Box>
-        <Typography variant="h4" gutterBottom sx={{textAlign:'center'}}>
+        <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
           Add Judges
         </Typography>
-        <Typography variant="body1" gutterBottom sx={{textAlign:'center'}}>
+        <Typography variant="body1" gutterBottom sx={{ textAlign: 'center' }}>
           Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
         </Typography>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        <Box sx={{ overflowX: 'auto', width: isSmall ? '80vw': '40vw' }}>
+          <Stepper activeStep={activeStep} alternativeLabel sx={{width: '100%' }}>
+            {judges.map((_, index) => (
+              <Step key={index}>
+                <StepLabel>{`Judge ${index + 1}`}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Box>
         <Box sx={{ mt: 3 }}>
           <Box sx={{ mb: 3, p: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb:2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <Avatar src={judges[activeStep]?.photo} sx={{ width: 76, height: 76, mr: 2 }} />
               <Box>
-              <Button variant="outlined" component="label">
-                Upload Your Photo
-                <input type="file" hidden onChange={(e) => handlePhotoChange(activeStep, e)} />
-              </Button>
-              <Typography sx={{fontSize:'0.8rem', color:'grey', width:'80%'}}>Image format must be PNG/JPGand size
-              less then 500 kb </Typography>
+                <Button variant="outlined" component="label">
+                  Upload Your Photo
+                  <input type="file" hidden onChange={(e) => handlePhotoChange(activeStep, e)} />
+                </Button>
+                <Typography sx={{ fontSize: '0.8rem', color: 'grey', width: '80%' }}>
+                  Image format must be PNG/JPG and size less than 500 kb
+                </Typography>
               </Box>
             </Box>
-            <label style={{fontWeight:600,}}>Judge Name</label>
-            <br/>
-            <br/>
-
+            <label style={{ fontWeight: 600 }}>Judge Name</label>
+            <br />
+            <br />
             <TextField
               label="Judge Name"
               variant="outlined"
@@ -113,9 +102,9 @@ const AddJudgeMain = () => {
               onChange={(e) => handleChange(activeStep, 'name', e.target.value)}
               sx={{ mb: 2 }}
             />
-                        <label style={{fontWeight:600,}}>Email</label>
-            <br/>
-            <br/>
+            <label style={{ fontWeight: 600 }}>Email</label>
+            <br />
+            <br />
             <TextField
               label="Email"
               variant="outlined"
@@ -123,29 +112,24 @@ const AddJudgeMain = () => {
               value={judges[activeStep]?.email || ''}
               onChange={(e) => handleChange(activeStep, 'email', e.target.value)}
             />
-<Box gap={3} sx={{display:'flex', alignItems:'center', mt:3}}>
-         <Button
-  variant="outlined"
-  onClick={handleAddNewJudge}
-
-  sx={{ mr: 2, width:'100%' }}
-  disabled={activeStep === steps.length - 1} // Disable when all steps are completed
->
-  + Add New Judge
-</Button>
-<Button
-  variant="contained"
-  color="primary"
-  onClick={handleNext}
-sx={{width:'100%'}}
->
-  {activeStep === steps.length - 1 ? 'Next' : 'Next'}
-</Button>
-         </Box>
-
-
+            <Box gap={3} sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
+              <Button
+                variant="outlined"
+                onClick={handleAddNewJudge}
+                sx={{ mr: 2, width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform:'none' }}
+              >
+                + Add New Judge
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform:'none' }}
+              >
+                {activeStep === judges.length - 1 ? 'Finish' : 'Next'}
+              </Button>
+            </Box>
           </Box>
-
         </Box>
       </Box>
     </Box>

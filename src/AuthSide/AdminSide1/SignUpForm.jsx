@@ -1,18 +1,22 @@
 import React from 'react'
 import MyTextField from '../../page/components/MyTextField'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
 import MyButton from '../../page/components/MyButton'
 import { useNavigate } from 'react-router'
 
 const SignUpForm = () => {
     const navigate = useNavigate()
+const theme = useTheme()
+    const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+
 
     return (
         <Box sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '120vh', // Full viewport height
+            padding:'1rem 10%',
+            height: isSmall ? '80vh':'100vh', // Full viewport height
         }}>
             <Box sx={{
                 display: 'flex',

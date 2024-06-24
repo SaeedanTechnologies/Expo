@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, InputAdornment, IconButton, useTheme } from '@mui/material';
+import { Box, TextField, Typography, InputAdornment, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import React from 'react';
 import LinkIcon from '@mui/icons-material/Link';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -11,9 +11,9 @@ const theme = useTheme()
     alert("Link copied to clipboard!");
   };
 
-
+const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   return (
-    <Box sx={{ flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', padding:'0rem 30%' }}>
+    <Box sx={{ flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', padding: isSmall ? '0rem 10%': '0rem 30%' }}>
       <Box>
         <Typography sx={{ fontSize: '2rem', fontWeight: 600, textAlign: 'center' }}>Links</Typography>
         <Typography sx={{ fontSize: '1rem', textAlign: 'center' }}>
