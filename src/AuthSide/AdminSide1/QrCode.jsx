@@ -3,8 +3,8 @@ import MyTextField from '../../page/components/MyTextField'
 import { Box, Typography } from '@mui/material'
 import MyButton from '../../page/components/MyButton'
 import { useNavigate } from 'react-router'
-// import QRCode from "react-qr-code";
-import QRCode from 'qrcode.react';
+import QRCode from "react-qr-code";
+// import QRCode from 'qrcode.react';
 
 const QrCode = () => {
     const navigate = useNavigate()
