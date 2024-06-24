@@ -18,7 +18,7 @@ const JudgeRoleTable = ({ data }) => {
       <TableContainer component={Paper} sx={{ backgroundColor: 'white', boxShadow: 'none' }}>
         <Table>
           <TableHead sx={{ background: '#F3F6F9' }}>
-            <TableRow>
+            <TableRow >
               <TableCell sx={{ color: 'black', borderBottom: 'white' }}>No :</TableCell>
               <TableCell sx={{ color: 'black', borderBottom: 'white' }}>Context Name Name</TableCell>
             </TableRow>
@@ -28,14 +28,17 @@ const JudgeRoleTable = ({ data }) => {
               <TableRow
                 key={index}
                 sx={{
-                  borderBottom: 'none',
+                 
+                   borderBottom: 'none',
                   ...(index < 2 && {
                     border: '1px solid #D90B0F',
-                  marginBottom:'2px'
                   }),
+                  '& > *': {
+                    padding: '16px 0', 
+                    lineHeight:'12px',
+                  
+                  },
                 }}
-                
-                
               >
                 <TableCell sx={{ color: 'black', borderBottom: 'none' }}>
                   <img src={row.image} alt={`Image ${index}`} style={{ width: '50px', height: '50px' }} />
@@ -43,7 +46,7 @@ const JudgeRoleTable = ({ data }) => {
                 <TableCell sx={{ color: 'black', borderBottom: 'none' }}>
                   <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar src={row.image} alt={`Avatar ${index}`} />
-                    <Typography sx={{ padding: '0 8px' }}>{row.url}</Typography>
+                    <Typography sx={{ padding: '0px 8px' }}>{row.url}</Typography>
                   </Typography>
                 </TableCell>
               </TableRow>
