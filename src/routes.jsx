@@ -29,6 +29,8 @@ import JudgePanelReg2 from "./AuthSide/JudgePanel/JudgePanelReg2";
 import JudgeAllParticepent from "./AuthSide/JudgePanel/JudgeAllParticepent";
 import JudgeAdminPanelParticipant from "./AuthSide/JudgePanel/JudgeAdminPanelParticipant";
 import LoginAdminPanel from "./AuthSide/JudgePanel/LoginAdminPanel";
+import AdminRegisterForm from "./AuthSide/AdminSide1/AdminRegisterForm";
+import AdminLoginForm from "./AuthSide/AdminSide1/AdminLoginForm";
 export default function Router() {
     let element = useRoutes([
         {
@@ -67,6 +69,7 @@ export default function Router() {
                     path: 'signUp',
                     element: <SignUpForm />,
                 },
+                
 
             ]
         },
@@ -145,6 +148,14 @@ export default function Router() {
         {
             path: 'login_admin_panel_participant',
             element: <LoginAdminPanel />,
+        },
+        {
+            path: 'admin-sign-up',
+            element: <AdminRegisterForm />,
+        },
+        {
+            path: 'admin-login',
+            element: <AdminLoginForm />,
         },
     ]);
     return element;

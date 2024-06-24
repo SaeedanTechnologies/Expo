@@ -1,7 +1,12 @@
-import React from 'react'
-import { Helmet } from 'react-helmet'
-const page = (props) => {
-  const {title, children} = props
+import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
+
+const Page = ({ title, children }) => {
+  // Update document title on component mount and whenever `title` changes
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
   return (
     <div>
       <Helmet>
@@ -9,7 +14,7 @@ const page = (props) => {
       </Helmet>
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default Page;
