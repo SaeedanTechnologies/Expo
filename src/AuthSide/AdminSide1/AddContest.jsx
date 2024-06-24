@@ -12,6 +12,8 @@ const AddContent = () => {
             alignItems: 'center',
             justifyContent: 'center',
             height: '80vh', // Full viewport height
+            padding:'1rem 10%'
+
         }}>
             <Box sx={{
                 display: 'flex',

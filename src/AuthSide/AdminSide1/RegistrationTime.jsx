@@ -12,6 +12,7 @@ const AddRegistration = () => {
             alignItems: 'center',
             justifyContent: 'center',
             height: '80vh', // Full viewport height
+            padding:'1rem 5%'
         }}>
             <Box sx={{
                 display: 'flex',

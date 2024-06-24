@@ -11,6 +11,8 @@ import {
   Typography,
   Paper,
   Box,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 import Positions from "../../page/components/Positions";
@@ -28,8 +30,13 @@ const records = [
 ];
 
 const AllRecords = () => {
+
+  const theme = useTheme()
+  const isSmall = useMediaQuery(theme. breakpoints.down('sm'))
+
+
   return (
-    <Box sx={{ padding: "2rem 30%" }}>
+    <Box sx={{ padding: isSmall ? '2rem 10%': '2rem 30%'}}>
       <Typography variant="h4" align="center" gutterBottom>
         All Records
       </Typography>

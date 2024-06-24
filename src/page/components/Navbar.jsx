@@ -24,11 +24,12 @@ const Navbar = () => {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
-  const isHidden = location.pathname === "/participant-page";
+  const isHidden = location.pathname === "/participant-page" || location.pathname === "/admin_side_screen1" || location.pathname === "/admin_side_screen2";
 
   if (isHidden) {
     return null;
   }
+
 
   return (
     <Box sx={{ backgroundColor: "white", padding: "0rem 5%", display: "flex", justifyContent: "space-between", alignItems: "center", position: "static", top: 0, zIndex: 10000000, boxShadow: "1px 1px 1px #ededed" }}>
