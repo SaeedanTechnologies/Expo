@@ -53,7 +53,7 @@ console.log('user login by redux')
 
 
 
-      navigate("/admin-sign-up");
+      navigate("/");
     })
     .catch((err) => {
       // setLoading(false);
