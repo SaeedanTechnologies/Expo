@@ -14,6 +14,8 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router";
+import {useDispatch} from 'react-redux'
+import { adminRegister } from "../../store/actions/authActions";
 
 const AdminSignUpForm = () => {
     const navigate=useNavigate();
@@ -51,47 +53,71 @@ const AdminSignUpForm = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   if (validateForm()) {
+  //     try {
+  //       setLoading(true); // Start loading
+  //       const response = await axios.post(
+  //         "https://expoproject.saeedantechpvt.com/api/admin/register",
+  //         formData
+  //       );
+  //       console.log("API response:", response.data);
+  //       // Reset form fields after successful submission
+  //       setFormData({
+  //         name: "",
+  //         phone: "",
+  //         email: "",
+  //         password: "",
+  //       });
+  //       // Show success message or redirect
+  //       setSnackbarMessage("Registration successful!");
+  //       setSnackbarOpen(true);
+  //       navigate("/admin-login")
+  //     } catch (error) {
+  //       // Handle error
+  //       if (error.response && error.response.status === 409) {
+  //         // User already exists (assuming 409 Conflict status code)
+  //         setSnackbarMessage("User already exists. Please try another email.");
+  //         setSnackbarOpen(true);
+  //       } else {
+  //         // Other errors
+  //         console.error("Error:", error);
+  //         setSnackbarMessage("User already exists. Please try another email.");
+  //         setSnackbarOpen(true);
+  //       }
+  //     } finally {
+  //       setLoading(false); // Stop loading
+  //     }
+  //   } else {
+  //     // Form validation failed
+  //     console.log("Form validation failed.");
+  //   }
+  // };
+
+const [formValues, setFormValues] = useState()
+const dispatch = useDispatch()
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (validateForm()) {
-      try {
-        setLoading(true); // Start loading
-        const response = await axios.post(
-          "https://expoproject.saeedantechpvt.com/api/admin/register",
-          formData
-        );
-        console.log("API response:", response.data);
-        // Reset form fields after successful submission
-        setFormData({
-          name: "",
-          phone: "",
-          email: "",
-          password: "",
-        });
-        // Show success message or redirect
-        setSnackbarMessage("Registration successful!");
-        setSnackbarOpen(true);
-        navigate("/admin-login")
-      } catch (error) {
-        // Handle error
-        if (error.response && error.response.status === 409) {
-          // User already exists (assuming 409 Conflict status code)
-          setSnackbarMessage("User already exists. Please try another email.");
-          setSnackbarOpen(true);
-        } else {
-          // Other errors
-          console.error("Error:", error);
-          setSnackbarMessage("User already exists. Please try another email.");
-          setSnackbarOpen(true);
-        }
-      } finally {
-        setLoading(false); // Stop loading
-      }
-    } else {
-      // Form validation failed
-      console.log("Form validation failed.");
-    }
+    dispatch(adminRegister(formData))
+    .then((res) => {
+
+      setFormValues(res.data.payload);
+console.log('user registered by redux')
+      // enqueueSnackbar("User Registered Successfully", { variant: "success" });
+
+
+
+      navigate("/admin-login");
+    })
+    .catch((err) => {
+      // setLoading(false);
+      alert('errorrrrrr')
+
+      // enqueueSnackbar(err.message, { variant: "error" });
+    });
   };
 
   const validateForm = () => {
