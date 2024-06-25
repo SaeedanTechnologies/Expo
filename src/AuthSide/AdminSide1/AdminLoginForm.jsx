@@ -50,10 +50,7 @@ const dispatch = useDispatch()
       setFormValues(res.data.payload);
 console.log('user login by redux')
       // enqueueSnackbar("User Registered Successfully", { variant: "success" });
-
-
-
-      navigate("/admin-sign-up");
+      navigate("/");
     })
     .catch((err) => {
       // setLoading(false);
@@ -63,7 +60,7 @@ console.log('user login by redux')
     });
 
 
-    
+
     // if (validateForm()) {
     //   try {
     //     setLoading(true);
