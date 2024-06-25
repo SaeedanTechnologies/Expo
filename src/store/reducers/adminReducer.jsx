@@ -7,11 +7,11 @@ const adminReducer = (state=initialState, action) => {
     switch(action.type) {
         case 'LOGIN_SUCCESS': {
 
-            localStorage.setItem('token', action.payload.data.access_token);
+            localStorage.setItem('token', action.payload.data.token);
             return {
                 ...state,
                 ...action.payload.data,
-                token: action.payload.data.access_token,
+                token: action.payload.data.token,
                 isAuthenticated: true
             };
         };
@@ -23,7 +23,7 @@ const adminReducer = (state=initialState, action) => {
               };
         };
         default :  return state
-        
+
     }
 }
 

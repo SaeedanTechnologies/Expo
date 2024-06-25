@@ -14,6 +14,8 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { adminLogin } from "../../store/actions/authActions";
+import { useDispatch } from "react-redux";
 const AdminLoginForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -38,40 +40,60 @@ const AdminLoginForm = () => {
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-
+const dispatch = useDispatch()
+  const [formValues, setFormValues] = useState()
   const handleSubmit = async (event) => {
     event.preventDefault();
+    dispatch(adminLogin(formData))
+    .then((res) => {
 
-    if (validateForm()) {
-      try {
-        setLoading(true);
-        const response = await axios.post(
-          "https://expoproject.saeedantechpvt.com/api/admin/login",
-          formData
-        );
-        console.log("API response:", response.data.payload.token);
-        localStorage.setItem("token", response.data.payload.token);
+      setFormValues(res.data.payload);
+console.log('user login by redux')
+      // enqueueSnackbar("User Registered Successfully", { variant: "success" });
 
-        setFormData({
-          email: "",
-          password: "",
-        });
 
-        setSnackbarMessage("Login successful!");
-        setSnackbarOpen(true);
-        navigate("/");
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setError("Invalid email or password");
-        } else {
-          console.error("Error:", error);
-          setSnackbarMessage("An error occurred. Please try again later.");
-          setSnackbarOpen(true);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
+
+      navigate("/admin-sign-up");
+    })
+    .catch((err) => {
+      // setLoading(false);
+      alert('errorrrrrr')
+
+      // enqueueSnackbar(err.message, { variant: "error" });
+    });
+
+
+    
+    // if (validateForm()) {
+    //   try {
+    //     setLoading(true);
+    //     const response = await axios.post(
+    //       "https://expoproject.saeedantechpvt.com/api/admin/login",
+    //       formData
+    //     );
+    //     console.log("API response:", response.data.payload.token);
+    //     localStorage.setItem("token", response.data.payload.token);
+
+    //     setFormData({
+    //       email: "",
+    //       password: "",
+    //     });
+
+    //     setSnackbarMessage("Login successful!");
+    //     setSnackbarOpen(true);
+    //     navigate("/");
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 401) {
+    //       setError("Invalid email or password");
+    //     } else {
+    //       console.error("Error:", error);
+    //       setSnackbarMessage("An error occurred. Please try again later.");
+    //       setSnackbarOpen(true);
+    //     }
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // }
   };
 
   const validateForm = () => {
