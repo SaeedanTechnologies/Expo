@@ -10,18 +10,45 @@ export const adminRegister = (formValues) => async (dispatch) => {
   }
 };
 
+// export const adminLogin = (formValues) => async (dispatch) => {
+//   try {
+//     const res = await api.post("admin/login", formValues);
+//     dispatch({
+//       type: "LOGIN_SUCCESS",
+//       payload: res.data,
+//     });
+//     return res;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
+
+
 export const adminLogin = (formValues) => async (dispatch) => {
   try {
     const res = await api.post("admin/login", formValues);
-    // dispatch({
-    //   type: "LOGIN_SUCCESS",
-    //   payload: res.data,
-    // });
+
+    console.log(res.data.payload, 'dataaaaaaaaaaaa')
+    const { token, user } = res.data.payload;
+
+    console.log(token, 'tokennnnnnnn')
+
+    
+    dispatch({
+      type: "LOGIN_SUCCESS",
+      payload: {
+        data: {
+          token,
+          user,
+        },
+      },
+    });
     return res;
   } catch (err) {
     throw err;
   }
 };
+
 
 export const updateProfile = (formValues) => async (dispatch) => {
   try {
