@@ -402,12 +402,18 @@ const AddParticipant = () => {
         setInputValues(newInputValues);
     };
 
-    const handleFileInputChange = (index, event) => {
+    const handleFileInputChange = async (event) => {
         const file = event.target.files[0];
-        const newUploadFields = [...uploadFields];
-        newUploadFields[index] = file;
-        setUploadFields(newUploadFields);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result.split(",")[1]; // Base64 string of the file content
+            setSelectedFile(base64String);
+        };
+        reader.readAsDataURL(file);
     };
+    
+    ``
+    
 
     const handleDragOver = (event) => {
         event.preventDefault();
@@ -429,18 +435,18 @@ const AddParticipant = () => {
     const handleDropClick = (index) => {
         const fileInput = document.getElementById(`fileInput-${index}`);
         fileInput.click();
+      
     };
 
     const handleFileUpload = () => {
         // Implement file upload logic here
         console.log('Uploaded file:', selectedFile);
     };
-
     const handleSubmit = async () => {
         try {
             const token = localStorage.getItem('token');
             const formData = [];
-
+    
             // Handle text fields
             inputValues.forEach((value, index) => {
                 const field = {
@@ -451,26 +457,26 @@ const AddParticipant = () => {
                     required: true,
                     is_important: value.includes('*')
                 };
-
+    
                 formData.push(field);
             });
-
-            // Handle file uploads
-            uploadFields.forEach((file, index) => {
-                if (file) {
+    
+            // Handle file contents
+            uploadFields.forEach(( value, index) => {
+              
                     const field = {
                         contest_id: contest_id,
-                        name: `File ${index + 1}`,
+                        name: `Field ${index + 1}`,
                         type: "file",
                         label: `Upload ${index + 1}`,
                         required: true,
-                        is_important: false
+                      is_important: 'imp'
                     };
-
+    
                     formData.push(field);
-                }
+                
             });
-
+    
             // Send formData to API endpoint
             const response = await fetch('https://expoproject.saeedantechpvt.com/api/admin/form_fields', {
                 method: 'POST',
@@ -480,21 +486,78 @@ const AddParticipant = () => {
                 },
                 body: JSON.stringify({ formData })
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to submit form data');
             }
-
+    
             const responseData = await response.json();
             console.log('Form data submitted successfully:', responseData);
-            console.log('Form data submitted successfully:', responseData);
-            console.log(responseData, 'iddddddddddd')
-
+    
             navigate('/admin/add-QR', { state: {contest_id } });
         } catch (error) {
             console.error('Error submitting data:', error);
         }
     };
+    // const handleSubmit = async () => {
+    //     try {
+    //         const token = localStorage.getItem('token');
+    //         const formData = [];
+
+    //         // Handle text fields
+    //         inputValues.forEach((value, index) => {
+    //             const field = {
+    //                 contest_id: contest_id,
+    //                 name: `Field ${index + 1}`,
+    //                 type: "text",
+    //                 label: value,
+    //                 required: true,
+    //                 is_important: value.includes('*')
+    //             };
+
+    //             formData.push(field);
+    //         });
+
+    //         // Handle file uploads
+    //         uploadFields.forEach((file, index) => {
+    //             if (file) {
+    //                 const field = {
+    //                     contest_id: contest_id,
+    //                     name: `File ${index + 1}`,
+    //                     type: "file",
+    //                     label: `Upload ${index + 1}`,
+    //                     required: true,
+    //                     is_important: false
+    //                 };
+
+    //                 formData.push(field);
+    //             }
+    //         });
+
+    //         // Send formData to API endpoint
+    //         const response = await fetch('https://expoproject.saeedantechpvt.com/api/admin/form_fields', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: `Bearer ${token}`
+    //             },
+    //             body: JSON.stringify({ formData })
+    //         });
+
+    //         if (!response.ok) {
+    //             throw new Error('Failed to submit form data');
+    //         }
+
+    //         const responseData = await response.json();
+    //         console.log('Form data submitted successfully:', responseData);
+    //         console.log('Form data submitted successfully:', responseData);
+    //         console.log(responseData, 'iddddddddddd')
+
+    //         navigate('/admin/add-QR', { state: {contest_id } });
+    //     } catch (error) {
+    //         console.error('Error submitting data:', error);
+    //     }
+    // };
 
     return (
         <Box
