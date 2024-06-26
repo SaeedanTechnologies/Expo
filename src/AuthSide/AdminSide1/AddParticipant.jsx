@@ -464,7 +464,8 @@ const AddParticipant = () => {
                         type: "file",
                         label: `Upload ${index + 1}`,
                         required: true,
-                        is_important: false
+                        is_important: false,
+                        //  file: file ? file.name : 'No file uploaded'
                     };
 
                     formData.push(field);
