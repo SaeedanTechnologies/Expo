@@ -10,14 +10,19 @@ import {
   InputAdornment,
   CircularProgress,
   Snackbar,
+  useTheme,
+
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { adminLogin } from "../../store/actions/authActions";
 import { useDispatch } from "react-redux";
+import {Link} from 'react-router-dom'
+import { ThemeContext } from "@emotion/react";
 const AdminLoginForm = () => {
   const navigate = useNavigate();
+  const theme = useTheme()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -195,6 +200,20 @@ console.log('user login by redux')
           >
             {loading ? <CircularProgress size={24} /> : "Sign In"}
           </Button>
+<Box sx={{display:'flex', alignItems:'center', justifyContent:'end'}}>
+
+<Typography>Dont Have an account ?</Typography>
+          <Link to="/admin-sign-up" style={{ textDecoration: "none" }}>
+                    <Typography
+                      sx={{
+                        color:theme.palette.primary.main,
+                        marginLeft: "0.5rem",
+                      }}
+                    >
+                      Signup!
+                    </Typography>
+                  </Link>
+</Box>
         </Box>
       </Box>
       {/* Snackbar for notifications */}

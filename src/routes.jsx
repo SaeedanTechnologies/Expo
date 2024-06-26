@@ -65,11 +65,15 @@ export default function Router() {
                     path: 'add-QR',
                     element: <QrCode />,
                 },
+                // {
+                //     path: 'contest:contest_id',
+                //     element: <SignUpForm />,
+                // },
                 {
-                    path: 'signUp',
+                    path: 'contest/:id',
                     element: <SignUpForm />,
                 },
-                
+
 
             ]
         },

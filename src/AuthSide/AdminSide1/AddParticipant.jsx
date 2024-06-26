@@ -78,7 +78,7 @@
 //         try {
 //             const token = localStorage.getItem('token');
 //             const requests = [];
-    
+
 //             // Handle text fields
 //             inputValues.forEach((value, index) => {
 //                 const payload = {
@@ -89,7 +89,7 @@
 //                     required: true,
 //                     type: "text"
 //                 };
-    
+
 //                 requests.push(
 //                     fetch('https://expoproject.saeedantechpvt.com/api/admin/form_fields', {
 //                         method: 'POST',
@@ -101,18 +101,18 @@
 //                     })
 //                 );
 //             });
-    
+
 //             // Handle file uploads
 //             // uploadFields.forEach((file, index) => {
 //             //     const payload = {
 //             //         contest_id: contest_id,
-//             //         is_important: "no", 
+//             //         is_important: "no",
 //             //         label: `Upload ${index + 1}`,
 //             //         name: `File ${index + 1}`,
 //             //         required: true,
 //             //         type: "file"
 //             //     };
-    
+
 //             //     requests.push(
 //             //         fetch('https://expoproject.saeedantechpvt.com/api/admin/form_fields', {
 //             //             method: 'POST',
@@ -124,7 +124,7 @@
 //             //         })
 //             //     );
 //             // });
-    
+
 //             // Execute all requests concurrently
 //             const responses = await Promise.all(requests);
 //             const responseData = await Promise.all(responses.map(response => response.json()));
@@ -135,8 +135,8 @@
 //             console.error('Error submitting data:', error);
 //         }
 //     };
-    
-    
+
+
 
 //     return (
 //         <Box
@@ -487,9 +487,9 @@ const AddParticipant = () => {
 
             const responseData = await response.json();
             console.log('Form data submitted successfully:', responseData);
+console.log(contest_id, 'iddddddddddd')
 
-            // Navigate to the next page
-            navigate('/admin/add-QR');
+            navigate('/admin/add-QR', { state: {contest_id } });
         } catch (error) {
             console.error('Error submitting data:', error);
         }

@@ -11,17 +11,23 @@ import {
   IconButton,
   useTheme,
 } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
 
+
 const Navbar = () => {
   const location = useLocation()
+const navigate = useNavigate()
+
   const [drawerOpen, setDrawerOpen] = useState(false);
 const theme = useTheme()
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
   };
+
+  const handleLogin = () => {
+    navigate('/admin-login')  };
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
@@ -138,7 +144,7 @@ const auth = useSelector((state)=>state?.admin?.isAuthenticated)
                 </Box>
               ) : (
                 <Button
-                  // onClick={handleSignup}
+                  onClick={handleLogin}
                   variant="contained"
                   sx={{
                     backgroundColor: theme.palette.primary.main,
