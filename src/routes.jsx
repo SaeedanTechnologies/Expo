@@ -35,7 +35,7 @@ export default function Router() {
     let element = useRoutes([
         {
             path: '/',
-            element: <Navigate to="/admin/welcome" replace />,
+            element: <Navigate to="/admin-login" replace />,
         },
         {
             path: '/admin',
