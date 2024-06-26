@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MyTextField from '../../page/components/MyTextField';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import MyButton from '../../page/components/MyButton';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
@@ -14,7 +14,7 @@ const SignUpForm = () => {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         window.scroll(0, 0);
@@ -22,10 +22,12 @@ const SignUpForm = () => {
 
     useEffect(() => {
 
+        console.log('resultttt')
 
         dispatch(getFormFields(id))
             .then((result) => {
                 setData(result.data.payload);
+                console.log(result, 'resultttt')
                 setLoading(false); // Update loading state when data is fetched
             })
             .catch((err) => {
@@ -41,7 +43,7 @@ const SignUpForm = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: '1rem 10%',
-                height: isSmall ? '80vh' : '100vh', // Full viewport height
+                minHeight: isSmall ? '80vh' : '100vh', // Full viewport height
             }}
         >
             <Box
@@ -74,13 +76,18 @@ const SignUpForm = () => {
                     Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
                 </Typography>
                 {/* Render form fields dynamically */}
+
+
+
+
+
                 {data &&
                     data.map((field) => (
                         <MyTextField
                             key={field.id}
                             label={field.label}
                             placeholder={`Enter Your ${field.label}`}
-                            type={field.type} // Assuming MyTextField component supports type prop for input type
+                            type={field.type}
                         />
                     ))}
                 <MyButton onClick={() => navigate('/add-judges')} text="Submit" />

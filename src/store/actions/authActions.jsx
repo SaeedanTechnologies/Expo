@@ -127,7 +127,7 @@ export const getMenus = () => async (dispatch) => {
 
 export const getFormFields = (contest_id) => async (dispatch) => {
   try {
-      const res = await api.get('admin/form_fields', {
+      const res = await api.get('all_formFields', {
           params: {
               contest_id: contest_id
           }
