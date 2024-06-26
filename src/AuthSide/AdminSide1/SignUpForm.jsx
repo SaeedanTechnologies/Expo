@@ -173,30 +173,30 @@ const handleCloseSnackbar = () => {
     return currentDateTime <= endDateTime;
   };
 
-  if (!compareEndDateTime()) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "1rem 10%",
-          height: "100vh",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "24px",
-            fontWeight: 700,
-            textAlign: "center",
-            color: "red",
-          }}
-        >
-          The registration period has ended.
-        </Typography>
-      </Box>
-    );
-  }
+  // if (!compareEndDateTime()) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //         padding: "1rem 10%",
+  //         height: "100vh",
+  //       }}
+  //     >
+  //       <Typography
+  //         sx={{
+  //           fontSize: "24px",
+  //           fontWeight: 700,
+  //           textAlign: "center",
+  //           color: "red",
+  //         }}
+  //       >
+  //         The registration period has ended.
+  //       </Typography>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Box
