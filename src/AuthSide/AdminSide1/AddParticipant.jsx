@@ -487,7 +487,8 @@ const AddParticipant = () => {
 
             const responseData = await response.json();
             console.log('Form data submitted successfully:', responseData);
-console.log(contest_id, 'iddddddddddd')
+            console.log('Form data submitted successfully:', responseData);
+      console.log(responseData, 'iddddddddddd')
 
             navigate('/admin/add-QR', { state: {contest_id } });
         } catch (error) {

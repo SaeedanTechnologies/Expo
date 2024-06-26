@@ -15,8 +15,10 @@ import { useNavigate } from 'react-router-dom';
 
 const AddJudgeMain = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [judges, setJudges] = useState([{ name: '', email: '', photo: '' }]);
+  const [judges, setJudges] = useState([{ judge_name: '', email: '', profile_pic: '' }]);
   const navigate = useNavigate();
+  const contest_id = localStorage.getItem('add_register_response');
+  console.log(contest_id, "contest_id");
 
   useEffect(() => {
     const savedJudges = JSON.parse(localStorage.getItem('judges'));
@@ -35,7 +37,7 @@ const AddJudgeMain = () => {
   };
 
   const handleAddNewJudge = () => {
-    const newJudges = [...judges, { name: '', email: '', photo: '' }];
+    const newJudges = [...judges, { judge_name: '', email: '', profile_pic: '' }];
     setJudges(newJudges);
     setActiveStep(newJudges.length - 1);
   };
@@ -50,7 +52,7 @@ const AddJudgeMain = () => {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        handleChange(index, 'photo', reader.result);
+        handleChange(index, 'profile_pic', reader.result);
       }
     };
     reader.readAsDataURL(event.target.files[0]);
@@ -80,7 +82,7 @@ const AddJudgeMain = () => {
         <Box sx={{ mt: 3 }}>
           <Box sx={{ mb: 3, p: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Avatar src={judges[activeStep]?.photo} sx={{ width: 76, height: 76, mr: 2 }} />
+              <Avatar src={judges[activeStep]?.profile_pic} sx={{ width: 76, height: 76, mr: 2 }} />
               <Box>
                 <Button variant="outlined" component="label">
                   Upload Your Photo
@@ -98,8 +100,8 @@ const AddJudgeMain = () => {
               label="Judge Name"
               variant="outlined"
               fullWidth
-              value={judges[activeStep]?.name || ''}
-              onChange={(e) => handleChange(activeStep, 'name', e.target.value)}
+              value={judges[activeStep]?.judge_name || ''}
+              onChange={(e) => handleChange(activeStep, 'judge_name', e.target.value)}
               sx={{ mb: 2 }}
             />
             <label style={{ fontWeight: 600 }}>Email</label>
