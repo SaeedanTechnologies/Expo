@@ -156,7 +156,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AddJudgeMain = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: null, profile_pic: '' }]);
+  const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: null, profile_picture: null }]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -166,6 +166,11 @@ const AddJudgeMain = () => {
     }
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('judges', JSON.stringify(judges));
+    console.log('Judges state updated:', judges);
+  }, [judges]);
+  
   const handleNext = () => {
     localStorage.setItem('judges', JSON.stringify(judges));
     if (activeStep === judges.length - 1) {
@@ -176,7 +181,7 @@ const AddJudgeMain = () => {
   };
 
   const handleAddNewJudge = () => {
-    const newJudges = [...judges, { judge_name: '', email: '', phone: null, profile_pic: '' }];
+    const newJudges = [...judges, { judge_name: '', email: '', phone: null, profile_picture: null }];
     setJudges(newJudges);
     setActiveStep(newJudges.length - 1);
   };
