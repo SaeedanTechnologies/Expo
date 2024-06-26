@@ -64,7 +64,8 @@ const AddRegistration = () => {
 
       const responseData = await response.json();
       localStorage.setItem("add_register_response", responseData.payload.id);
-      console.log("API response:", responseData.payload.id);
+      localStorage.setItem("end_date_time", responseData.payload.end_date_time);
+      console.log("API response:", responseData.payload.end_date_time);
 
       // Handle successful API call, e.g., navigate to the next step
       navigate("/admin/add-participant");

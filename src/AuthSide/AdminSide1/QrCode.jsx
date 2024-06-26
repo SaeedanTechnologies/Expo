@@ -100,8 +100,6 @@
 
 // export default QrCode;
 
-
-
 import React, { useRef } from "react";
 import { Box, Typography } from "@mui/material";
 import MyButton from "../../page/components/MyButton";
@@ -112,16 +110,11 @@ const QrCode = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-
-
+ 
   const id = state && state?.contest_id;
-console.log(id, 'id on QR Code')
-
 
   const qrRef = useRef();
   const qrCodeUrl = `https://frontend.saeedantechpvt.com/admin/contest/${id}`;
-
-
 
   const downloadQRCode = () => {
     const canvas = qrRef.current.querySelector("canvas");
@@ -212,5 +205,3 @@ console.log(id, 'id on QR Code')
 };
 
 export default QrCode;
-
-
