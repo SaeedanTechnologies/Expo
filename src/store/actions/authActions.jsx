@@ -10,30 +10,10 @@ export const adminRegister = (formValues) => async (dispatch) => {
   }
 };
 
-// export const adminLogin = (formValues) => async (dispatch) => {
-//   try {
-//     const res = await api.post("admin/login", formValues);
-//     dispatch({
-//       type: "LOGIN_SUCCESS",
-//       payload: res.data,
-//     });
-//     return res;
-//   } catch (err) {
-//     throw err;
-//   }
-// };
-
-
 export const adminLogin = (formValues) => async (dispatch) => {
   try {
     const res = await api.post("admin/login", formValues);
-
-    console.log(res.data.payload, 'dataaaaaaaaaaaa')
     const { token, user } = res.data.payload;
-
-    console.log(token, 'tokennnnnnnn')
-
-    
     dispatch({
       type: "LOGIN_SUCCESS",
       payload: {
@@ -128,6 +108,32 @@ export const getMenus = () => async (dispatch) => {
       const res = await api.get(`all/menus`);
       dispatch({
           type: "GET_MENU",
+          payload: res.data,
+      });
+      return res;
+  } catch (err) {
+      throw err;
+  }
+};
+
+
+
+
+
+
+
+// -------------------qr code---------
+
+
+export const getFormFields = (contest_id) => async (dispatch) => {
+  try {
+      const res = await api.get('admin/form_fields', {
+          params: {
+              contest_id: contest_id
+          }
+      });
+      dispatch({
+          type: "GET_FORM_FIELDS",
           payload: res.data,
       });
       return res;
