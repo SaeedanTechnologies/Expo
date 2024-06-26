@@ -53,6 +53,7 @@ const CreateScoreCard = () => {
   console.log(names, "JKLJKKL");
   
   const [textFields, setTextFields] = useState([{ name: '', label: '', type: 'text', value: '', required: true }]);
+  console.log(textFields, "textFileds")
   const token = localStorage.getItem('token');
   const contest_id = localStorage.getItem('add_register_response');
   const handleDrop = () => {
@@ -73,7 +74,7 @@ const CreateScoreCard = () => {
       judge_name: names,
     
       email: judges.map(judge => judge.email),
-      profile_picture: judges.map(judge => judge.photo),
+      profile_picture: null,
       fields: textFields.map((field, index) => ({
         name: `field_${index + 1}`,
         label: field.label || `Field ${index + 1}`,  // Ensure label is set
