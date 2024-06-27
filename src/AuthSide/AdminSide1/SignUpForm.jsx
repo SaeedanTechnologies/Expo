@@ -94,13 +94,14 @@
 
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import axios from 'axios';
 import MyTextField from "../../page/components/MyTextField";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import MyButton from "../../page/components/MyButton";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { getFormFields } from "../../store/actions/authActions";
-
+import { Snackbar, CircularProgress } from "@mui/material";
 const SignUpForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -110,9 +111,10 @@ const SignUpForm = () => {
   const end_date_time = localStorage.getItem("end_date_time");
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
-
+  console.log(data, "datata")
   const { handleSubmit, control, formState: { errors } } = useForm();
-
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
@@ -130,10 +132,39 @@ const SignUpForm = () => {
   }, [dispatch, id]);
 
   const onSubmit = (formData) => {
-    // Handle form submission logic
-    console.log(formData);
-    navigate("/add-judges");
-  };
+    const payload = {
+        contest_id: id,
+        fields_values: JSON.stringify(formData)
+    };
+
+    axios.post('https://expoproject.saeedantechpvt.com/api/participients', payload)
+        .then(response => {
+            console.log('Success message:', response.data.message);
+            navigate("/add-judges");
+        })
+        .catch(error => {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error('message', error.response.data.message);
+                setSnackbarMessage(error.response.data.message);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error('Error:', error.request);
+                setSnackbarMessage('No response received from the server.');
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.error('Error:', error.message);
+                setSnackbarMessage(error.message);
+            }
+            setSnackbarOpen(true);
+        });
+};
+
+const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+};
+
 
   const compareEndDateTime = () => {
     const currentDateTime = new Date();
@@ -142,30 +173,30 @@ const SignUpForm = () => {
     return currentDateTime <= endDateTime;
   };
 
-  if (!compareEndDateTime()) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "1rem 10%",
-          height: "100vh",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "24px",
-            fontWeight: 700,
-            textAlign: "center",
-            color: "red",
-          }}
-        >
-          The registration period has ended.
-        </Typography>
-      </Box>
-    );
-  }
+  // if (!compareEndDateTime()) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //         padding: "1rem 10%",
+  //         height: "100vh",
+  //       }}
+  //     >
+  //       <Typography
+  //         sx={{
+  //           fontSize: "24px",
+  //           fontWeight: 700,
+  //           textAlign: "center",
+  //           color: "red",
+  //         }}
+  //       >
+  //         The registration period has ended.
+  //       </Typography>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Box
@@ -238,6 +269,12 @@ const SignUpForm = () => {
           <MyButton type="submit" text="Submit" />
         </form>
       </Box>
+      <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleCloseSnackbar}
+      message={snackbarMessage}
+  />
     </Box>
   );
 };

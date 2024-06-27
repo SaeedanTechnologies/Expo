@@ -55,7 +55,7 @@ const dispatch = useDispatch()
       setFormValues(res.data.payload);
 console.log('user login by redux')
       // enqueueSnackbar("User Registered Successfully", { variant: "success" });
-      navigate("/");
+      navigate("/admin/welcome");
     })
     .catch((err) => {
       // setLoading(false);
