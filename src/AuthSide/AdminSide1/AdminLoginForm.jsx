@@ -18,7 +18,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { adminLogin } from "../../store/actions/authActions";
 import { useDispatch } from "react-redux";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ThemeContext } from "@emotion/react";
 const AdminLoginForm = () => {
   const navigate = useNavigate();
@@ -45,24 +45,24 @@ const AdminLoginForm = () => {
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const [formValues, setFormValues] = useState()
   const handleSubmit = async (event) => {
     event.preventDefault();
     dispatch(adminLogin(formData))
-    .then((res) => {
+      .then((res) => {
 
-      setFormValues(res.data.payload);
-console.log('user login by redux')
-      // enqueueSnackbar("User Registered Successfully", { variant: "success" });
-      navigate("/admin/welcome");
-    })
-    .catch((err) => {
-      // setLoading(false);
-      alert('errorrrrrr')
+        setFormValues(res.data.payload);
+        console.log('user login by redux')
+        // enqueueSnackbar("User Registered Successfully", { variant: "success" });
+        navigate("/admin/welcome", { state: res.data.payload });
+      })
+      .catch((err) => {
+        // setLoading(false);
+        alert('errorrrrrr')
 
-      // enqueueSnackbar(err.message, { variant: "error" });
-    });
+        // enqueueSnackbar(err.message, { variant: "error" });
+      });
 
 
 
@@ -200,20 +200,20 @@ console.log('user login by redux')
           >
             {loading ? <CircularProgress size={24} /> : "Sign In"}
           </Button>
-<Box sx={{display:'flex', alignItems:'center', justifyContent:'end'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
 
-<Typography>Dont Have an account ?</Typography>
-          <Link to="/admin-sign-up" style={{ textDecoration: "none" }}>
-                    <Typography
-                      sx={{
-                        color:theme.palette.primary.main,
-                        marginLeft: "0.5rem",
-                      }}
-                    >
-                      Signup!
-                    </Typography>
-                  </Link>
-</Box>
+            <Typography>Dont Have an account ?</Typography>
+            <Link to="/admin-sign-up" style={{ textDecoration: "none" }}>
+              <Typography
+                sx={{
+                  color: theme.palette.primary.main,
+                  marginLeft: "0.5rem",
+                }}
+              >
+                Signup!
+              </Typography>
+            </Link>
+          </Box>
         </Box>
       </Box>
       {/* Snackbar for notifications */}

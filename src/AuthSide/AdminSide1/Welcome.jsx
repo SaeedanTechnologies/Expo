@@ -1,18 +1,20 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { MdOutlineWavingHand } from "react-icons/md";
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import MyButton from '../../page/components/MyButton';
 
 const Welcome = () => {
     const navigate = useNavigate()
+    const { state } = useLocation()
+    // console.log(state.user.name, 'yuse')
     return (
         <Box sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             height: '80vh',
-            padding:'1rem 2%'
+            padding: '1rem 2%'
         }}>
             <Box sx={{
                 display: 'flex',
@@ -30,7 +32,7 @@ const Welcome = () => {
                     alignItems: 'center',
                     gap: '10px'
                 }}>
-                    Welcome Hamza
+                    Welcome {state?.user?.name}
                     <MdOutlineWavingHand style={{ color: '#D90B0F' }} />
                 </Typography>
                 <Typography sx={{
@@ -46,14 +48,14 @@ const Welcome = () => {
                     alignItems: 'center',
                     backgroundColor: '#F6F6F6',
                     borderRadius: '12px',
-                    padding: '20px',
+                    padding: '20px 60px',
                     gap: '10px',
                     cursor: 'pointer'
                 }}>
                     <img src="/expoLogo.png" alt="" style={{ height: '10vh' }} />
                     <Box>
                         <Typography sx={{ fontSize: '18px', fontWeight: 700 }}>Add Event</Typography>
-                        <Typography sx={{ fontSize: '13px', color: '#949494' }}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores necessitatibus magni explicabo!</Typography>
+                        <Typography sx={{ fontSize: '13px', color: '#949494' }}></Typography>
                     </Box>
 
                 </Box>

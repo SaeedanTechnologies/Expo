@@ -120,7 +120,7 @@
 //           disabled={loading}
 //         />
 //       </Box>
-     
+
 //       <Snackbar
 //         open={snackbarOpen}
 //         autoHideDuration={6000}
@@ -245,11 +245,11 @@ const AddEvent = () => {
         </Box>
         <MyButton
           onClick={handleSubmit}
-          text={loading ? <CircularProgress size={24} /> : "Next"}
+          text={loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Next"}
           disabled={loading}
         />
       </Box>
-     
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

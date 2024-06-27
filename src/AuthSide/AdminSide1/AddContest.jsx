@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MyTextField from '../../page/components/MyTextField';
-import { Box, Typography, Snackbar } from '@mui/material';
+import { Box, Typography, Snackbar, CircularProgress } from '@mui/material';
 import MyButton from '../../page/components/MyButton';
 import { useNavigate } from 'react-router';
 
@@ -10,6 +10,7 @@ const AddContent = () => {
   const [error, setError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [loading, setLoading] = useState(false); // Corrected state variable name
 
   const handleContestNameChange = (event) => {
     setContestName(event.target.value);
@@ -17,14 +18,17 @@ const AddContent = () => {
   };
 
   const handleSubmit = () => {
+    setLoading(true); // Set loading to true when submitting
     if (!contestName.trim()) {
       setError('Contest Name is required');
       setSnackbarMessage('Please enter the contest name.');
       setSnackbarOpen(true);
+      setLoading(false); // Reset loading to false on error
       return;
     }
     // Pass contestName to the next page
     navigate('/admin/add-registration', { state: { contestName } });
+    setLoading(false); // Reset loading to false after successful submission
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -83,7 +87,11 @@ const AddContent = () => {
             helperText={error}
           />
         </Box>
-        <MyButton onClick={handleSubmit} text="Next" />
+        <MyButton
+          onClick={handleSubmit}
+          text={loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Next"}
+          disabled={loading} // Disable button when loading
+        />
       </Box>
       {/* Snackbar for notifications */}
       <Snackbar
