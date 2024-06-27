@@ -198,7 +198,7 @@ const AddJudgeMain = () => {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        handleChange(index, 'profile_pic', reader.result);
+        handleChange(index, 'profile_picture', reader.result);
       }
     };
     reader.readAsDataURL(event.target.files[0]);
@@ -228,7 +228,7 @@ const AddJudgeMain = () => {
         <Box sx={{ mt: 3 }}>
           <Box sx={{ mb: 3, p: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Avatar src={judges[activeStep]?.profile_pic} sx={{ width: 76, height: 76, mr: 2 }} />
+              <Avatar src={judges[activeStep]?.profile_picture} sx={{ width: 76, height: 76, mr: 2 }} />
               <Box>
                 <Button variant="outlined" component="label">
                   Upload Your Photo

@@ -49,7 +49,7 @@ const CreateScoreCard = () => {
   const location = useLocation();
   const { judges } = location.state || { judges: [] };
   const names = judges.map(judge => judge.judge_name); // Correct the field name
-  
+  const profile = judges.map(judge => judge.profile_picture);
   console.log(names, "JKLJKKL");
   
   const [textFields, setTextFields] = useState([{ name: '', label: '', type: 'text', value: '', required: true }]);
@@ -74,7 +74,7 @@ const CreateScoreCard = () => {
       judge_name: names,
     
       email: judges.map(judge => judge.email),
-      profile_picture: null,
+      profile_picture: profile,
       fields: textFields.map((field, index) => ({
         name: `field_${index + 1}`,
         label: field.label || `Field ${index + 1}`,  // Ensure label is set
