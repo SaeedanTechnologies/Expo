@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { SlCloudDownload } from 'react-icons/sl';
 import { useNavigate } from 'react-router-dom';
+import { FaArrowRight } from "react-icons/fa";
 
 const AddParticipant = () => {
     const [inputValues, setInputValues] = useState([]);
@@ -164,7 +165,16 @@ const AddParticipant = () => {
                         textAlign: 'center'
                     }}
                 >
-                    Add Participant
+                    Add Registration Form
+                </Typography>
+                <Typography
+                    sx={{
+                        fontSize: '22px',
+                        fontWeight: 500,
+                        textAlign: 'center'
+                    }}
+                >
+                    (Participants)
                 </Typography>
                 <Typography
                     sx={{
@@ -224,7 +234,7 @@ const AddParticipant = () => {
                             </Button>
 
                         </Box>
-                        <Typography sx={{ fontWeight: 500, fontSize: '16px', padding: '20px 10px' }}>Drag & Drop field from left to right</Typography>
+                        <Typography sx={{ fontWeight: 500, fontSize: '16px', padding: '20px 10px', display: 'flex', alignItems: 'center' }}>Drag & Drop field from left to right <FaArrowRight /></Typography>
                     </Box>
                     <Box
                         flex={1}
@@ -255,7 +265,7 @@ const AddParticipant = () => {
                                                         variant="contained"
                                                         color="primary"
                                                         size="small"
-                                                        style={{ padding: '5px 10px', backgroundColor: "#c61013", border: 'none', borderRadius: '3px', color: 'white' }}
+                                                        style={{ padding: '5px 10px', backgroundColor: "green", border: 'none', borderRadius: '3px', color: 'white' }}
                                                     >
                                                         Yes
                                                     </button>
@@ -273,7 +283,7 @@ const AddParticipant = () => {
                                                         color="error"
                                                         size="small"
                                                         onClick={() => removeField(index, 'textField')}
-                                                        style={{ padding: '5px 15px', backgroundColor: "#c61013", border: 'none', borderRadius: '3px', color: 'white' }}
+                                                        style={{ padding: '5px 15px', backgroundColor: "transparent", border: '1px solid #c61013', borderRadius: '3px', color: '#c61013' }}
                                                     >
                                                         X
                                                     </button>

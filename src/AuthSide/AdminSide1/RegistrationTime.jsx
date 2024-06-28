@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Box, Typography, Grid, FormControl, FormHelperText, CircularProgress } from "@mui/material";
 import MyTextField from "../../page/components/MyTextField";
@@ -25,7 +24,7 @@ const AddRegistration = () => {
   const [maxContestant, setMaxContestant] = useState("");
   const [timeError, setTimeError] = useState(false);
   const [dateTimeError, setDateTimeError] = useState(false);
-  const [loading, isLoading] = useState(false)
+  const [loading, isLoading] = useState(false);
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
@@ -90,9 +89,8 @@ const AddRegistration = () => {
   };
 
   const handleNextClick = async () => {
-
     try {
-      isLoading(true)
+      isLoading(true);
       const payload = {
         expo_id: expo_id,
         name: name,
@@ -114,10 +112,9 @@ const AddRegistration = () => {
       });
 
       if (response.ok) {
-
-        navigate('/admin/add-participant')
+        navigate('/admin/add-participant');
       } else {
-        isLoading(false)
+        isLoading(false);
         throw new Error("Network response was not ok");
       }
 
@@ -125,7 +122,6 @@ const AddRegistration = () => {
       localStorage.setItem("add_register_response", responseData.payload.id);
       localStorage.setItem("end_date_time", responseData.payload.end_date_time);
       console.log("API response:", responseData.payload.end_date_time);
-
     } catch (error) {
       console.error("Error:", error);
     }
@@ -188,6 +184,7 @@ const AddRegistration = () => {
               value={startTime}
               onChange={handleStartTimeChange}
               renderInput={(params) => <MyTextField {...params} />}
+              minTime={dayjs().isSame(startDate, "day") ? dayjs() : dayjs().startOf("day")}
               sx={{ marginBottom: "16px" }}
             />
           </Grid>
@@ -212,6 +209,8 @@ const AddRegistration = () => {
               value={endTime}
               onChange={handleEndTimeChange}
               renderInput={(params) => <MyTextField {...params} />}
+              minTime={dayjs().isSame(endDate, "day") ? dayjs() : dayjs().startOf("day")}
+              maxTime={dayjs().isSame(endDate, "day") ? dayjs() : undefined}
               error={timeError}
               helperText={timeError ? "End time cannot be before or the same as start time, or exceed the current time" : ""}
               sx={{ marginBottom: "16px" }}
@@ -244,6 +243,3 @@ const AddRegistration = () => {
 };
 
 export default AddRegistration;
-
-
-
