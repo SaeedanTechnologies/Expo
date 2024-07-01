@@ -134,7 +134,7 @@ export default function Router() {
             element: <JugedRole />,
         },
         {
-            path: 'judge_panel_screen1',
+            path: 'judge-score-card',
             element: <JudgePanelReg />,
         },
         {
@@ -150,7 +150,7 @@ export default function Router() {
             element: <JudgeAdminPanelParticipant />,
         },
         {
-            path: 'login_admin_panel_participant',
+            path: 'judge-login',
             element: <LoginAdminPanel />,
         },
         {

@@ -68,22 +68,22 @@ const CreateScoreCard = () => {
 
   const navigate = useNavigate();
 
+
   const handleSubmit = () => {
     const payload = {
-      contest_id,
+      contest_id: contest_id,
       judge_name: names,
-
       email: judges.map(judge => judge.email),
       profile_picture: profile,
       fields: textFields.map((field, index) => ({
-        name: `field_${index + 1}`,
-        label: field.label || `Field ${index + 1}`,  // Ensure label is set
+        name: field.value,
+        label: field.value,
         type: field.type,
-        value: field.value,
         required: field.required,
+       
       }))
     };
-
+  
     axios.post('https://expoproject.saeedantechpvt.com/api/admin/judges', payload, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -97,6 +97,37 @@ const CreateScoreCard = () => {
         console.error('There was an error!', error);
       });
   };
+
+  
+  // const handleSubmit = () => {
+  //   const payload = {
+  //     contest_id,
+  //     judge_name: names,
+
+  //     email: judges.map(judge => judge.email),
+  //     profile_picture: profile,
+  //     fields: textFields.map((field, index) => ({
+  //       name: `{index + 1}`,
+  //       label: field.label || `${index + 1}`,  
+  //       type: field.type,
+  //       value: field.value,
+  //       required: field.required,
+  //     }))
+  //   };
+
+  //   axios.post('https://expoproject.saeedantechpvt.com/api/admin/judges', payload, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     }
+  //   })
+  //     .then(response => {
+  //       console.log(response.data);
+  //       navigate('/links');
+  //     })
+  //     .catch(error => {
+  //       console.error('There was an error!', error);
+  //     });
+  // };
 
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));

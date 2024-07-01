@@ -17,11 +17,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { adminLogin } from "../../store/actions/authActions";
-
+import { useNavigate } from "react-router";
 const LoginAdminPanel = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+ 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
+    email:"",
     password: "",
     rememberMe: false,
   });
@@ -45,8 +48,12 @@ const LoginAdminPanel = () => {
     setLoading(true);
 
     try {
-      await dispatch(adminLogin(formData));
+     await dispatch(adminLogin(formData));
       console.log("Login successful");
+    
+        navigate("/judge-score-card")
+      
+    
       // Handle successful login (e.g., navigate to another page)
     } catch (error) {
       console.error("Login failed", error);
@@ -100,6 +107,31 @@ const LoginAdminPanel = () => {
             Journey platform.
           </Typography>
           <form onSubmit={handleSubmit}>
+          <Typography
+          component="label"
+          sx={{
+            fontFamily: "Roboto",
+            fontSize: "14px",
+            fontWeight: "700",
+            lineHeight: "20px",
+            color: "#666687",
+            marginTop: "16px",
+            display: "block",
+            color: "black",
+          }}
+        >
+         Email
+        </Typography>
+        <TextField
+          fullWidth
+          margin="normal"
+          type="text"
+          variant="outlined"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+     
+        />
             <Typography
               component="label"
               sx={{
@@ -138,6 +170,7 @@ const LoginAdminPanel = () => {
                 ),
               }}
             />
+       
             <Box
               sx={{
                 display: "flex",
