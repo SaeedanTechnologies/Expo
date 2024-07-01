@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
     Box,
     Button,
+    CircularProgress,
     InputAdornment,
     TextField,
     Typography
@@ -10,6 +11,7 @@ import { SlCloudDownload } from 'react-icons/sl';
 import { useNavigate } from 'react-router-dom';
 
 const AddParticipant = () => {
+  const [loading, setLoading] = useState(false);
     const [inputValues, setInputValues] = useState([]);
     const [uploadFields, setUploadFields] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -81,6 +83,8 @@ const AddParticipant = () => {
     };
 
     const handleSubmit = async () => {
+      setLoading(true);
+
         try {
             const token = localStorage.getItem('token');
             const formData = [];
@@ -132,6 +136,8 @@ const AddParticipant = () => {
 
             navigate('/admin/add-QR', { state: { contest_id } });
         } catch (error) {
+      setLoading(false);
+
             console.error('Error submitting data:', error);
         }
     };
@@ -383,6 +389,8 @@ const AddParticipant = () => {
                             variant="contained"
                             color="primary"
                             onClick={handleSubmit}
+                            text={loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Next"}
+                            disabled={loading}
                             sx={{ width: '100%', marginTop: '20px' }}
                         >
                             Next

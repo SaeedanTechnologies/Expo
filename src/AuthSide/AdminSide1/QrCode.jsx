@@ -110,7 +110,7 @@ const QrCode = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
- 
+
   const id = state && state?.contest_id;
 
   const qrRef = useRef();
@@ -191,13 +191,13 @@ const QrCode = () => {
             onClick={downloadQRCode}
             text="Save"
             sx={{ width: "100%" }}
-            bgColor="#D37476"
+         
           />
-          <MyButton
+          {/* <MyButton
             // onClick={() => navigate("/admin/signUp")}
             text="Next"
             sx={{ width: "100%" }}
-          />
+          /> */}
         </Box>
       </Box>
     </Box>
