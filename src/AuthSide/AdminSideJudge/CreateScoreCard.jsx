@@ -48,10 +48,10 @@ const DropArea = ({ onDrop, children }) => {
 const CreateScoreCard = () => {
   const location = useLocation();
   const { judges } = location.state || { judges: [] };
-  const names = judges.map(judge => judge.judge_name); // Correct the field name
+  const names = judges.map(judge => judge.judge_name);
   const profile = judges.map(judge => judge.profile_picture);
   console.log(names, "JKLJKKL");
-  
+
   const [textFields, setTextFields] = useState([{ name: '', label: '', type: 'text', value: '', required: true }]);
   console.log(textFields, "textFileds")
   const token = localStorage.getItem('token');
@@ -65,14 +65,14 @@ const CreateScoreCard = () => {
     newTextFields[index][field] = value;
     setTextFields(newTextFields);
   };
- 
+
   const navigate = useNavigate();
- 
+
   const handleSubmit = () => {
     const payload = {
       contest_id,
       judge_name: names,
-    
+
       email: judges.map(judge => judge.email),
       profile_picture: profile,
       fields: textFields.map((field, index) => ({
@@ -89,13 +89,13 @@ const CreateScoreCard = () => {
         Authorization: `Bearer ${token}`,
       }
     })
-    .then(response => {
-      console.log(response.data);
-      navigate('/links');
-    })
-    .catch(error => {
-      console.error('There was an error!', error);
-    });
+      .then(response => {
+        console.log(response.data);
+        navigate('/links');
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
   };
 
   const theme = useTheme();
@@ -110,7 +110,7 @@ const CreateScoreCard = () => {
         <Typography sx={{ textAlign: 'center' }}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae sapiente inventore libero accusantium quisquam adipisci numquam quos harum fugiat quis.</Typography>
         <Grid container spacing={2} mt={2}>
           <Grid item xs={4} md={6} lg={6} sm={6} sx={{ backgroundColor: '#f9fafc' }}>
-            <Typography sx={{ fontSize: isSmall ? '0.9rem': '1.3rem', fontWeight: 600 }}>Field Selection</Typography>
+            <Typography sx={{ fontSize: isSmall ? '0.9rem' : '1.3rem', fontWeight: 600 }}>Field Selection</Typography>
             <br />
             <DraggableButton />
           </Grid>
