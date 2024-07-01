@@ -49,6 +49,8 @@ const AdminLoginForm = () => {
   const [formValues, setFormValues] = useState()
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
+
     dispatch(adminLogin(formData))
       .then((res) => {
 
@@ -58,7 +60,7 @@ const AdminLoginForm = () => {
         navigate("/admin/welcome", { state: res.data.payload });
       })
       .catch((err) => {
-        // setLoading(false);
+        setLoading(false);
         alert('errorrrrrr')
 
         // enqueueSnackbar(err.message, { variant: "error" });
