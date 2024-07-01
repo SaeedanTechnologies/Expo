@@ -155,6 +155,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const AddJudgeMain = () => {
+  
   const [activeStep, setActiveStep] = useState(0);
   const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: '' }]);
   const navigate = useNavigate();

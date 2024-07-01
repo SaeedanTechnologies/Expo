@@ -81,6 +81,7 @@ export default function Router() {
             path: 'add-judges',
             element: <AddJudgeMain />,
         },
+        
         {
             path: 'create-score-card',
             element: <CreateScoreCard />
@@ -94,7 +95,7 @@ export default function Router() {
             element: <UploadVideo />
         },
         {
-            path: 'admin-operator',
+            path: 'admin-contest-start/:id',
             element: <AdminOperator />
         },
         {

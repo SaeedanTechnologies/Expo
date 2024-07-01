@@ -2,13 +2,32 @@ import { Box, TextField, Typography, InputAdornment, IconButton, useTheme, useMe
 import React from 'react';
 import LinkIcon from '@mui/icons-material/Link';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
+import { useLocation } from 'react-router';
+import { useSnackbar } from 'notistack';
 const Links = () => {
-  const link = "https://example.com/operator-screen";
+
+  const location = useLocation();
+  const { contest_id } = location.state || {};
+  const { enqueueSnackbar } = useSnackbar();
+
+  const adminlink = `https://frontend.saeedantechpvt.com/admin-contest-start/${contest_id}`;
+  const judgelink = `https://frontend.saeedantechpvt.com/judge-login`;
+  const behindscreenlink = `https://frontend.saeedantechpvt.com/`;
+
+
 const theme = useTheme()
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(link);
-    alert("Link copied to clipboard!");
+    const handleCopyAdminLink = () => {
+    navigator.clipboard.writeText(adminlink);
+    enqueueSnackbar("Admin Link copied to clipboard!", {variant :'success'});
+  };
+  const handleCopyJudgeLink = () => {
+    navigator.clipboard.writeText(judgelink);
+ 
+    enqueueSnackbar("Judge Link copied to clipboard!", {variant :'success'});
+  };
+  const handleCopyBehindLink = () => {
+    navigator.clipboard.writeText(behindscreenlink);
+    enqueueSnackbar("BehindLink copied to clipboard!!", {variant :'success'});
   };
 
 const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
@@ -25,7 +44,7 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
 
           <Typography sx={{fontSize:'1rem', fontWeight:600, mb:1}}>Operator Screen Link</Typography>
           <TextField
-            value={link}
+            value={adminlink}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -34,7 +53,7 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={handleCopyLink}>
+                  <IconButton onClick={handleCopyAdminLink}>
                     <ContentCopyIcon sx={{color:theme.palette.primary.main}}/>
                   </IconButton>
                 </InputAdornment>
@@ -51,7 +70,7 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
           <Typography sx={{fontSize:'1rem', fontWeight:600, mb:1}}>judge Screen Link</Typography>
 
           <TextField
-            value={link}
+            value={judgelink}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -60,7 +79,7 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={handleCopyLink} sx={{color:theme.palette.primary.main}}>
+                  <IconButton onClick={handleCopyJudgeLink} sx={{color:theme.palette.primary.main}}>
                     <ContentCopyIcon />
                   </IconButton>
                 </InputAdornment>
@@ -69,6 +88,8 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
             fullWidth
             size='small'
           />
+
+
         </Box>
 
 
@@ -77,7 +98,7 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
 
 
           <TextField
-            value={link}
+            value={behindscreenlink}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -86,7 +107,7 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={handleCopyLink} sx={{color:theme.palette.primary.main}}>
+                  <IconButton onClick={handleCopyBehindLink} sx={{color:theme.palette.primary.main}}>
                     <ContentCopyIcon />
                   </IconButton>
                 </InputAdornment>

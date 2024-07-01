@@ -46,6 +46,7 @@ const DropArea = ({ onDrop, children }) => {
 };
 
 const CreateScoreCard = () => {
+
   const location = useLocation();
   const { judges } = location.state || { judges: [] };
   const names = judges.map(judge => judge.judge_name);
@@ -73,6 +74,7 @@ const CreateScoreCard = () => {
     const payload = {
       contest_id: contest_id,
       judge_name: names,
+      link:`https://frontend.saeedantechpvt.com/admin-login`,
       email: judges.map(judge => judge.email),
       profile_picture: profile,
       fields: textFields.map((field, index) => ({
@@ -80,10 +82,10 @@ const CreateScoreCard = () => {
         label: field.value,
         type: field.type,
         required: field.required,
-       
+
       }))
     };
-  
+
     axios.post('https://expoproject.saeedantechpvt.com/api/admin/judges', payload, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -91,14 +93,14 @@ const CreateScoreCard = () => {
     })
       .then(response => {
         console.log(response.data);
-        navigate('/links');
+        navigate('/links', { state: { contest_id: contest_id } });
       })
       .catch(error => {
         console.error('There was an error!', error);
       });
   };
 
-  
+
   // const handleSubmit = () => {
   //   const payload = {
   //     contest_id,
@@ -108,7 +110,7 @@ const CreateScoreCard = () => {
   //     profile_picture: profile,
   //     fields: textFields.map((field, index) => ({
   //       name: `{index + 1}`,
-  //       label: field.label || `${index + 1}`,  
+  //       label: field.label || `${index + 1}`,
   //       type: field.type,
   //       value: field.value,
   //       required: field.required,
