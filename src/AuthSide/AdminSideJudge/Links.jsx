@@ -3,12 +3,12 @@ import React from 'react';
 import LinkIcon from '@mui/icons-material/Link';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useLocation } from 'react-router';
-
+import { useSnackbar } from 'notistack';
 const Links = () => {
 
   const location = useLocation();
   const { contest_id } = location.state || {};
-
+  const { enqueueSnackbar } = useSnackbar();
 
   const adminlink = `https://frontend.saeedantechpvt.com/admin-contest-start/${contest_id}`;
   const judgelink = `https://frontend.saeedantechpvt.com/judge-login`;
@@ -18,15 +18,16 @@ const Links = () => {
 const theme = useTheme()
     const handleCopyAdminLink = () => {
     navigator.clipboard.writeText(adminlink);
-    alert("Admin Link copied to clipboard!");
+    enqueueSnackbar("Admin Link copied to clipboard!", {variant :'success'});
   };
   const handleCopyJudgeLink = () => {
     navigator.clipboard.writeText(judgelink);
-    alert("Judge Link copied to clipboard!");
+ 
+    enqueueSnackbar("Judge Link copied to clipboard!", {variant :'success'});
   };
   const handleCopyBehindLink = () => {
     navigator.clipboard.writeText(behindscreenlink);
-    alert("BehindLink copied to clipboard!");
+    enqueueSnackbar("BehindLink copied to clipboard!!", {variant :'success'});
   };
 
 const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
