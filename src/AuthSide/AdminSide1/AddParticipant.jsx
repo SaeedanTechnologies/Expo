@@ -10,6 +10,8 @@ import {
 import { SlCloudDownload } from 'react-icons/sl';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from "react-icons/fa";
+import { enqueueSnackbar } from "notistack";
+
 
 const AddParticipant = () => {
   const [loading, setLoading] = useState(false);
@@ -83,14 +85,85 @@ const AddParticipant = () => {
         fileInput.click();
     };
 
+    // const handleSubmit = async () => {
+    //   setLoading(true);
+
+    //     try {
+    //         const token = localStorage.getItem('token');
+    //         const formData = [];
+
+
+    //         inputValues.forEach((value, index) => {
+    //             const field = {
+    //                 contest_id: contest_id,
+    //                 name: `Field ${index + 1}`,
+    //                 type: "text",
+    //                 label: value,
+    //                 required: true,
+    //                 is_important: value.includes('*')
+    //             };
+
+    //             formData.push(field);
+    //         });
+
+
+    //         uploadFields.forEach((value, index) => {
+    //             const field = {
+    //                 contest_id: contest_id,
+    //                 name: `Field ${index + 1}`,
+    //                 type: "file",
+    //                 label: `Upload ${index + 1}`,
+    //                 required: true,
+    //                 is_important: 'imp'
+    //             };
+
+    //             formData.push(field);
+    //         });
+
+
+    //         const response = await fetch('https://expoproject.saeedantechpvt.com/api/admin/form_fields', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: `Bearer ${token}`
+    //             },
+    //             body: JSON.stringify({ formData })
+    //         });
+
+    //         if (!response.ok) {
+    //             throw new Error('Failed to submit form data');
+    //         }
+
+    //         const responseData = await response.json();
+    //         console.log('Form data submitted successfully:', responseData);
+
+    //         navigate('/admin/add-QR', { state: { contest_id } });
+    //     } catch (error) {
+    //   setLoading(false);
+
+    //         console.error('Error submitting data:', error);
+    //     }
+    // };
+
+
     const handleSubmit = async () => {
-      setLoading(true);
+        setLoading(true);
 
         try {
             const token = localStorage.getItem('token');
             const formData = [];
 
-            // Handle text fields
+            // Add the first TextField value explicitly as "name"
+            formData.push({
+                contest_id: contest_id,
+                name: "name", // Fixed value for the first TextField
+                type: "text",
+                label: "name", // You can change this label as needed
+                required: true,
+                is_important: false // Adjust as per your logic
+            });
+
+            // Add dynamic fields from inputValues
             inputValues.forEach((value, index) => {
                 const field = {
                     contest_id: contest_id,
@@ -104,7 +177,7 @@ const AddParticipant = () => {
                 formData.push(field);
             });
 
-            // Handle file contents
+            // Add upload fields from uploadFields (if needed)
             uploadFields.forEach((value, index) => {
                 const field = {
                     contest_id: contest_id,
@@ -112,13 +185,12 @@ const AddParticipant = () => {
                     type: "file",
                     label: `Upload ${index + 1}`,
                     required: true,
-                    is_important: 'imp'
+                    is_important: 'imp' // Adjust as per your logic
                 };
 
                 formData.push(field);
             });
 
-            // Send formData to API endpoint
             const response = await fetch('https://expoproject.saeedantechpvt.com/api/admin/form_fields', {
                 method: 'POST',
                 headers: {
@@ -137,11 +209,15 @@ const AddParticipant = () => {
 
             navigate('/admin/add-QR', { state: { contest_id } });
         } catch (error) {
-      setLoading(false);
-
+            setLoading(false);
             console.error('Error submitting data:', error);
         }
     };
+
+
+
+
+
 
     return (
         <Box
@@ -254,6 +330,28 @@ const AddParticipant = () => {
                         onDrop={(event) => handleDrop(event, '')}
                         onDragOver={handleDragOver}
                     >
+
+<TextField
+
+                                    variant="outlined"
+
+                                    value='Name'
+                                
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+
+
+
+                                                </div>
+
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                    sx={{ width: '100%' }}
+                                />
+
                         {inputValues.map((inputValue, index) => (
                             <Box key={index} sx={{ marginBottom: '10px', position: 'relative' }}>
                                 <TextField
