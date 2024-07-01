@@ -38,6 +38,7 @@ const {id} = useParams()
   const navigate = useNavigate();
   const [judges, setJudges] = useState([]);
   const [participants, setParticipants] = useState([]);
+  console.log(participants,"participants")
   const dispatch = useDispatch();
 
   const handleClick = async (id, contestId) => {
