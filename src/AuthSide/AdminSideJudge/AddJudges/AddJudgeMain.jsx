@@ -156,7 +156,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AddJudgeMain = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: null, profile_picture: null }]);
+  const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: '' }]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -168,9 +168,8 @@ const AddJudgeMain = () => {
 
   useEffect(() => {
     localStorage.setItem('judges', JSON.stringify(judges));
-    console.log('Judges state updated:', judges);
   }, [judges]);
-  
+
   const handleNext = () => {
     localStorage.setItem('judges', JSON.stringify(judges));
     if (activeStep === judges.length - 1) {
@@ -181,17 +180,15 @@ const AddJudgeMain = () => {
   };
 
   const handleAddNewJudge = () => {
-    const newJudges = [...judges, { judge_name: '', email: '', phone: null, profile_picture: null }];
+    const newJudges = [...judges, { judge_name: '', email: '', phone: '', profile_picture: '' }];
     setJudges(newJudges);
     setActiveStep(newJudges.length - 1);
   };
 
- const handleChange = (index, field, value) => {
-    console.log(`Changing ${field} of judge ${index} to ${value}`); // Debugging
+  const handleChange = (index, field, value) => {
     const newJudges = [...judges];
     newJudges[index][field] = value;
     setJudges(newJudges);
-    console.log('Updated judges:', newJudges); // Verify the updated state
   };
 
   const handlePhotoChange = (index, event) => {
@@ -216,8 +213,8 @@ const AddJudgeMain = () => {
         <Typography variant="body1" gutterBottom sx={{ textAlign: 'center' }}>
           Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
         </Typography>
-        <Box sx={{ overflowX: 'auto', width: isSmall ? '80vw': '40vw' }}>
-          <Stepper activeStep={activeStep} alternativeLabel sx={{width: '100%' }}>
+        <Box sx={{ overflowX: 'auto', width: isSmall ? '80vw' : '40vw' }}>
+          <Stepper activeStep={activeStep} alternativeLabel sx={{ width: '100%' }}>
             {judges.map((_, index) => (
               <Step key={index}>
                 <StepLabel>{`Judge ${index + 1}`}</StepLabel>
@@ -265,7 +262,7 @@ const AddJudgeMain = () => {
               <Button
                 variant="outlined"
                 onClick={handleAddNewJudge}
-                sx={{ mr: 2, width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform:'none' }}
+                sx={{ mr: 2, width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
               >
                 + Add New Judge
               </Button>
@@ -273,7 +270,7 @@ const AddJudgeMain = () => {
                 variant="contained"
                 color="primary"
                 onClick={handleNext}
-                sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform:'none' }}
+                sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
               >
                 {activeStep === judges.length - 1 ? 'Finish' : 'Next'}
               </Button>

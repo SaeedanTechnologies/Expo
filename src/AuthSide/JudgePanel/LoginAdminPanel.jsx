@@ -15,6 +15,8 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import { adminLogin } from "../../store/actions/authActions";
 
 const LoginAdminPanel = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,6 +25,8 @@ const LoginAdminPanel = () => {
     password: "",
     rememberMe: false,
   });
+
+  const dispatch = useDispatch();
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -36,14 +40,20 @@ const LoginAdminPanel = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      console.log("Form submitted with:", formData);
+    try {
+      await dispatch(adminLogin(formData));
+      console.log("Login successful");
+      // Handle successful login (e.g., navigate to another page)
+    } catch (error) {
+      console.error("Login failed", error);
+      // Handle login failure (e.g., show an error message)
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   return (
