@@ -4,7 +4,7 @@
 // const JudgePanelReg = () => {
 //   const handleSubmit = (event) => {
 //     event.preventDefault();
-    
+
 //   };
 
 //   return (
@@ -15,7 +15,7 @@
 //       justifyContent: 'center',
 //       alignItems: 'center',
 //       minHeight: '100vh',
-    
+
 //       backgroundSize: 'cover',
 //       backgroundPosition: 'center',
 //       backgroundRepeat: 'no-repeat'
@@ -87,35 +87,35 @@
 //             margin='normal'
 //             required
 //             InputProps={{
-            
+
 //               sx: {
 //                 '& .MuiOutlinedInput-notchedOutline': {
-//                   borderBottom: '1px solid #D1D1D1', 
-//                   borderLeft: 'none', 
-//                   borderRight: 'none', 
-//                   borderTop: 'none', 
+//                   borderBottom: '1px solid #D1D1D1',
+//                   borderLeft: 'none',
+//                   borderRight: 'none',
+//                   borderTop: 'none',
 //                   padding:'0px'
 //                 },
 //                 '&:hover .MuiOutlinedInput-notchedOutline': {
-//                   borderBottom: '2px solid #D1D1D1', 
+//                   borderBottom: '2px solid #D1D1D1',
 //                 },
 //                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-//                   borderBottom: '2px solid #D1D1D1', 
+//                   borderBottom: '2px solid #D1D1D1',
 //                 },
 //               },
 //             }}
 //             sx={{
-            
+
 //               '& .MuiOutlinedInput-root': {
 //                 '& fieldset': {
-//                   border: 'none', 
+//                   border: 'none',
 //                 },
 //               },
 //             }}
 //           />
 //         </FormControl>
-        
-       
+
+
 //           </Box>
         //   <Typography
         //   variant="h5"
@@ -155,7 +155,7 @@
         //     margin='normal'
         //     required
         //     InputProps={{ style: { height: '60px' } }} // Apply height to the input element
-        //     sx={{ height: '60px' }} 
+        //     sx={{ height: '60px' }}
         //   />
         // </FormControl>
 //           <InputLabel
@@ -182,7 +182,7 @@
 //             placeholder='e.g 0-10'
 //             required
 //             InputProps={{ style: { height: '60px' } }} // Apply height to the input element
-//             sx={{ height: '60px' }} 
+//             sx={{ height: '60px' }}
 //           />
 //         </FormControl>
 //             <InputLabel
@@ -208,7 +208,7 @@
 //                 margin='normal'
 //                 required
 //                 InputProps={{ style: { height: '60px' } }} // Apply height to the input element
-//                 sx={{ height: '60px' }} 
+//                 sx={{ height: '60px' }}
 //               />
 //             </FormControl>
 
@@ -402,7 +402,7 @@
 //                     margin='normal'
 //                     required
 //                     InputProps={{ style: { height: '60px' } }} // Apply height to the input element
-//                     sx={{ height: '60px' }} 
+//                     sx={{ height: '60px' }}
 //                   />
 //                 </FormControl>
 //                 </Box>
@@ -451,7 +451,7 @@
 //             required: true
 //           }));
 //           setFormFields(fields);
-          
+
 //          console.log(response?.data,"irfan")
 //           setJudgeId(response.data.judge_id);
 //           setParticipantId(response.data.participant_id);
@@ -604,7 +604,7 @@
 //                   color: '#000000',
 //                 }}
 //               >
-             
+
 //                 LineWork
 //               </InputLabel>
 //               <FormControl fullWidth sx={{ marginBottom: '1rem', }}>
@@ -619,8 +619,8 @@
 //                   variant='outlined'
 //                   margin='normal'
 //                   required
-//                   InputProps={{ style: { height: '60px' } }} 
-//                   sx={{ height: '60px' }} 
+//                   InputProps={{ style: { height: '60px' } }}
+//                   sx={{ height: '60px' }}
 //                 />
 //               </FormControl>
 //               <Button
@@ -654,23 +654,24 @@ const JudgePanelReg = () => {
   const [participantId, setParticipantId] = useState(null);
   const [contestId, setContestId] = useState(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+
   useEffect(() => {
     dispatch(fetchFormJudegForm())
       .then(response => {
         if (Array.isArray(response.data) && response.data.length > 0) {
-          const firstItem = response.data[0];
-          const fields = JSON.parse(firstItem.fields); // Assuming fields is a JSON string
+          const firstItem = response.data[1];
+          const fields = JSON.parse(firstItem.fields);
 
           const mappedFields = fields.map(item => ({
-            id: item.name, // Using name as id, adjust as needed
+            id: item.name,
             label: item.label,
             name: item.name,
             type: item.type,
             required: item.required,
           }));
-          
+
           setFormFields(mappedFields);
-          
+
           setJudgeId(firstItem.judge_id);
           setParticipantId(firstItem.current_participant_id);
           setContestId(firstItem.contest_id);
@@ -686,7 +687,7 @@ const JudgePanelReg = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // Check if participantId is null to disable submit button
+
     if (participantId === null) {
       setSubmitDisabled(true);
     } else {
@@ -712,22 +713,22 @@ const JudgePanelReg = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-  
+
     // Create an array of scores
     const scoresArray = formFields.map(field => ({
       field_name: field.name,
       score: formData[field.name] || '', // Assuming you store score under field name
     }))
-  
+
     const dataToSubmit = {
       scores: scoresArray,
       judge_id: judgeId,
       participant_id: participantId,
       contest_id: contestId
     };
-  
+
     console.log('Form submitted:', dataToSubmit);
-  
+
     dispatch(submitJudegFormData(dataToSubmit))
       .then(response => {
         // Handle success response
@@ -745,7 +746,7 @@ const JudgePanelReg = () => {
         }
       });
   };
-  
+
   return (
     <Box
       sx={{
@@ -831,6 +832,10 @@ const JudgePanelReg = () => {
                     }}
                   >
                     {field.label}
+
+                    {/* {field.current_participant_id} */}
+
+
                   </InputLabel>
                   <FormControl fullWidth sx={{ marginBottom: '1rem' }}>
                     <TextField
@@ -848,11 +853,11 @@ const JudgePanelReg = () => {
                       sx={{ height: '60px' }}
                     />
                   </FormControl>
-             
-             
+
+
                 </Box>
               ))}
-        
+
               <Button
               disabled={submitDisabled}
                 type='submit'

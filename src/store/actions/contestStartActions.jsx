@@ -25,3 +25,16 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     }
   };
 
+
+
+  export const getAllRecords = (contestId) => async (dispatch) => {
+    try {
+      const res = await api.get(`admin/contest-result/${contestId}`);
+  
+
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+

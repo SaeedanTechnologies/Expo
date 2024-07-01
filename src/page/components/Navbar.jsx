@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/actions/authActions";
 
 
 const Navbar = () => {
@@ -32,6 +33,16 @@ const theme = useTheme()
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+const dispatch = useDispatch()
+
+  const handleMenuItemClick = (value) => {
+    if (value === "Logout") {
+      dispatch(logout());
+    }
+
+
+  };
+
   const isHidden = location.pathname === "/participant-page" || location.pathname === "/admin_side_screen1" || location.pathname === "/admin_side_screen2";
 
   if (isHidden) {
@@ -39,6 +50,7 @@ const theme = useTheme()
   }
 
 const auth = useSelector((state)=>state?.admin?.isAuthenticated)
+const username = useSelector((state)=>state?.admin?.user?.name)
 
   return (
     <Box sx={{ backgroundColor: "white", padding: "0rem 5%", display: "flex", justifyContent: "space-between", alignItems: "center", position: "static", top: 0, zIndex: 10000000, boxShadow: "1px 1px 1px #ededed" }}>
@@ -104,38 +116,17 @@ const auth = useSelector((state)=>state?.admin?.isAuthenticated)
                             // src={userData ? `${base}${userData?.profile_image}` : ""}
                             sx={{ height:'2rem', width:'2rem', marginRight: "8px" }}
                           />
-                         <Typography sx={{fontSize:'1rem'}}> user </Typography>
+                         <Typography sx={{fontSize:'1rem'}}>{username}</Typography>
                         </Box>
                       )}
                     >
-                      <MenuItem
 
-                        sx={{fontSize:'0.8rem'}}
-
-                      >
-                        Manage Profile
-                      </MenuItem>
-
-                      <MenuItem
-                        sx={{fontSize:'0.8rem'}}
-
-                      >
-                        Booking
-                      </MenuItem>
-
-                      <MenuItem
-                        sx={{fontSize:'0.8rem'}}
-
-
-                      >
-                        History
-                      </MenuItem>
 
                       <MenuItem
                         sx={{fontSize:'0.8rem'}}
 
                         value="Logout"
-                        // onClick={() => handleMenuItemClick("Logout")}
+                        onClick={() => handleMenuItemClick("Logout")}
                       >
                         Logout
                       </MenuItem>
@@ -202,38 +193,18 @@ const auth = useSelector((state)=>state?.admin?.isAuthenticated)
                             // src={userData ? `${base}${userData?.profile_image}` : ""}
                             sx={{ height:'2rem', width:'2rem', marginRight: "8px" }}
                           />
-                         <Typography sx={{fontSize:'1rem'}}> user </Typography>
+                         <Typography sx={{fontSize:'1rem'}}> {auth.admin.user.name} </Typography>
                         </Box>
                       )}
                     >
-                      <MenuItem
-
-                        sx={{fontSize:'0.8rem'}}
-
-                      >
-                        Manage Profile
-                      </MenuItem>
-
-                      <MenuItem
-                        sx={{fontSize:'0.8rem'}}
-
-                      >
-                        Booking
-                      </MenuItem>
-
-                      <MenuItem
-                        sx={{fontSize:'0.8rem'}}
 
 
-                      >
-                        History
-                      </MenuItem>
 
                       <MenuItem
                         sx={{fontSize:'0.8rem'}}
 
                         value="Logout"
-                        // onClick={() => handleMenuItemClick("Logout")}
+                        onClick={() => handleMenuItemClick("Logout")}
                       >
                         Logout
                       </MenuItem>
@@ -255,30 +226,6 @@ const auth = useSelector((state)=>state?.admin?.isAuthenticated)
                 </Button>
               )}
             </Box>
-
-
-
-
-
-
-            {/* <FormControl sx={{ padding: 0 }}>
-              <Select
-                sx={{ outline: "none", "&:focus": { outline: "none" }, "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
-                displayEmpty
-                inputProps={{ "aria-label": "Select user" }}
-                style={{ minWidth: "120px", padding: 0 }}
-                renderValue={() => (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Avatar />
-                    <Typography sx={{ fontSize: "1rem" }}> user</Typography>
-                  </Box>
-                )}
-              >
-                <MenuItem sx={{ fontSize: "0.8rem" }}>Manage Profile</MenuItem>
-                <MenuItem sx={{ fontSize: "0.8rem" }}>Manage Judges</MenuItem>
-                <MenuItem sx={{ fontSize: "0.8rem" }}>Logout</MenuItem>
-              </Select>
-            </FormControl> */}
           </Box>
         </Drawer>
       </Box>

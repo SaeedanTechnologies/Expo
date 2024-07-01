@@ -65,10 +65,7 @@ export default function Router() {
                     path: 'add-QR',
                     element: <QrCode />,
                 },
-                // {
-                //     path: 'contest:contest_id',
-                //     element: <SignUpForm />,
-                // },
+         
                 {
                     path: 'contest/:id',
                     element: <SignUpForm />,
@@ -81,7 +78,7 @@ export default function Router() {
             path: 'add-judges',
             element: <AddJudgeMain />,
         },
-        
+
         {
             path: 'create-score-card',
             element: <CreateScoreCard />
