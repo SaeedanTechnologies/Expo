@@ -129,8 +129,9 @@ const JudgePanelReg = () => {
           const { payload } = error.response.data;
 
           console.log(error, 'errorrrr')
-          enqueueSnackbar(error.response.data.error, { variant: "error" });
-      
+          // enqueueSnackbar(error.response.data.error, { variant: "error" });
+          enqueueSnackbar('Score is not Assigned ', { variant: "error" });
+
 
         } else {
           console.error('Unexpected error:', error);
@@ -172,7 +173,7 @@ const JudgePanelReg = () => {
               marginBottom: '1rem',
             }}
           >
-            HAMZA YASIN
+            Unknown
           </Typography>
           <Typography
             variant='h6'
