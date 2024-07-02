@@ -125,7 +125,7 @@ export default function Router() {
             element: <IframeLink />
         },
         {
-            path: 'participant-page',
+            path: 'participant-page/:id',
             element: <ParticipantPage />
         },
         {

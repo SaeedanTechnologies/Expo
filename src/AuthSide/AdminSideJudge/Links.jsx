@@ -12,7 +12,7 @@ const Links = () => {
 
   const adminlink = `https://frontend.saeedantechpvt.com/admin-contest-start/${contest_id}`;
   const judgelink = `https://frontend.saeedantechpvt.com/judge-login`;
-  const behindscreenlink = `https://frontend.saeedantechpvt.com/`;
+  const behindscreenlink = `https://frontend.saeedantechpvt.com/participant-page/${contest_id}`;
 
 
 const theme = useTheme()
@@ -22,7 +22,7 @@ const theme = useTheme()
   };
   const handleCopyJudgeLink = () => {
     navigator.clipboard.writeText(judgelink);
- 
+
     enqueueSnackbar("Judge Link copied to clipboard!", {variant :'success'});
   };
   const handleCopyBehindLink = () => {
