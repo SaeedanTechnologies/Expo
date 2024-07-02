@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux'; // Assuming you are using Redux
 import { setNextParticipant, getStartContest } from '../../store/actions/contestStartActions';
 
-const ParticipantCard = ({ name, task, score }) => (
+const ParticipantCard = ({ name, task, score,partcipentId }) => (
   <Card>
     <Box>
       <img src='/person.png' alt='image' width={'100%'} />
@@ -86,6 +86,7 @@ const ParticipantPage = () => {
                   <ParticipantCard 
                     name={judge.name} 
                     task="Judge Task" 
+                    partcipentId={partcipentId}
                     score={totalScores.find(score => score.judge_id === judge.id)?.total_score || "N/A"} 
                   />
                 </Grid>
