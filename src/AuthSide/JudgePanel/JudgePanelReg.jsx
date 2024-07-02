@@ -10,12 +10,16 @@ const JudgePanelReg = () => {
 
   const dispatch = useDispatch();
   const [formFields, setFormFields] = useState([]);
+  const [particeipentName, setParticeipentName] = useState([]);
+  const PArticepentName=particeipentName.map(name=>name.current_participant_name)
+  console.log(PArticepentName,"response")
   const [formData, setFormData] = useState({});
   const [judgeId, setJudgeId] = useState(null);
   const [participantId, setParticipantId] = useState(null);
   const [contestId, setContestId] = useState(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
+  console.log(formData,"FormData");
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -24,7 +28,7 @@ const JudgePanelReg = () => {
         if (Array.isArray(response.data) && response.data.length > 0) {
           const firstItem = response.data[0];
           const fields = JSON.parse(firstItem.fields);
-
+         
           const mappedFields = fields.map(item => ({
             id: item.name,
             label: item.label,
@@ -32,7 +36,8 @@ const JudgePanelReg = () => {
             type: item.type,
             required: item.required,
           }));
-
+          setParticeipentName(response.data)
+          
           setFormFields(mappedFields);
 
           setJudgeId(firstItem.judge_id);
@@ -173,7 +178,8 @@ const JudgePanelReg = () => {
               marginBottom: '1rem',
             }}
           >
-            Unknown
+          {PArticepentName}
+
           </Typography>
           <Typography
             variant='h6'
