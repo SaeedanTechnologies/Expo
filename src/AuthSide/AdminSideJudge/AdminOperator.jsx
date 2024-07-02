@@ -417,13 +417,14 @@ setParticipants(participants)
               {score
       .filter(
         (score) =>
-          score.judge_id === judge.id &&
-          score.participant_id === participants[0]?.id
+          score?.judge_id === judge?.id &&
+          score?.participant_id === participants[0]?.id
       )
       .map((score, ind) => (
         <Typography key={ind} sx={{ color: "green", fontSize: "0.8rem" }}>
-          Score {score?.total_score}
-        </Typography>
+  Score {score?.total_score ? score?.total_score.toFixed(2) : ''}
+</Typography>
+
       ))}
             </Box>
           ))}
