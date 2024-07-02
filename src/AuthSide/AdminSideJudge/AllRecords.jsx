@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -17,9 +17,11 @@ import {
 
 import Positions from "../../page/components/Positions";
 import TelegramIcon from '@mui/icons-material/Telegram';
+import { useDispatch } from "react-redux";
+import { getAllRecords } from "../../store/actions/contestStartActions";
 
 const records = [
-  { position: 1, name: "Hamza", score: 47, avatar: "avatar1.png", color: "#f44336" },
+  { position: 1, name: "Hamza", score: 47, avatar: "avatar1.png", color: "#ff9800" },
   { position: 2, name: "Ruhan", score: 48, avatar: "avatar2.png", color: "#ff9800" },
   { position: 3, name: "Sheeda", score: 49, avatar: "avatar3.png", color: "#4caf50" },
   { position: 4, name: "Hamza", score: 47, avatar: "avatar1.png", color: "#2196f3" },
@@ -34,6 +36,33 @@ const AllRecords = () => {
   const theme = useTheme()
   const isSmall = useMediaQuery(theme. breakpoints.down('sm'))
 
+const dispatch = useDispatch()
+
+const [records1, setRecords1] = useState([]);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await dispatch(getAllRecords(82));
+      setRecords1(response.data.data);
+    } catch (error) {
+      console.error('Error fetching records:', error);
+
+    }
+  };
+
+  fetchData();
+}, [dispatch]);
+
+const parseFormFields = (fieldsValuesString) => {
+  try {
+    const fieldsValues = JSON.parse(JSON.parse(fieldsValuesString));
+    return fieldsValues;
+  } catch (error) {
+    console.error('Error parsing fields_values:', error);
+    return { name: 'Unknown' };
+  }
+};
 
   return (
     <Box sx={{ padding: isSmall ? '2rem 10%': '2rem 30%'}}>
@@ -54,7 +83,7 @@ const AllRecords = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {records.map((record) => (
+            {records1.map((record) => (
               <TableRow key={record.position}>
                 <TableCell>
             <Positions number={record.position} color={record.color} />
@@ -63,13 +92,13 @@ const AllRecords = () => {
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Avatar
                       src={record.avatar}
-                      alt={record.name}
+                      alt={record.participant.name}
                       sx={{ marginRight: 2 }}
                     />
-                    {record.name}
+                   {parseFormFields(record.participant.fields_values).name}
                   </Box>
                 </TableCell>
-                <TableCell>{record.score}</TableCell>
+                <TableCell>{record.total_score}</TableCell>
               </TableRow>
             ))}
           </TableBody>

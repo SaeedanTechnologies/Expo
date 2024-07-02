@@ -21,7 +21,7 @@ import { useNavigate } from "react-router";
 const LoginAdminPanel = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
- 
+
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email:"",
@@ -48,12 +48,15 @@ const LoginAdminPanel = () => {
     setLoading(true);
 
     try {
-     await dispatch(adminLogin(formData));
-      console.log("Login successful");
-    
-        navigate("/judge-score-card")
-      
-    
+      const response = await dispatch(adminLogin(formData));
+      console.log("Login successful", response);
+     const contestId = response.data.payload.user.contest_id;
+
+     console.log(contestId, 'id on judge login')
+     // Navigate to '/judge-score-card/{contestId}'
+     navigate(`/judge-score-card/${contestId}`);
+
+
       // Handle successful login (e.g., navigate to another page)
     } catch (error) {
       console.error("Login failed", error);
@@ -130,7 +133,7 @@ const LoginAdminPanel = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-     
+
         />
             <Typography
               component="label"
@@ -170,7 +173,7 @@ const LoginAdminPanel = () => {
                 ),
               }}
             />
-       
+
             <Box
               sx={{
                 display: "flex",

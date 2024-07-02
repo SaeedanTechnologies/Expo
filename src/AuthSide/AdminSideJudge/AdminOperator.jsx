@@ -248,26 +248,42 @@ import {
 } from "../../store/actions/contestStartActions";
 import { useDispatch } from "react-redux";
 
-const StyledAvatar = styled(Avatar)(({ theme, isCurrent }) => ({
-  width: 60,
-  height: 60,
-  border: `4px solid ${isCurrent ? "green" : "red"}`,
-  margin: theme.spacing(1),
-}));
 
 const AdminOperator = () => {
   const { id } = useParams();
+
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const [judges, setJudges] = useState([]);
+  const [score, setScore] = useState([]);
+
   const [participants, setParticipants] = useState([]);
   const [allScoresGiven, setAllScoresGiven] = useState(false);
   const dispatch = useDispatch();
   const [allJudges, setAllJudges] = useState([]);
  console.log(allJudges, "irfanali")
-  const handleClick = async (id, contestId) => {
+
+
+
+  const StyledAvatar = styled(Avatar)(({ theme, isCurrent, judgeId }) => ({
+    width: 60,
+    height: 60,
+    border: `4px solid ${
+      score.some((score) => score.judge_id === judgeId && score.participant_id === participants[0]?.id)
+        ? "green"
+        : "red"
+    }`,
+    margin: theme.spacing(1),
+  }));
+
+
+
+
+  const handleClick = async (participantName, id, contestId) => {
     try {
-      const res = await dispatch(setNextParticipant(contestId, id));
+      const res = await dispatch(
+        setNextParticipant(contestId, id, participantName)
+      );
       console.log("success", res);
     } catch (error) {
       console.error("Failed to send help request:", error);
@@ -279,6 +295,7 @@ const AdminOperator = () => {
       try {
         const result = await dispatch(getStartContest(id));
         setJudges(result.data.data.judges);
+        setScore(result.data.data.total_scores);
         const filteredParticipants = result.data.data.participants.filter(
           (participant) => participant.is_judged === 0
         );
@@ -293,7 +310,7 @@ const AdminOperator = () => {
         );
         setAllJudges(result.data.data.participants);
 
-     
+
       } catch (err) {
         console.log(err);
       }
@@ -392,13 +409,21 @@ setParticipants(participants)
                 src={judge?.image}
                 alt={judge?.name}
                 isCurrent={judge?.isCurrent}
+                judgeId={judge?.id}
               />
+
               <Typography sx={{ fontWeight: 600 }}>{judge?.name}</Typography>
-              {judge?.score && (
-                <Typography sx={{ color: "green", fontSize: "0.8rem" }}>
-                  Score {judge?.score}
-                </Typography>
-              )}
+              {score
+      .filter(
+        (score) =>
+          score.judge_id === judge.id &&
+          score.participant_id === participants[0]?.id
+      )
+      .map((score, ind) => (
+        <Typography key={ind} sx={{ color: "green", fontSize: "0.8rem" }}>
+          Score {score?.total_score}
+        </Typography>
+      ))}
             </Box>
           ))}
         </Box>
@@ -496,7 +521,7 @@ setParticipants(participants)
 
 
 
-      
+
         )}
       </Box>
     </Box>

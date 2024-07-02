@@ -32,6 +32,8 @@ import LoginAdminPanel from "./AuthSide/JudgePanel/LoginAdminPanel";
 import AdminRegisterForm from "./AuthSide/AdminSide1/AdminRegisterForm";
 import AdminLoginForm from "./AuthSide/AdminSide1/AdminLoginForm";
 export default function Router() {
+
+
     let element = useRoutes([
         {
             path: '/',
@@ -65,10 +67,7 @@ export default function Router() {
                     path: 'add-QR',
                     element: <QrCode />,
                 },
-                // {
-                //     path: 'contest:contest_id',
-                //     element: <SignUpForm />,
-                // },
+
                 {
                     path: 'contest/:id',
                     element: <SignUpForm />,
@@ -81,7 +80,7 @@ export default function Router() {
             path: 'add-judges',
             element: <AddJudgeMain />,
         },
-        
+
         {
             path: 'create-score-card',
             element: <CreateScoreCard />
@@ -135,7 +134,7 @@ export default function Router() {
             element: <JugedRole />,
         },
         {
-            path: 'judge-score-card',
+            path: 'judge-score-card/:id',
             element: <JudgePanelReg />,
         },
         {
