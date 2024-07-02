@@ -168,7 +168,7 @@ const AllRecords = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(getAllRecords(89));
+        const response = await dispatch(getAllRecords(contestId));
         setRecords1(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -178,11 +178,11 @@ const AllRecords = () => {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch],contestId);
 
   const handleShowOnPublicScreen = async () => {
     try {
-      const response = await dispatch(saveToPublicScreen(89));
+      const response = await dispatch(saveToPublicScreen(contestId));
       setSnackbarOpen(true);
       setSnackbarMessage(response.data.message);
       console.log('Response from public screen API:', response);
