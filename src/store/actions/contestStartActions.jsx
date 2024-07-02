@@ -12,9 +12,9 @@ export const getStartContest = (contestId) => async (dispatch) => {
 
 
 
-export const setNextParticipant = (contestId, participant_id) => async (dispatch) => {
+export const setNextParticipant = (contestId, participant_id, current_participant_name) => async (dispatch) => {
     try {
-      const res = await api.post(`admin/judge-participant/${contestId}`, {participant_id});
+      const res = await api.post(`admin/judge-participant/${contestId}`, {participant_id, current_participant_name});
       return res;
     } catch (err) {
       throw err;

@@ -645,8 +645,10 @@ import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, TextField, Button, FormControl, InputLabel } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { fetchFormJudegForm, submitJudegFormData } from '../../store/actions/addJudegsActions';
+import { useParams } from 'react-router';
 
 const JudgePanelReg = () => {
+  const {id} = useParams()
   const dispatch = useDispatch();
   const [formFields, setFormFields] = useState([]);
   const [formData, setFormData] = useState({});
@@ -656,10 +658,10 @@ const JudgePanelReg = () => {
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchFormJudegForm())
+    dispatch(fetchFormJudegForm(id))
       .then(response => {
         if (Array.isArray(response.data) && response.data.length > 0) {
-          const firstItem = response.data[1];
+          const firstItem = response.data[0];
           const fields = JSON.parse(firstItem.fields);
 
           const mappedFields = fields.map(item => ({

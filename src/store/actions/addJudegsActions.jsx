@@ -1,9 +1,9 @@
 // src/store/actions/formActions.js
 import api from "../../utils/Api";
 
-export const fetchFormJudegForm = () => async (dispatch) => {
+export const fetchFormJudegForm = (id) => async (dispatch) => {
   try {
-    const res = await api.get("judge/score-cards");
+    const res = await api.get(`judge/score-cards/${id}`);
     dispatch({ type: "GET_JUDEG_RESP", payload: res.data });
     return res;
   } catch (err) {
@@ -11,6 +11,8 @@ export const fetchFormJudegForm = () => async (dispatch) => {
     throw err;
   }
 };
+
+
 
 export const submitJudegFormData = (dataToSubmit) => async (dispatch) => {
     try {
