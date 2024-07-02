@@ -125,10 +125,12 @@ const JudgePanelReg = () => {
 
       })
       .catch(error => {
-
         if (error.response && error.response.data) {
           const { payload } = error.response.data;
-          enqueueSnackbar("Failed to Assign Score", { variant: "error" });
+
+          console.log(error, 'errorrrr')
+          enqueueSnackbar(error.response.data.error, { variant: "error" });
+      
 
         } else {
           console.error('Unexpected error:', error);
