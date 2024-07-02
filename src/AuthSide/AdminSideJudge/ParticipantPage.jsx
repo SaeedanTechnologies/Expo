@@ -17,11 +17,11 @@ const ParticipantCard = ({ name, task, score }) => (
   </Card>
 );
 
-const ScoreBoard = ({ judgeName, totalScore,partcipentId }) => (
+const ScoreBoard = ({ judgeName, totalScore,partcipentId,participantsName }) => (
   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', height: '35vh', backgroundColor: '#162f33', color: 'white' }}>
     <Typography variant="h4" sx={{ fontSize: '1rem', mt: '1rem' }}>{partcipentId}</Typography>
     <Typography variant="h5" sx={{ fontSize: '1.3rem', fontWeight: 600 }}>Total Score : {totalScore}</Typography>
-    <Typography variant="h6" sx={{ fontSize: '1rem', textAlign: 'center', color: 'white', backgroundColor: '#7c8385', width: '100%' }}>{judgeName}</Typography>
+    <Typography variant="h6" sx={{ fontSize: '1rem', textAlign: 'center', color: 'white', backgroundColor: '#7c8385', width: '100%' }}>{participantsName}</Typography>
   </Box>
 );
 
@@ -31,6 +31,7 @@ const ParticipantPage = () => {
   const [judges, setJudges] = useState([]);
   const [totalScores, setTotalScores] = useState([]);
   const [participants, setParticipents] = useState([]);
+  const [participantsName, setParticipentsName] = useState("");
   console.log(participants,"juderr")
   const partcipentId= participants.map(id=>id.participant_id);
   const dispatch = useDispatch();
@@ -41,7 +42,8 @@ const ParticipantPage = () => {
         const result = await dispatch(getStartContest(id));
         setJudges(result.data.data.judges);
         setTotalScores(result.data.data.total_scores);
-        setParticipents(result.data.data.participants)
+        setParticipents(result.data.data.participants);
+        setParticipentsName(result.data.data.now_in_progress)
       } catch (err) {
         console.log(err);
       }
@@ -74,7 +76,7 @@ const ParticipantPage = () => {
         <Grid container spacing={4} sx={{ alignItems: 'start' }}>
           <Grid item xs={12} sm={3} md={2.5}>
             <Box>
-              <ScoreBoard judgeName={judgeName} totalScore={totalScore} partcipentId={partcipentId}/>
+              <ScoreBoard judgeName={judgeName} totalScore={totalScore} partcipentId={partcipentId} participantsName={participantsName}/>
             </Box>
           </Grid>
           <Grid item xs={12} sm={9} md={9.5}>
