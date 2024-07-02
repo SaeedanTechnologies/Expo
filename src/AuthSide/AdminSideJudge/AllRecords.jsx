@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -19,53 +20,60 @@ import Positions from "../../page/components/Positions";
 import TelegramIcon from '@mui/icons-material/Telegram';
 import { useDispatch } from "react-redux";
 import { getAllRecords } from "../../store/actions/contestStartActions";
-
-const records = [
-  { position: 1, name: "Hamza", score: 47, avatar: "avatar1.png", color: "#ff9800" },
-  { position: 2, name: "Ruhan", score: 48, avatar: "avatar2.png", color: "#ff9800" },
-  { position: 3, name: "Sheeda", score: 49, avatar: "avatar3.png", color: "#4caf50" },
-  { position: 4, name: "Hamza", score: 47, avatar: "avatar1.png", color: "#2196f3" },
-  { position: 5, name: "Ruhan", score: 48, avatar: "avatar2.png", color: "#9c27b0" },
-  { position: 6, name: "Sheeda", score: 49, avatar: "avatar3.png", color: "#e91e63" },
-  { position: 7, name: "Ruhan", score: 48, avatar: "avatar2.png", color: "#3f51b5" },
-  { position: 8, name: "Sheeda", score: 49, avatar: "avatar3.png", color: "#00bcd4" },
-];
+import { useLocation } from "react-router";
 
 const AllRecords = () => {
+  const location = useLocation();
+  const id = location.state?.id;
 
-  const theme = useTheme()
-  const isSmall = useMediaQuery(theme. breakpoints.down('sm'))
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-const [records1, setRecords1] = useState([]);
+  const [records1, setRecords1] = useState([]);
+  const [loading, setLoading] = useState(true); // State to manage loading indicator
 
-useEffect(() => {
-  const fetchData = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(getAllRecords(id));
+        setRecords1(response.data.data);
+        setLoading(false); // Data fetched, set loading to false
+
+      } catch (error) {
+        console.error('Error fetching records:', error);
+        setLoading(false); // Error occurred, set loading to false
+
+      }
+    };
+
+    fetchData();
+  }, [dispatch, id]);
+
+  const parseFormFields = (fieldsValuesString) => {
     try {
-      const response = await dispatch(getAllRecords(82));
-      setRecords1(response.data.data);
+      const fieldsValues = JSON.parse(JSON.parse(fieldsValuesString));
+      return fieldsValues;
     } catch (error) {
-      console.error('Error fetching records:', error);
-
+      console.error('Error parsing fields_values:', error);
+      return { name: 'Unknown' };
     }
   };
 
-  fetchData();
-}, [dispatch]);
-
-const parseFormFields = (fieldsValuesString) => {
-  try {
-    const fieldsValues = JSON.parse(JSON.parse(fieldsValuesString));
-    return fieldsValues;
-  } catch (error) {
-    console.error('Error parsing fields_values:', error);
-    return { name: 'Unknown' };
+  // Render loading spinner while data is being fetched
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+        <CircularProgress/>
+      </Box>
+    );
   }
-};
 
   return (
-    <Box sx={{ padding: isSmall ? '2rem 10%': '2rem 30%'}}>
+
+    <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', minHeight:'80vh'}}>
+        <Box sx={{ padding: isSmall ? '2rem 10%': '2rem 30%'}}>
       <Typography variant="h4" align="center" gutterBottom>
         All Records
       </Typography>
@@ -113,6 +121,8 @@ const parseFormFields = (fieldsValuesString) => {
         </Button>
       </Box>
     </Box>
+    </Box>
+
   );
 };
 

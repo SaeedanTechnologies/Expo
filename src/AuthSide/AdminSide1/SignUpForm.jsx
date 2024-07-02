@@ -139,8 +139,9 @@ const SignUpForm = () => {
 
     axios.post('https://expoproject.saeedantechpvt.com/api/participients', payload)
         .then(response => {
-            console.log('Success message:', response.data.message);
-            navigate("/add-judges");
+
+            setSnackbarMessage('You are Registered ');
+            navigate("/participant-registered");
         })
         .catch(error => {
             if (error.response) {

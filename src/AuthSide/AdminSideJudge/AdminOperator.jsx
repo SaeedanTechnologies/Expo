@@ -279,10 +279,10 @@ const AdminOperator = () => {
 
 
 
-  const handleClick = async (participantName, id, contestId) => {
+  const handleClick = async (id, contestId) => {
     try {
       const res = await dispatch(
-        setNextParticipant(contestId, id, participantName)
+        setNextParticipant(contestId, id)
       );
       console.log("success", res);
     } catch (error) {
@@ -325,9 +325,10 @@ const AdminOperator = () => {
     return () => clearInterval(intervalId);
   }, [dispatch, id]);
 
-  const handleiFrame = () => {
-    navigate("/iframe");
+  const handleAllRecords = () => {
+    navigate('/all-records', { state: { id: 89 } });
   };
+
 useEffect(()=>{
 setParticipants(participants)
 },[participants])
@@ -429,45 +430,22 @@ setParticipants(participants)
         </Box>
         <br />
         <Divider />
-        {allJudges.length > 0 ? (
+        {participants.length === 0 ? (
           <>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              marginTop: 1,
-              justifyContent: "space-between",
-              padding: 2,
-              borderRadius: "8px",
-              width: "100%",
-              maxWidth: 500,
-            }}
-          >
-            <Box>
-              <Button
-                variant="contained"
-                sx={{
-                  width: "100%",
-                  textTransform: "none",
-                  backgroundColor: "#f5c0c1",
-                  color: "black",
-                  fontWeight: 600,
-                }}
-                onClick={handleiFrame}
-              >
-                Copy iframe link
-              </Button>
-            </Box>
+
+
             <Box>
               <Button
                 variant="contained"
                 color="primary"
+                onClick={handleAllRecords}
+
                 sx={{ width: "100%", textTransform: "none" }}
               >
-                Now Judge Hamza
+                All Records
               </Button>
             </Box>
-          </Box>
+
         </>
         ) : (
           <>
