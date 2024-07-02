@@ -22,8 +22,6 @@
 // } from "../../store/actions/contestStartActions";
 // import { useDispatch } from "react-redux";
 
-
-
 // const StyledAvatar = styled(Avatar)(({ theme, isCurrent }) => ({
 //   width: 60,
 //   height: 60,
@@ -207,9 +205,6 @@
 //               </Typography>
 //             </Box>
 //           </Box>
-          
-       
-
 
 //           <Button
 //             variant="contained"
@@ -268,7 +263,8 @@ const AdminOperator = () => {
   const [participants, setParticipants] = useState([]);
   const [allScoresGiven, setAllScoresGiven] = useState(false);
   const dispatch = useDispatch();
-
+  const [allJudges, setAllJudges] = useState([]);
+ console.log(allJudges, "irfanali")
   const handleClick = async (id, contestId) => {
     try {
       const res = await dispatch(setNextParticipant(contestId, id));
@@ -295,15 +291,9 @@ const AdminOperator = () => {
             return { ...participant, ...fieldsValues };
           })
         );
-        const totalScoresArray = result.data.data.total_scores;
-        const totalScores = totalScoresArray?.map((item) => item.total_score);
-        console.log(totalScores, "total_scores-datat");
+        setAllJudges(result.data.data.participants);
 
-        // Check if all judges have given scores
-        const allScores = result.data.data.judges.every(
-          (judge) => judge.score !== null
-        );
-        setAllScoresGiven(allScores);
+     
       } catch (err) {
         console.log(err);
       }
@@ -321,6 +311,11 @@ const AdminOperator = () => {
   const handleiFrame = () => {
     navigate("/iframe");
   };
+useEffect(()=>{
+setParticipants(participants)
+},[participants])
+
+
 
   return (
     <Box
@@ -409,85 +404,82 @@ const AdminOperator = () => {
         </Box>
         <br />
         <Divider />
-        {allScoresGiven ? (
+        {allJudges.length > 0 ? (
           <>
-          <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginTop: 1,
-            justifyContent: "space-between",
-            padding: 2,
-            borderRadius: "8px",
-            width: "100%",
-            maxWidth: 500,
-          }}
-        >
-        <Box>
-        <Button
-        variant="contained"
-        sx={{
-          width: "100%",
-          textTransform: "none",
-          backgroundColor: "#f5c0c1",
-          color: "black",
-          fontWeight: 600,
-        }}
-        onClick={handleiFrame}
-      >
-        Copy iframe link
-      </Button>
-        </Box>
-         <Box>
-         
-         <Button
-         variant="contained"
-         color="primary"
-         sx={{ width: "100%", textTransform: "none" }}
-       >
-         Now Judge Hamza
-       </Button>
-         </Box>
-          </Box>
-        </>
-        ) : ( 
-         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginTop: 1,
-            justifyContent: "space-between",
-            padding: 2,
-            borderRadius: "8px",
-            width: "100%",
-            maxWidth: 500,
-          }}
-        >
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
+              marginTop: 1,
               justifyContent: "space-between",
+              padding: 2,
+              borderRadius: "8px",
+              width: "100%",
+              maxWidth: 500,
             }}
           >
-            <Avatar
-              src={participants[0]?.image}
-              alt={participants[0]?.name}
-              sx={{ marginRight: 2 }}
-            />
-            <Box sx={{ flexGrow: 1 }}>
-              <Typography
-                variant="body1"
-                sx={{ fontSize: "0.9rem", fontWeight: 600 }}
+            <Box>
+              <Button
+                variant="contained"
+                sx={{
+                  width: "100%",
+                  textTransform: "none",
+                  backgroundColor: "#f5c0c1",
+                  color: "black",
+                  fontWeight: 600,
+                }}
+                onClick={handleiFrame}
               >
-                {participants[0]?.name}
-              </Typography>
+                Copy iframe link
+              </Button>
+            </Box>
+            <Box>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ width: "100%", textTransform: "none" }}
+              >
+                Now Judge Hamza
+              </Button>
             </Box>
           </Box>
+        </>
+        ) : (
+          <>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: 1,
+              justifyContent: "space-between",
+              padding: 2,
+              borderRadius: "8px",
+              width: "100%",
+              maxWidth: 500,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Avatar
+                src={participants[0]?.image}
+                alt={participants[0]?.name}
+                sx={{ marginRight: 2 }}
+              />
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography
+                  variant="body1"
+                  sx={{ fontSize: "0.9rem", fontWeight: 600 }}
+                >
+                  {participants[0]?.name}
+                </Typography>
+              </Box>
+            </Box>
 
-         
-            
-         
             <Button
               variant="contained"
               color="primary"
@@ -498,11 +490,14 @@ const AdminOperator = () => {
             >
               Now Judge {participants[0]?.name}
             </Button>
-         
-        </Box>
-        )}
+          </Box>
+        </>
 
-       
+
+
+
+      
+        )}
       </Box>
     </Box>
   );
