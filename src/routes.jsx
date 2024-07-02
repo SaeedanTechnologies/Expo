@@ -73,15 +73,12 @@ export default function Router() {
                     path: 'contest/:id',
                     element: <SignUpForm />,
                 },
-
-                {
-                    path: 'participant-registered',
-                    element: <ParticipantRegistered/>,
-                },
-
-
-
+                
             ]
+        },
+        {
+            path: 'participant-registered',
+            element: <ParticipantRegistered/>,
         },
         {
             path: 'add-judges',

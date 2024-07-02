@@ -1,15 +1,15 @@
-import { Box, TextField, Typography, InputAdornment, IconButton, useTheme, useMediaQuery } from '@mui/material';
+import { Box, TextField, Typography, InputAdornment, IconButton, useTheme, useMediaQuery, Button } from '@mui/material';
 import React from 'react';
 import LinkIcon from '@mui/icons-material/Link';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useSnackbar } from 'notistack';
 const Links = () => {
 
   const location = useLocation();
   const { contest_id } = location.state || {};
   const { enqueueSnackbar } = useSnackbar();
-
+const navigate = useNavigate()
   const adminlink = `https://frontend.saeedantechpvt.com/admin-contest-start/${contest_id}`;
   const judgelink = `https://frontend.saeedantechpvt.com/judge-login`;
   const behindscreenlink = `https://frontend.saeedantechpvt.com/participant-page/${contest_id}`;
@@ -31,6 +31,9 @@ const theme = useTheme()
   };
 
 const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
+const handleNext = (()=>{
+  navigate(`/admin-contest-start/${contest_id}`)
+})
   return (
     <Box sx={{ flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', padding: isSmall ? '0rem 10%': '0rem 30%' }}>
       <Box>
@@ -117,9 +120,16 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
             size='small'
           />
         </Box>
+
+<br/>
+
+
       </Box>
+      <Button variant='contained' sx={{width:'100%'}} onClick={handleNext}>Next</Button>
+
     </Box>
-  );
+
+);
 };
 
 export default Links;
