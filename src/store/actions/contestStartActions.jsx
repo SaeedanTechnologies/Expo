@@ -10,6 +10,14 @@ export const getStartContest = (contestId) => async (dispatch) => {
 };
 
 
+export const getBehindScreen = (contestId) => async (dispatch) => {
+  try {
+    const res = await api.get(`behind-screen-results/${contestId}`);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
 
 
 export const setNextParticipant = (contestId, participant_id) => async (dispatch) => {
@@ -23,6 +31,8 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
 
 
 
+
+
   export const getAllRecords = (contestId) => async (dispatch) => {
     try {
       const token=localStorage.getItem("token")
@@ -33,10 +43,10 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     }
   };
 
-  
+
 
   export const saveToPublicScreen = (contestId) => async (dispatch) => {
-    
+
       try {
         const token = localStorage.getItem("token");
         const res = await api.post(`admin/publish-record/${contestId}`);

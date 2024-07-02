@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Typography, Grid, Box } from '@mui/material';
 import { useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux'; // Assuming you are using Redux
-import { setNextParticipant, getStartContest } from '../../store/actions/contestStartActions';
+import { setNextParticipant, getStartContest, getBehindScreen } from '../../store/actions/contestStartActions';
 
 const ParticipantCard = ({ name, task, score,partcipentId }) => (
   <Card>
@@ -39,7 +39,7 @@ const ParticipantPage = () => {
   useEffect(() => {
     const fetchContestData = async () => {
       try {
-        const result = await dispatch(getStartContest(id));
+        const result = await dispatch(getBehindScreen(id));
         setJudges(result.data.data.judges);
         setTotalScores(result.data.data.total_scores);
         setParticipents(result.data.data.participants);
@@ -83,11 +83,11 @@ const ParticipantPage = () => {
             <Grid container spacing={2}>
               {judges.map((judge, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
-                  <ParticipantCard 
-                    name={judge.name} 
-                    task="Judge Task" 
+                  <ParticipantCard
+                    name={judge.name}
+                    task="Judge Task"
                     partcipentId={partcipentId}
-                    score={totalScores.find(score => score.judge_id === judge.id)?.total_score || "N/A"} 
+                    score={totalScores.find(score => score.judge_id === judge.id)?.total_score || "N/A"}
                   />
                 </Grid>
               ))}
