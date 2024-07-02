@@ -11,7 +11,7 @@ import {
   IconButton,
   useTheme,
 } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/actions/authActions";
@@ -43,11 +43,26 @@ const dispatch = useDispatch()
 
   };
 
-  const isHidden = location.pathname === "/participant-page" || location.pathname === "/admin_side_screen1" || location.pathname === "/admin_side_screen2";
 
-  if (isHidden) {
-    return null;
-  }
+  // const isHidden = location.pathname === `/participant-page/:id` || location.pathname === "/admin_side_screen1" || location.pathname === "/admin_side_screen2";
+
+  // if (isHidden) {
+  //   return null;
+
+  // }
+
+
+const participantPageRegex = /^\/participant-page\/[^\/]+$/;
+
+const isHidden = participantPageRegex.test(location.pathname)
+                || location.pathname === "/admin_side_screen1"
+                || location.pathname === "/admin_side_screen2";
+
+if (isHidden) {
+  return null;
+}
+
+
 
 const auth = useSelector((state)=>state?.admin?.isAuthenticated)
 const username = useSelector((state)=>state?.admin?.user?.name)

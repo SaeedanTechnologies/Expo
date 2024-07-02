@@ -1,97 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import MyTextField from "../../page/components/MyTextField";
-// import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-// import MyButton from "../../page/components/MyButton";
-// import { useNavigate, useParams } from "react-router";
-// import { useDispatch } from "react-redux";
-// import { getFormFields } from "../../store/actions/authActions";
-
-// const SignUpForm = () => {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const theme = useTheme();
-//   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
-//   const dispatch = useDispatch();
-//   const end_date_time = localStorage.getItem("add_register_response");
-//   console.log(end_date_time, "end-datetime");
-//   const [loading, setLoading] = useState(true);
-//   const [data, setData] = useState(null);
-
-//   useEffect(() => {
-//     window.scroll(0, 0);
-//   }, []);
-
-//   useEffect(() => {
-//     dispatch(getFormFields(id))
-//       .then((result) => {
-//         setData(result.data.payload);
-//         setLoading(false);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         setLoading(false);
-//       });
-//   }, [dispatch, id]);
-
-//   return (
-//     <Box
-//       sx={{
-//         display: "flex",
-//         alignItems: "center",
-//         justifyContent: "center",
-//         padding: "1rem 10%",
-//         height: isSmall ? "80vh" : "100vh",
-//       }}
-//     >
-//       <Box
-//         sx={{
-//           display: "flex",
-//           flexDirection: "column",
-//           gap: "20px",
-//           justifyContent: "center",
-//           width: "400px",
-//           margin: "0 auto",
-//         }}
-//       >
-//         <Typography
-//           sx={{
-//             fontSize: "36px",
-//             fontWeight: 700,
-//             textAlign: "center",
-//           }}
-//         >
-//           Sign Up As a Participant
-//         </Typography>
-//         <Typography
-//           sx={{
-//             color: "#949494",
-//             fontSize: "16px",
-//             fontWeight: 300,
-//             textAlign: "center",
-//           }}
-//         >
-//           Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet
-//           consectetur lorem ipsum dolor sit amet.
-//         </Typography>
-
-//         {data &&
-//           data.map((field) => (
-//             <MyTextField
-//               key={field.id}
-//               label={field.label}
-//               placeholder={`Enter Your ${field.label}`}
-//               type={field.type}
-//             />
-//           ))}
-//         <MyButton onClick={() => navigate("/add-judges")} text="Submit" />
-//       </Box>
-//     </Box>
-//   );
-// };
-
-// export default SignUpForm;
-
-
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import axios from 'axios';
@@ -103,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { getFormFields } from "../../store/actions/authActions";
 import { Snackbar, CircularProgress } from "@mui/material";
 const SignUpForm = () => {
+
+
   const { id } = useParams();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -111,7 +19,7 @@ const SignUpForm = () => {
   const end_date_time = localStorage.getItem("end_date_time");
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
-  console.log(data, "datata")
+  const [submitting, setSubmitting] = useState(false);
   const { handleSubmit, control, formState: { errors } } = useForm();
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -132,6 +40,7 @@ const SignUpForm = () => {
   }, [dispatch, id]);
 
   const onSubmit = (formData) => {
+    setSubmitting(true);
     const payload = {
         contest_id: id,
         fields_values: JSON.stringify(formData)
@@ -142,23 +51,25 @@ const SignUpForm = () => {
 
             setSnackbarMessage('You are Registered ');
             navigate("/participant-registered");
+            setSubmitting(false);
         })
         .catch(error => {
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
+
                 console.error('message', error.response.data.message);
                 setSnackbarMessage(error.response.data.message);
             } else if (error.request) {
-                // The request was made but no response was received
+
                 console.error('Error:', error.request);
                 setSnackbarMessage('No response received from the server.');
             } else {
-                // Something happened in setting up the request that triggered an Error
+
                 console.error('Error:', error.message);
                 setSnackbarMessage(error.message);
             }
             setSnackbarOpen(true);
+        }).finally(() => {
+          setSubmitting(false); // Stop loading indicator regardless of success/error
         });
 };
 
@@ -209,7 +120,14 @@ const handleCloseSnackbar = () => {
         height: isSmall ? "80vh" : "100vh",
       }}
     >
-      <Box
+
+{loading ? (
+        <CircularProgress />
+      ) : (
+
+<>
+
+<Box
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -221,7 +139,7 @@ const handleCloseSnackbar = () => {
       >
         <Typography
           sx={{
-            fontSize: "36px",
+            fontSize: "2rem",
             fontWeight: 700,
             textAlign: "center",
           }}
@@ -267,17 +185,31 @@ const handleCloseSnackbar = () => {
                 )}
               />
             ))}
-          <MyButton type="submit" text="Submit" />
+          {/* <MyButton type="submit" text="Submit" /> */}
+
+          <MyButton type="submit" text="Submit" disabled={submitting}  />
+
+
         </form>
+
+
       </Box>
+
+
       <Snackbar
       open={snackbarOpen}
       autoHideDuration={6000}
       onClose={handleCloseSnackbar}
       message={snackbarMessage}
   />
+</>
+      )}
+
     </Box>
   );
 };
 
 export default SignUpForm;
+
+
+

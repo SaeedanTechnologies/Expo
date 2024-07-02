@@ -326,7 +326,7 @@ const AdminOperator = () => {
   }, [dispatch, id]);
 
   const handleAllRecords = () => {
-    navigate('/all-records', { state: { id: 89 } });
+    navigate('/all-records', { state: { id: id } });
   };
 
 useEffect(()=>{

@@ -191,13 +191,13 @@ const QrCode = () => {
             onClick={downloadQRCode}
             text="Save"
             sx={{ width: "100%" }}
-         
+
           />
-          {/* <MyButton
-            // onClick={() => navigate("/admin/signUp")}
+          <MyButton
+            onClick={() => navigate(`/add-judges`)}
             text="Next"
             sx={{ width: "100%" }}
-          /> */}
+          />
         </Box>
       </Box>
     </Box>
