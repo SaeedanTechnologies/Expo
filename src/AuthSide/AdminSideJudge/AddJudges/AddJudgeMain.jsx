@@ -1,3 +1,6 @@
+
+
+
 // import React, { useState, useEffect } from 'react';
 // import {
 //   Box,
@@ -14,8 +17,9 @@
 // import { useNavigate } from 'react-router-dom';
 
 // const AddJudgeMain = () => {
+  
 //   const [activeStep, setActiveStep] = useState(0);
-//   const [judges, setJudges] = useState([{ name: '', email: '', photo: '' }]);
+//   const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: '' }]);
 //   const navigate = useNavigate();
 
 //   useEffect(() => {
@@ -25,17 +29,21 @@
 //     }
 //   }, []);
 
+//   useEffect(() => {
+//     localStorage.setItem('judges', JSON.stringify(judges));
+//   }, [judges]);
+
 //   const handleNext = () => {
 //     localStorage.setItem('judges', JSON.stringify(judges));
 //     if (activeStep === judges.length - 1) {
-//       navigate('/create-score-card');
+//       navigate('/create-score-card', { state: { judges } });
 //     } else {
 //       setActiveStep((prevActiveStep) => prevActiveStep + 1);
 //     }
 //   };
 
 //   const handleAddNewJudge = () => {
-//     const newJudges = [...judges, { name: '', email: '', photo: '' }];
+//     const newJudges = [...judges, { judge_name: '', email: '', phone: '', profile_picture: '' }];
 //     setJudges(newJudges);
 //     setActiveStep(newJudges.length - 1);
 //   };
@@ -50,7 +58,7 @@
 //     const reader = new FileReader();
 //     reader.onload = () => {
 //       if (reader.readyState === 2) {
-//         handleChange(index, 'photo', reader.result);
+//         handleChange(index, 'profile_picture', reader.result);
 //       }
 //     };
 //     reader.readAsDataURL(event.target.files[0]);
@@ -68,8 +76,8 @@
 //         <Typography variant="body1" gutterBottom sx={{ textAlign: 'center' }}>
 //           Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
 //         </Typography>
-//         <Box sx={{ overflowX: 'auto', width: isSmall ? '80vw': '40vw' }}>
-//           <Stepper activeStep={activeStep} alternativeLabel sx={{width: '100%' }}>
+//         <Box sx={{ overflowX: 'auto', width: isSmall ? '80vw' : '40vw' }}>
+//           <Stepper activeStep={activeStep} alternativeLabel sx={{ width: '100%' }}>
 //             {judges.map((_, index) => (
 //               <Step key={index}>
 //                 <StepLabel>{`Judge ${index + 1}`}</StepLabel>
@@ -80,7 +88,7 @@
 //         <Box sx={{ mt: 3 }}>
 //           <Box sx={{ mb: 3, p: 2 }}>
 //             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-//               <Avatar src={judges[activeStep]?.photo} sx={{ width: 76, height: 76, mr: 2 }} />
+//               <Avatar src={judges[activeStep]?.profile_picture} sx={{ width: 76, height: 76, mr: 2 }} />
 //               <Box>
 //                 <Button variant="outlined" component="label">
 //                   Upload Your Photo
@@ -98,8 +106,8 @@
 //               label="Judge Name"
 //               variant="outlined"
 //               fullWidth
-//               value={judges[activeStep]?.name || ''}
-//               onChange={(e) => handleChange(activeStep, 'name', e.target.value)}
+//               value={judges[activeStep]?.judge_name || ''}
+//               onChange={(e) => handleChange(activeStep, 'judge_name', e.target.value)}
 //               sx={{ mb: 2 }}
 //             />
 //             <label style={{ fontWeight: 600 }}>Email</label>
@@ -111,12 +119,13 @@
 //               fullWidth
 //               value={judges[activeStep]?.email || ''}
 //               onChange={(e) => handleChange(activeStep, 'email', e.target.value)}
+//               sx={{ mb: 2 }}
 //             />
 //             <Box gap={3} sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
 //               <Button
 //                 variant="outlined"
 //                 onClick={handleAddNewJudge}
-//                 sx={{ mr: 2, width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform:'none' }}
+//                 sx={{ mr: 2, width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
 //               >
 //                 + Add New Judge
 //               </Button>
@@ -124,7 +133,7 @@
 //                 variant="contained"
 //                 color="primary"
 //                 onClick={handleNext}
-//                 sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform:'none' }}
+//                 sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
 //               >
 //                 {activeStep === judges.length - 1 ? 'Finish' : 'Next'}
 //               </Button>
@@ -137,7 +146,6 @@
 // };
 
 // export default AddJudgeMain;
-
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -155,7 +163,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const AddJudgeMain = () => {
-  
   const [activeStep, setActiveStep] = useState(0);
   const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: '' }]);
   const navigate = useNavigate();
@@ -200,6 +207,11 @@ const AddJudgeMain = () => {
       }
     };
     reader.readAsDataURL(event.target.files[0]);
+  };
+
+  const isNextButtonDisabled = () => {
+    const currentJudge = judges[activeStep];
+    return !currentJudge.judge_name || !currentJudge.email;
   };
 
   const theme = useTheme();
@@ -259,6 +271,10 @@ const AddJudgeMain = () => {
               onChange={(e) => handleChange(activeStep, 'email', e.target.value)}
               sx={{ mb: 2 }}
             />
+          
+            <br />
+            <br />
+          
             <Box gap={3} sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
               <Button
                 variant="outlined"
@@ -272,6 +288,7 @@ const AddJudgeMain = () => {
                 color="primary"
                 onClick={handleNext}
                 sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
+                disabled={isNextButtonDisabled()}
               >
                 {activeStep === judges.length - 1 ? 'Finish' : 'Next'}
               </Button>
@@ -284,5 +301,4 @@ const AddJudgeMain = () => {
 };
 
 export default AddJudgeMain;
-
 
