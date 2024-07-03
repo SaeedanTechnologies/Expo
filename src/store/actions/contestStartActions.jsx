@@ -55,3 +55,17 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
         throw err;
       }
     };
+
+
+
+
+  export const singleContest = (contestId) => async (dispatch) => {
+
+    try {
+
+      const res = await api.get(`behind-screen-contestinfo/${contestId}`);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };

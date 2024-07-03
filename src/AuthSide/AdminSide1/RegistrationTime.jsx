@@ -70,9 +70,10 @@ const AddRegistration = () => {
     if (endDate.isSame(startDate, "day") && time.isBefore(startTime)) {
       setTimeError(true);
       if (time.hour() < startTime.hour() || (time.hour() === startTime.hour() && time.minute() < startTime.minute())) {
-        // If end time is less than start time on the same day, adjust the start date
+
         setStartDate(startDate.subtract(1, 'day'));
       }
+      
     } else if (endDate.isSame(dayjs(), "day") && time.isAfter(now)) {
       setTimeError(true);
     } else if (endDate.isSame(startDate, "day") && time.isSame(startTime)) {

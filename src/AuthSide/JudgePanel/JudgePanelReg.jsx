@@ -28,7 +28,7 @@
 //         if (Array.isArray(response.data) && response.data.length > 0) {
 //           const firstItem = response.data[0];
 //           const fields = JSON.parse(firstItem.fields);
-         
+
 //           const mappedFields = fields.map(item => ({
 //             id: item.name,
 //             label: item.label,
@@ -37,7 +37,7 @@
 //             required: item.required,
 //           }));
 //           setParticeipentName(response.data)
-          
+
 //           setFormFields(mappedFields);
 
 //           setJudgeId(firstItem.judge_id);
@@ -279,7 +279,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, TextField, Button, FormControl, InputLabel } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchFormJudegForm, submitJudegFormData } from '../../store/actions/addJudegsActions';
 import { useParams } from 'react-router';
 import { useSnackbar } from 'notistack';
@@ -295,14 +295,15 @@ const JudgePanelReg = () => {
   const [contestId, setContestId] = useState(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
-
+  const judge_idd = useSelector(state => state?.admin?.user?.id);
+  console.log(judge_idd, 'dhadjkfsdkfsdjfh')
   useEffect(() => {
     dispatch(fetchFormJudegForm(id))
       .then(response => {
         if (Array.isArray(response.data) && response.data.length > 0) {
           const firstItem = response.data[0];
           const fields = JSON.parse(firstItem.fields);
-         
+
           const mappedFields = fields.map(item => ({
             id: item.name,
             label: item.label,
@@ -311,7 +312,7 @@ const JudgePanelReg = () => {
             required: item.required,
           }));
           setParticipantName(firstItem.current_participant_name); // Set the participant name
-          
+
           setFormFields(mappedFields);
           setJudgeId(firstItem.judge_id);
           setParticipantId(firstItem.current_participant_id);
@@ -354,15 +355,20 @@ const JudgePanelReg = () => {
     }));
     const dataToSubmit = {
       scores: scoresArray,
-      judge_id: judgeId,
+      judge_id: judge_idd,
       participant_id: participantId,
       contest_id: contestId
     };
+
+
+
     dispatch(submitJudegFormData(dataToSubmit))
       .then(response => {
-        setSubmitDisabled(true);
-        setFormData({});
-        enqueueSnackbar("Score Assigned", { variant: "success" });
+        // Handle success response
+        console.log('Submission success:', response);
+      setSubmitDisabled(true);
+      setFormData({})
+      enqueueSnackbar("Score Assigned", { variant: "success" });
       })
       .catch(error => {
         if (error.response && error.response.data) {
@@ -421,7 +427,7 @@ const JudgePanelReg = () => {
               color: '#949494',
             }}
           >
-            Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br />
+            Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br/>
             sit amet consectetur lorem ipsum dolor sit amet.
           </Typography>
 

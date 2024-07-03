@@ -53,6 +53,8 @@ const dispatch = useDispatch()
 
 
 const participantPageRegex = /^\/participant-page\/[^\/]+$/;
+// const participantPageRegex = /^\/admin/contest\/[^\/]+$/;
+
 
 const isHidden = participantPageRegex.test(location.pathname)
                 || location.pathname === "/admin_side_screen1"

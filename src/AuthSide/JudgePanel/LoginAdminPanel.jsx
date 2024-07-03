@@ -53,14 +53,14 @@ const LoginAdminPanel = () => {
      const contestId = response.data.payload.user.contest_id;
 
      console.log(contestId, 'id on judge login')
-     // Navigate to '/judge-score-card/{contestId}'
+
      navigate(`/judge-score-card/${contestId}`);
 
 
-      // Handle successful login (e.g., navigate to another page)
+
     } catch (error) {
       console.error("Login failed", error);
-      // Handle login failure (e.g., show an error message)
+  
     } finally {
       setLoading(false);
     }
