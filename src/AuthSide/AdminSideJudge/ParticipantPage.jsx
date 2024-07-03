@@ -154,6 +154,7 @@ const ParticipantPage = () => {
   const [totalScores, setTotalScores] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [participantsName, setParticipantsName] = useState("");
+  console.log(participantsName,"participantsName");
   const dispatch = useDispatch();
 
   useEffect(() => {
