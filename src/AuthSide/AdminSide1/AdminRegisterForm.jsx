@@ -116,9 +116,6 @@ const dispatch = useDispatch()
     if (!formData.phone.trim()) {
       errors.phone = "Phone is required";
       valid = false;
-    } else if (!/^\d{11}$/.test(formData.phone.trim())) {
-      errors.phone = "Phone must be an 11-digit number";
-      valid = false;
     }
 
     // Validate email

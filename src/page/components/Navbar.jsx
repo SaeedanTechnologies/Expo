@@ -52,17 +52,21 @@ const dispatch = useDispatch()
   // }
 
 
-const participantPageRegex = /^\/participant-page\/[^\/]+$/;
-// const participantPageRegex = /^\/admin/contest\/[^\/]+$/;
+  const participantPageRegex = /^\/participant-page\/[^\/]+$/;
+  const participantRegisterPage = /^\/admin\/contest\/[^\/]+$/;
 
+  const currentPath = location.pathname;
 
-const isHidden = participantPageRegex.test(location.pathname)
-                || location.pathname === "/admin_side_screen1"
-                || location.pathname === "/admin_side_screen2";
+  const isHidden = participantPageRegex.test(currentPath)
+                  || participantRegisterPage.test(currentPath)
+                  || currentPath === "/admin_side_screen1"
+                  || currentPath === "/admin_side_screen2"
+                  || currentPath === "/participant-registered";
 
-if (isHidden) {
-  return null;
-}
+  if (isHidden) {
+    return null;
+  }
+
 
 
 
@@ -154,12 +158,15 @@ const username = useSelector((state)=>state?.admin?.user?.name)
                 <Button
                   onClick={handleLogin}
                   variant="contained"
+                  size="small"
                   sx={{
+
                     backgroundColor: theme.palette.primary.main,
                     padding: "0.5rem 2rem",
                     textTransform: "none",
                     fontSize:'0.9rem'
-                  }}
+,
+marginLeft:'1rem'                  }}
                 >
                   Login
                 </Button>

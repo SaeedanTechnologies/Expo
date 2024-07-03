@@ -25,13 +25,22 @@ const SignUpForm = () => {
   const [timeDiff, setTimeDiff] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [registrationEnded, setRegistrationEnded] = useState(false);
   const { handleSubmit, control, formState: { errors } } = useForm();
+  const [registrationExpired, setRegistrationExpired] = useState(false);
 
   useEffect(() => {
     dispatch(singleContest(id))
       .then((result) => {
+        const maxparticipant = result.data.payload.max_contestent
+        const registeredParticipant = result.data.payload.participient
+
         const endDateTime = new Date(result.data.payload.end_date_time);
         setEndDateTime(endDateTime);
         setLoading(false);
+
+        if (maxparticipant === registeredParticipant.length) {
+          setRegistrationExpired(true);
+        }
+
       })
       .catch((err) => {
         console.log(err);
@@ -107,14 +116,22 @@ const SignUpForm = () => {
         alignItems: "center",
         justifyContent: "center",
         padding: "1rem 10%",
-        height: isSmall ? "80vh" : "80vh",
+        minHeight: isSmall ? "80vh" : "80vh",
       }}
     >
       {loading ? (
         <CircularProgress />
       ) : (
         <>
-          {registrationEnded ? (
+
+         { !registrationExpired ? (
+<>
+<Typography sx={{fontWeight:600, textAlign:'center', fontSize:'2rem'}}>Registration Completed</Typography>
+</>
+
+         ):(
+<>
+{registrationEnded ? (
             <Typography variant="h5" color="error" align="center" gutterBottom>
               Registration time has ended.
             </Typography>
@@ -160,7 +177,7 @@ const SignUpForm = () => {
               >
                 Sign Up As a Participant
               </Typography>
-              {!registrationEnded && data && (
+              {!registrationEnded && data  && (
                 <form onSubmit={handleSubmit(onSubmit)}>
                   {data.map((field) => (
                     <Controller
@@ -188,11 +205,30 @@ const SignUpForm = () => {
                       )}
                     />
                   ))}
-                  <MyButton type="submit" text="Submit" disabled={submitting} />
+
+
+                  {/* <MyButton type="submit" text="Submit" disabled={submitting} /> */}
+                  <MyButton
+    type="submit"
+    text={submitting ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Submit'}
+    disabled={submitting}
+/>
+
+
+
                 </form>
               )}
             </Box>
           )}
+
+
+</>
+         )
+
+         }
+
+
+
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={6000}

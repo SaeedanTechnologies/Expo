@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
 
 const AdminOperator = () => {
   const { id } = useParams();
-
+  const [loadingbtn, setLoadingbtn] = useState(false);
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const [judges, setJudges] = useState([]);
@@ -70,15 +70,15 @@ const AdminOperator = () => {
 
 
   const handleClick = async (id, contestId) => {
-    try {
-      const res = await dispatch(
-        setNextParticipant(contestId, id)
 
-      );
-      console.log("success", res);
+    try {
+      const res = await dispatch(setNextParticipant(contestId, id));
+
       setClickedParticipantId(id);
+
     } catch (error) {
       console.error("Failed to send request:", error);
+
     }
   };
 
@@ -339,6 +339,21 @@ if (loading) { // Display loader while loading
               >
                 Now Judge {participants[0]?.name}
               </Button>
+
+              {/* <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleClick(participants[0]?.id, participants[0]?.contest_id)}
+        disabled={participants[0]?.id === clickedParticipantId}
+        sx={{ textTransform: "none" }}
+      >
+        {loadingbtn ? (
+          <CircularProgress size={24} color="inherit" />
+        ) : (
+          `Now Judge ${participants[0]?.name}`
+        )}
+      </Button> */}
+
 
           </Box>
         </>
