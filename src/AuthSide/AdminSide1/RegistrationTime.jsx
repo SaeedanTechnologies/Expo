@@ -28,61 +28,71 @@ const AddRegistration = () => {
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
-    if (endDate.isBefore(date)) {
-      setEndDate(date);
-    }
+  
+    // Set end date to start from the selected start date
+    setEndDate(dayjs(date).add(1, "day"));
+  
+    // Adjust end time if end date is the same as start date
     if (dayjs(endDate).isSame(date, "day")) {
       setEndTime((prevEndTime) => {
         return prevEndTime.isBefore(startTime) ? startTime : prevEndTime;
       });
     }
   };
-
+  
   const handleEndDateChange = (date) => {
-    const now = dayjs();
-    if (date.isBefore(startDate)) {
-      setEndDate(startDate);
-    } else if (date.isAfter(now)) {
-      setEndDate(now);
-      setEndTime(now);
+    setEndDate(date);
+  
+    // Set end time to start from the selected end date
+    setEndTime(dayjs(date));
+  
+    // Check for datetime error based on new end date
+    if (date.isBefore(startDate) || date.isAfter(dayjs())) {
       setDateTimeError(true);
     } else {
-      setEndDate(date);
       setDateTimeError(false);
     }
-    if (dayjs(date).isSame(startDate, "day")) {
-      setEndTime((prevEndTime) => {
-        return prevEndTime.isBefore(startTime) ? startTime : prevEndTime;
-      });
-    }
   };
+  
+  
 
   const handleStartTimeChange = (time) => {
     setStartTime(time);
-    if (endDate.isSame(startDate, "day") && endTime.isBefore(time)) {
-      setEndTime(time.add(1, "hour"));
+  
+    // Adjust minTime for end time picker if start and end date are the same
+    if (endDate.isSame(startDate, "day")) {
+      setEndTime((prevEndTime) => {
+        if (prevEndTime.isBefore(time)) {
+          return time.add(1, "hour"); // Ensure end time is at least 1 hour ahead of start time
+        }
+        return prevEndTime;
+      });
     }
   };
+  
+  
 
+ 
+  
   const handleEndTimeChange = (time) => {
-    const now = dayjs();
     setEndTime(time);
-    if (endDate.isSame(startDate, "day") && time.isBefore(startTime)) {
-      setTimeError(true);
-      if (time.hour() < startTime.hour() || (time.hour() === startTime.hour() && time.minute() < startTime.minute())) {
-        // If end time is less than start time on the same day, adjust the start date
-        setStartDate(startDate.subtract(1, 'day'));
+  
+    // Ensure end time is at least 10 minutes after start time
+    const minEndTime = dayjs(startTime).add(10, 'minute');
+    if (time.isBefore(minEndTime)) {
+      setEndTime(minEndTime);
+    }
+  
+    // Validate against start time if end date is the same as start date
+    if (endDate.isSame(startDate, 'day')) {
+      if (time.isBefore(startTime)) {
+        setTimeError(true);
+      } else {
+        setTimeError(false);
       }
-    } else if (endDate.isSame(dayjs(), "day") && time.isAfter(now)) {
-      setTimeError(true);
-    } else if (endDate.isSame(startDate, "day") && time.isSame(startTime)) {
-      setTimeError(true);
-    } else if (endDate.isSame(startDate, "day") && time.isBefore(startTime)) {
-      setTimeError(true);
-    } else {
-      setTimeError(false);
     }
   };
+  
 
   const handleMaxContestantChange = (event) => {
     setMaxContestant(event.target.value);
@@ -204,17 +214,20 @@ const AddRegistration = () => {
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-            <TimePicker
-              label="End Contest Time"
-              value={endTime}
-              onChange={handleEndTimeChange}
-              renderInput={(params) => <MyTextField {...params} />}
-              minTime={dayjs().isSame(endDate, "day") ? dayjs() : dayjs().startOf("day")}
-              maxTime={dayjs().isSame(endDate, "day") ? dayjs() : undefined}
-              error={timeError}
-              helperText={timeError ? "End time cannot be before or the same as start time, or exceed the current time" : ""}
-              sx={{ marginBottom: "16px" }}
-            />
+          <TimePicker
+          label="End Contest Time"
+          value={endTime}
+          onChange={handleEndTimeChange}
+          renderInput={(params) => <MyTextField {...params} />}
+          minTime={dayjs().isSame(endDate, 'day') ? dayjs().add(10, 'minute') : dayjs().startOf('day')}
+          // Optionally, set maxTime if needed
+          // maxTime={dayjs().add(1, 'week')}
+          error={timeError}
+          helperText={timeError ? "End time cannot be before or the same as start time, or exceed the current time" : ""}
+          sx={{ marginBottom: "16px" }}
+        />
+        
+
           </Grid>
           <Grid item xs={12}>
             <MyTextField
