@@ -194,25 +194,7 @@ const LoginAdminPanel = () => {
                 label="Remember me"
                 sx={{ mt: 1 }}
               />
-              <Button
-                variant="text"
-                color="primary"
-                type="button" // Use type="button" to prevent form submission
-                onClick={() =>
-                  alert("Implement your Forgot Password logic here")
-                }
-                sx={{
-                  fontFamily: "Roboto",
-                  fontSize: "14px",
-                  fontWeight: "400",
-                  lineHeight: "20px",
-                  textAlign: "left",
-                  color: "#D90B0F",
-                  mt: 1,
-                }}
-              >
-                Forgot Password?
-              </Button>
+            
             </Box>
             <Button
               fullWidth

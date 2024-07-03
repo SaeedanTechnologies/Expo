@@ -14,10 +14,11 @@ import { enqueueSnackbar } from "notistack";
 
 
 const AddParticipant = () => {
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [inputValues, setInputValues] = useState([]);
     const [uploadFields, setUploadFields] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+  
     const navigate = useNavigate();
     const contest_id = localStorage.getItem('add_register_response');
     const token = localStorage.getItem('token');
@@ -46,7 +47,7 @@ const AddParticipant = () => {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onloadend = () => {
-            const base64String = reader.result.split(",")[1]; // Base64 string of the file content
+            const base64String = reader.result.split(",")[1]; 
             setSelectedFile(base64String);
         };
         reader.readAsDataURL(file);
@@ -150,6 +151,7 @@ const AddParticipant = () => {
         setLoading(true);
 
         try {
+            setLoading(true)
             const token = localStorage.getItem('token');
             const formData = [];
 
@@ -211,6 +213,8 @@ const AddParticipant = () => {
         } catch (error) {
             setLoading(false);
             console.error('Error submitting data:', error);
+        }finally{
+            setLoading(false)
         }
     };
 
@@ -501,7 +505,7 @@ const AddParticipant = () => {
                             disabled={loading}
                             sx={{ width: '100%', marginTop: '20px' }}
                         >
-                            Next
+                        {loading ? <CircularProgress size={24} /> : "Next"}
                         </Button>
                     </Box>
                 </Box>

@@ -178,7 +178,7 @@
 
 
 import React, { useState } from 'react';
-import { Grid, Button, TextField, Box, Typography, InputAdornment, useMediaQuery, useTheme } from '@mui/material';
+import { Grid, Button, TextField, Box, Typography, InputAdornment, useMediaQuery, useTheme , CircularProgress} from '@mui/material';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
@@ -229,7 +229,7 @@ const DropArea = ({ onDrop, children }) => {
 };
 
 const CreateScoreCard = () => {
-
+ const [loading, setLoading]=useState(false)
   const location = useLocation();
   const { judges } = location.state || { judges: [] };
   const names = judges.map(judge => judge.judge_name);
@@ -263,6 +263,7 @@ const CreateScoreCard = () => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
+    setLoading(true)
     const payload = {
       contest_id: contest_id,
       judge_name: names,
@@ -288,8 +289,11 @@ const CreateScoreCard = () => {
       })
       .catch(error => {
         console.error('There was an error!', error);
-      });
-  };
+        setLoading(false)
+      }
+      
+    )
+  }
 
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -336,7 +340,7 @@ const CreateScoreCard = () => {
                 </Box>
               ))}
             </DropArea>
-            <Button variant='contained' fullWidth onClick={handleSubmit}>Submit</Button>
+            <Button variant='contained' fullWidth onClick={handleSubmit}  disabled={loading}>{loading ? <CircularProgress size={24} /> : "Submit"}</Button>
           </Grid>
         </Grid>
       </Box>

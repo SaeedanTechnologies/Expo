@@ -339,8 +339,12 @@ import { useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux'; // Assuming you are using Redux
 import { getBehindScreen } from '../../store/actions/contestStartActions'; // Update action import as needed
 
-const ParticipantCard = ({ judge, scores }) => (
-  <Card>
+const ParticipantCard = ({ judge, scores }) => {
+    const totalScore = scores.reduce((acc, curr) => acc + parseInt(curr.total_score, 10), 0);
+  const totalCount = scores.length;
+  if (totalCount === 0) return null;
+  return( 
+    <Card>
     <Box>
       <img src='/person.png' alt='image' width={'100%'} />
       <Typography variant="h6" sx={{ fontSize: '1rem', textAlign: 'center', backgroundColor: '#7c8385', color: 'white' }}>{judge.name}</Typography>
@@ -350,9 +354,16 @@ const ParticipantCard = ({ judge, scores }) => (
           <Typography variant="h5" sx={{ fontSize: '0.9rem', color: 'red', fontWeight: 600 }}>{score.total_score}</Typography>
         </Box>
       ))}
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#e0e0e0', padding: '0.5rem' }}>
+                 <Typography variant="subtitle1" sx={{ fontSize: '0.9rem', fontWeight: 600 }}>Total ({totalCount} items):</Typography>
+                <Typography variant="h5" sx={{ fontSize: '0.9rem', color: 'red', fontWeight: 600 }}>{totalScore}</Typography>
+              </Box>
+
     </Box>
-  </Card>
-);
+  </Card>)
+ 
+    }
 
 const ScoreBoard = ({ judgeName, totalScore, participantId, participantsName }) => (
   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', height: '35vh', backgroundColor: '#162f33', color: 'white' }}>
