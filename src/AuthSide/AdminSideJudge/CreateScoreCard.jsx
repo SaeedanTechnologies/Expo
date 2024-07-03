@@ -183,6 +183,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { FaArrowRight } from "react-icons/fa";
 import axios from 'axios';
 
 const ItemTypes = {
@@ -207,7 +208,7 @@ const DraggableButton = () => {
       >
         Role
       </Button>
-      <Typography sx={{ fontSize: "15px", fontWeight: 600, marginTop: '12px' }}>Please Drag and Drop Left to right</Typography>
+      <Typography sx={{ fontSize: "15px", fontWeight: 600, marginTop: '12px' }}>Please Drag and Drop Left to right <FaArrowRight style={{fontSize:'14px'}}/></Typography>
     </Box>
   );
 };
