@@ -231,27 +231,27 @@ import { Card, Typography, Grid, Box } from '@mui/material';
 import { useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux'; // Assuming you are using Redux
 import { setNextParticipant, getStartContest, getBehindScreen } from '../../store/actions/contestStartActions';
+import { current } from '@reduxjs/toolkit';
 
-// const ParticipantCard = ({ judge, scores }) => (
-  
-//   <Card>
-//     <Box>
-//       <img src='/person.png' alt='image' width={'100%'} />
-//       <Typography variant="h6" sx={{ fontSize: '1rem', textAlign: 'center', backgroundColor: '#7c8385', color: 'white' }}>{judge.name}</Typography>
-//       {scores.map((score, index) => (
-//         <Box key={index} sx={{ display: 'flex', padding: '0.2rem', justifyContent: 'space-between', alignItems: 'center' }}>
-//           <Typography variant="subtitle1" sx={{ fontSize: '0.9rem', fontWeight: 600 }}>{score.field_name}</Typography>
-//           <Typography variant="h5" sx={{ fontSize: '0.9rem', color: 'red', fontWeight: 600 }}>{score.total_score}</Typography>
-//         </Box>
-//       ))}
-//     </Box>
-//   </Card>
-// );
+
 
 const ParticipantCard = ({ judge, scores }) => {
   const totalScore = scores.reduce((acc, curr) => acc + parseInt(curr.total_score, 10), 0);
   const totalCount = scores.length;
+  if (totalCount === 0) return null;
 
+//   {scores
+//     .filter(
+//       (score) =>
+//         score?.judge_id === judge?.id &&
+//         score?.participant_id === participants[0]?.id
+//     )
+//     .map((score, ind) => (
+//       <Typography key={ind} sx={{ color: "green", fontSize: "0.8rem" }}>
+// Score {score?.total_score ? score?.total_score.toFixed(2) : ''}
+// </Typography>
+
+//     ))}
   return (
     <Card>
       <Box>
@@ -272,9 +272,6 @@ const ParticipantCard = ({ judge, scores }) => {
   );
 };
 
-
-
-
 const ScoreBoard = ({ judgeName, totalScore, participantId, participantsName }) => (
   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', height: '35vh', backgroundColor: '#162f33', color: 'white' }}>
     <Typography variant="h4" sx={{ fontSize: '1rem', mt: '1rem' }}>{participantId[0]}</Typography>
@@ -289,8 +286,11 @@ const ParticipantPage = () => {
   const [judges, setJudges] = useState([]);
   const [totalScores, setTotalScores] = useState([]);
   const [participants, setParticipants] = useState([]);
+  const [participantsID, setParticipantsID] = useState([]);
+  const Scoreid=participantsID.map(id=>id.participant_id[0]);
   const [participantsName, setParticipantsName] = useState("");
   const [image, setImages] = useState([]);
+   console.log(participants,"participants")
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -302,6 +302,7 @@ const ParticipantPage = () => {
         setParticipants(result.data.data.participants);
         setParticipantsName(result.data.data.now_in_progress);
         setImages(result.data.data.files);
+        setParticipantsID(result.data.data.total_scores);
       } catch (err) {
         console.log(err);
       }
@@ -315,16 +316,18 @@ const ParticipantPage = () => {
 
     return () => clearInterval(intervalId);
   }, [dispatch, id]);
+ 
 
-  // Filter totalScores for the current participant with ID 62
+ 
   const currentParticipantScores = totalScores.filter(score => score.participant_id === 62);
+  console.log(currentParticipantScores,"currentParticipantScores")
   const judgeName = judges.length > 0 ? judges[0].name : "Unknown";
   const totalScore = currentParticipantScores.reduce((acc, curr) => acc + parseInt(curr.total_score, 10), 0);
 
   return (
     <Box
       sx={{
-        backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), url(${image.length > 0 ? image[0].file_url : "/bgimage.png"})`,
+        backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), url(${image.file_url})`,
         backgroundPosition: "center",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
@@ -352,6 +355,11 @@ const ParticipantPage = () => {
                   </Grid>
                 );
               })}
+
+
+
+         
+        
             </Grid>
           </Grid>
         </Grid>
