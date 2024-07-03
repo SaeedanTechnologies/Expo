@@ -25,40 +25,34 @@ const PreviewBox = styled(Box)(({ theme }) => ({
 const UploadVideo = () => {
   const dispatch = useDispatch();
   const admin_id = useSelector(state => state?.admin?.user?.id);
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState(null); // Change to single file state
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*,video/*',
     onDrop: acceptedFiles => {
-      setFiles(
-        acceptedFiles.map(file =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
+      // Set only the first file from acceptedFiles array
+      if (acceptedFiles && acceptedFiles.length > 0) {
+        const selectedFile = acceptedFiles[0];
+        setFile(Object.assign(selectedFile, {
+          preview: URL.createObjectURL(selectedFile)
+        }));
+      }
     }
   });
 
   const navigate = useNavigate();
-
-  const handleUpload = () => {
-    // Dispatch fileUpload action with admin_id and files
-    dispatch(fileUpload({ admin_id, files }));
   
-  };
+const contest_id = 105
 
-  const thumbs = files.map(file => (
-    <PreviewBox key={file.name}>
-      {file.type.startsWith('image/') && (
-        <img src={file.preview} alt={file.name} style={{ width: '200px', height: 'auto' }} />
-      )}
-      {file.type.startsWith('video/') && (
-        <video src={file.preview} controls style={{ width: '200px', height: 'auto' }} />
-      )}
-      <Typography variant="body2">{file.name}</Typography>
-    </PreviewBox>
-  ));
+const handleUpload = () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('admin_id', admin_id);
+      formData.append('contest_id', contest_id); // Append admin_id to formData
+      dispatch(fileUpload({ formData })); // Pass formData directly
+    }
+  };
 
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -94,7 +88,17 @@ const UploadVideo = () => {
           Supported formats: Any image format, pdf, doc, docs, or upload video for any format
         </Typography>
       </UploadBox>
-      {thumbs}
+      {file && (
+        <PreviewBox>
+          {file.type.startsWith('image/') && (
+            <img src={file.preview} alt={file.name} style={{ width: '200px', height: 'auto' }} />
+          )}
+          {file.type.startsWith('video/') && (
+            <video src={file.preview} controls style={{ width: '200px', height: 'auto' }} />
+          )}
+          <Typography variant="body2">{file.name}</Typography>
+        </PreviewBox>
+      )}
       <Button sx={{ width: '100%' }} variant="contained" color="error" size="large" onClick={handleUpload}>
         Upload
       </Button>

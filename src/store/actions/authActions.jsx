@@ -130,10 +130,30 @@ export const getFormFields = (contest_id) => async (dispatch) => {
 
 // -------------------------Admin file upload Post API--------
 
-export const fileUpload = ({admin_id, file}) => async (dispatch) => {
+// export const fileUpload = ({formData}) => async (dispatch) => {
+//   try {
+
+//     const res = await api.post("admin/upload-file", {formData});
+
+//     return res;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
+
+
+export const fileUpload = ({ formData }) => async (dispatch) => {
   try {
 
-    const res = await api.post("admin/upload-file", {admin_id , file});
+    if (!formData) {
+      throw new Error('Missing formData argument in fileUpload action');
+    }
+
+    const hasFile = formData instanceof FormData;
+
+    const res = await api.post("admin/upload-file", hasFile ? formData : {
+      ...formData,
+    });
 
     return res;
   } catch (err) {
