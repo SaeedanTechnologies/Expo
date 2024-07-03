@@ -138,7 +138,8 @@ const AllRecords = () => {
                       {parseFormFields(record.participant.fields_values).name}
                     </Box>
                   </TableCell>
-                  <TableCell>{record.total_score}</TableCell>
+                  <TableCell>{record.total_score.toFixed(2)}</TableCell>
+
                 </TableRow>
               ))}
             </TableBody>

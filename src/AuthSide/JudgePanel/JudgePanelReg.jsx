@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, TextField, Button, FormControl, InputLabel } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchFormJudegForm, submitJudegFormData } from '../../store/actions/addJudegsActions';
 import { useParams } from 'react-router';
 import { useSnackbar } from 'notistack';
@@ -17,7 +17,8 @@ const JudgePanelReg = () => {
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
   const { enqueueSnackbar } = useSnackbar();
-
+  const judge_idd = useSelector(state => state?.admin?.user?.id);
+  console.log(judge_idd, 'dhadjkfsdkfsdjfh')
   useEffect(() => {
     dispatch(fetchFormJudegForm(id))
       .then(response => {
@@ -107,12 +108,13 @@ const JudgePanelReg = () => {
 
     const dataToSubmit = {
       scores: scoresArray,
-      judge_id: judgeId,
+
+      judge_id: judge_idd,
       participant_id: participantId,
       contest_id: contestId
     };
 
-    console.log('Form submitted:', dataToSubmit);
+
 
     dispatch(submitJudegFormData(dataToSubmit))
       .then(response => {
@@ -121,18 +123,10 @@ const JudgePanelReg = () => {
       setSubmitDisabled(true);
       setFormData({})
       enqueueSnackbar("Score Assigned", { variant: "success" });
-
-
       })
       .catch(error => {
         if (error.response && error.response.data) {
-          const { payload } = error.response.data;
-
-          console.log(error, 'errorrrr')
-          // enqueueSnackbar(error.response.data.error, { variant: "error" });
           enqueueSnackbar('Score is not Assigned ', { variant: "error" });
-
-
         } else {
           console.error('Unexpected error:', error);
         }
@@ -187,7 +181,7 @@ const JudgePanelReg = () => {
               color: '#949494',
             }}
           >
-            Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br />
+            Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br/>
             sit amet consectetur lorem ipsum dolor sit amet.
           </Typography>
 
@@ -269,5 +263,4 @@ const JudgePanelReg = () => {
 };
 
 export default JudgePanelReg;
-
 
