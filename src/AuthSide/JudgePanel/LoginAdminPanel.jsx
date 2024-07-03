@@ -60,7 +60,7 @@ const LoginAdminPanel = () => {
 
     } catch (error) {
       console.error("Login failed", error);
-  
+
     } finally {
       setLoading(false);
     }

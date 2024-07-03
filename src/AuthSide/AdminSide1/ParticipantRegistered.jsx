@@ -7,7 +7,7 @@ const ParticipantRegistered = () => {
 
 <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', minHeight:'80vh'}}>
 
-<Typography variant='h1' sx={{fontSize:'2rem', fontWeight:600}}> You are Registered Successfully </Typography>
+<Typography variant='h1' sx={{fontSize:'2rem', textAlign:'center', fontWeight:600}}> You are Registered Successfully </Typography>
 
 </Box>
 

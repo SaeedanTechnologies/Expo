@@ -340,7 +340,7 @@ const AddParticipant = () => {
                                     variant="outlined"
 
                                     value='Name'
-                                
+
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
