@@ -77,7 +77,7 @@ const AddRegistration = () => {
   const handleEndTimeChange = (time) => {
     setEndTime(time);
 
-    // Ensure end time is at least 10 minutes after start time
+    // Ensure end time is at least 5 minutes after start time
     const minEndTime = dayjs(startTime).add(5, 'minute');
     if (time.isBefore(minEndTime)) {
       setEndTime(minEndTime);
