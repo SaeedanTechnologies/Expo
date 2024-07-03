@@ -63,8 +63,7 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
 
     try {
 
-      const token = localStorage.getItem("token");
-      const res = await api.get(`admin/contests/${contestId}`);
+      const res = await api.get(`behind-screen-contestinfo/${contestId}`);
       return res;
     } catch (err) {
       throw err;
