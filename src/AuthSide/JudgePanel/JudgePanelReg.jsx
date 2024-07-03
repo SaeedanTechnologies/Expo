@@ -386,10 +386,11 @@ const JudgePanelReg = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
+        minHeight: '80vh',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        padding:'1rem 8%'
       }}
     >
       <Container>
@@ -415,7 +416,7 @@ const JudgePanelReg = () => {
           >
             {participantName ? participantName : "Participant Name"}
           </Typography>
-          <Typography
+          {/* <Typography
             variant='h6'
             sx={{
               fontFamily: 'Roboto',
@@ -429,20 +430,21 @@ const JudgePanelReg = () => {
           >
             Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br/>
             sit amet consectetur lorem ipsum dolor sit amet.
-          </Typography>
+          </Typography> */}
 
           <Box sx={{ width: '100%', maxWidth: '500px' }}>
             <Typography
               variant="h5"
               sx={{
                 fontFamily: 'Roboto',
-                fontSize: '34px',
+                fontSize: '1.4rem',
                 fontWeight: 700,
                 lineHeight: '28px',
                 letterSpacing: '0.25px',
                 textAlign: 'left',
                 color: '#000000',
                 marginBottom: '1rem',
+                textAlign:'center'
               }}
             >
               Give Score
@@ -455,9 +457,9 @@ const JudgePanelReg = () => {
                     sx={{
                       marginBottom: '0.5rem',
                       fontFamily: 'Roboto',
-                      fontSize: '22px',
+                      fontSize: '1.1rem',
                       fontWeight: 1000,
-                      lineHeight: '28px',
+                      lineHeight: '13px',
                       letterSpacing: '0.25px',
                       textAlign: 'left',
                       color: '#000000',
@@ -476,6 +478,7 @@ const JudgePanelReg = () => {
                       type="number"
                       variant='outlined'
                       margin='normal'
+                      size='small'
                       required={field.required}
                       InputProps={{ style: { height: '60px' } }}
                       sx={{ height: '60px' }}

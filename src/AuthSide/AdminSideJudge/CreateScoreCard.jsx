@@ -29,7 +29,7 @@
 //       Role
 //     </Button>
 //     <Typography sx={{ fontSize: "11px", fontWeight: 600 , marginTop:'12px'}}>Please Drag and Drop Left to right</Typography>
-   
+
 //     </Box>
 //   );
 // };
@@ -149,7 +149,7 @@
 //           <Grid item xs={4} md={6} lg={6} sm={6} sx={{ backgroundColor: '#f9fafc' }}>
 //             <Typography sx={{ fontSize: isSmall ? '0.9rem' : '1.3rem', fontWeight: 600 }}>Field Selection</Typography>
 //             <br />
-           
+
 //             <DraggableButton />
 //           </Grid>
 //           <Grid item xs={8} md={6} lg={6} sm={8}>
@@ -178,13 +178,14 @@
 
 
 import React, { useState } from 'react';
-import { Grid, Button, TextField, Box, Typography, InputAdornment, useMediaQuery, useTheme } from '@mui/material';
+import { Grid, Button, TextField, Box, Typography, InputAdornment, useMediaQuery, useTheme, CircularProgress } from '@mui/material';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaArrowRight } from "react-icons/fa";
 import axios from 'axios';
+import {useSnackbar} from 'notistack'
 
 const ItemTypes = {
   BUTTON: 'button',
@@ -234,6 +235,9 @@ const CreateScoreCard = () => {
   const { judges } = location.state || { judges: [] };
   const names = judges.map(judge => judge.judge_name);
   const profile = judges.map(judge => judge.profile_picture);
+  const [loading, setLoading] = useState(false)
+  const { enqueueSnackbar } = useSnackbar();
+
 
   const [textFields, setTextFields] = useState([{ name: '', label: '', type: 'text', value: '', required: true }]);
   const token = localStorage.getItem('token');
@@ -261,8 +265,22 @@ const CreateScoreCard = () => {
   };
 
   const navigate = useNavigate();
+  const areAllFieldsFilled = () => {
+    return textFields.every(field => field.value.trim() !== '');
+  };
 
   const handleSubmit = () => {
+
+    if (!areAllFieldsFilled()) {
+
+      enqueueSnackbar("All fields must be filled", { variant: "error" });
+
+      return;
+    }
+
+    setLoading(true);
+
+
     const payload = {
       contest_id: contest_id,
       judge_name: names,
@@ -283,11 +301,15 @@ const CreateScoreCard = () => {
       }
     })
       .then(response => {
-        console.log(response.data);
+
+        enqueueSnackbar('Judges Added Successfully', {variant:'success'})
+
         navigate('/links', { state: { contest_id: contest_id } });
       })
       .catch(error => {
-        console.error('There was an error!', error);
+    setLoading(false);
+    enqueueSnackbar('Please Try Again', {variant:'error'})
+
       });
   };
 
@@ -336,7 +358,19 @@ const CreateScoreCard = () => {
                 </Box>
               ))}
             </DropArea>
-            <Button variant='contained' fullWidth onClick={handleSubmit}>Submit</Button>
+
+
+            <Button
+  variant='contained'
+  fullWidth
+  onClick={handleSubmit}
+  disabled={loading}
+>
+  {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Submit'}
+</Button>
+
+
+
           </Grid>
         </Grid>
       </Box>

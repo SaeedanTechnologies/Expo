@@ -336,7 +336,7 @@ const AddParticipant = () => {
                                     variant="outlined"
 
                                     value='Name'
-                                
+
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -494,15 +494,19 @@ const AddParticipant = () => {
                             </Button>
                         </Box> */}
                         <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleSubmit}
-                            text={loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Next"}
-                            disabled={loading}
-                            sx={{ width: '100%', marginTop: '20px' }}
-                        >
-                            Next
-                        </Button>
+    variant="contained"
+    color="primary"
+    onClick={handleSubmit}
+    sx={{ width: '100%', marginTop: '20px' }}
+    disabled={loading}  // Disable the button when loading is true
+>
+    {loading ? (  // Render CircularProgress if loading is true
+        <CircularProgress size={24} sx={{ color: 'white' }} />
+    ) : (
+        'Next'  // Render 'Next' text when not loading
+    )}
+</Button>
+
                     </Box>
                 </Box>
             </Box>
