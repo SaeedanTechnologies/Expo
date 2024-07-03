@@ -141,7 +141,7 @@ const ParticipantCard = ({ judge, scores }) => {
 
 const ScoreBoard = ({ judgeName, totalScore, partcipentId, participantsName }) => (
   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', height: '35vh', backgroundColor: '#162f33', color: 'white' }}>
-    <Typography variant="h4" sx={{ fontSize: '1rem', mt: '1rem' }}>{partcipentId}</Typography>
+    <Typography variant="h4" sx={{ fontSize: '1rem', mt: '1rem' }}>{partcipentId ? partcipentId : "ID"}</Typography>
     <Typography variant="h5" sx={{ fontSize: '1.3rem', fontWeight: 600 }}>Total Score : {totalScore}</Typography>
     <Typography variant="h6" sx={{ fontSize: '1rem', textAlign: 'center', color: 'white', backgroundColor: '#7c8385', width: '100%' }}>{participantsName}</Typography>
   </Box>
@@ -154,7 +154,8 @@ const ParticipantPage = () => {
   const [totalScores, setTotalScores] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [participantsName, setParticipantsName] = useState("");
-  console.log(participantsName,"participantsName");
+  const [image, setImages] = useState([]);
+  console.log(image,"participantsName");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -165,6 +166,7 @@ const ParticipantPage = () => {
         setTotalScores(result.data.data.total_scores);
         setParticipants(result.data.data.participants);
         setParticipantsName(result.data.data.now_in_progress);
+        setImages(result.data.data.files)
       } catch (err) {
         console.log(err);
       }
@@ -185,7 +187,7 @@ const ParticipantPage = () => {
   return (
     <Box
       sx={{
-        backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%),url(${"/bgimage.png"})`,
+        backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), url(${image.length > 0 ? image[0].file : "/bgimage.png"})`,
         backgroundPosition: "center",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",

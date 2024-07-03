@@ -17,19 +17,29 @@ const AddContent = () => {
     setError('');
   };
 
-  const handleSubmit = () => {
-    setLoading(true); // Set loading to true when submitting
+  const handleSubmit = async () => {
+    setLoading(true);
+  
+    console.log(loading, "loading"); // This may still log `false` due to asynchronous state update
+  
     if (!contestName.trim()) {
       setError('Contest Name is required');
       setSnackbarMessage('Please enter the contest name.');
       setSnackbarOpen(true);
-      setLoading(false); // Reset loading to false on error
+      setLoading(false); // Move this line outside of the if block
       return;
     }
-    // Pass contestName to the next page
+  
+    // Simulating async operation with a timeout
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Replace with your actual async operation
+    
+    // Example navigation
     navigate('/admin/add-registration', { state: { contestName } });
-    setLoading(false); // Reset loading to false after successful submission
+    
+    setLoading(false); // This should be outside of the if block as well
   };
+  
+  
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
