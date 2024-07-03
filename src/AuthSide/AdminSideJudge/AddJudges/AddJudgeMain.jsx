@@ -199,15 +199,34 @@ const AddJudgeMain = () => {
     setJudges(newJudges);
   };
 
+
   const handlePhotoChange = (index, event) => {
+    const formData = new FormData();
+    formData.append('profile_picture', event.target.files[0]);
+  
+    // Now you can send this formData object wherever you need, such as an API call
+    // For example, you can send it to a backend server using fetch or axios
+  
+    // Assuming you want to keep it locally updated, you can update the state with base64 representation
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        handleChange(index, 'profile_picture', reader.result);
+        handleChange(index, 'profile_picture', reader.result); // Update state with base64 representation
       }
     };
-    reader.readAsDataURL(event.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]); // Read the file as data URL
   };
+  
+
+  // const handlePhotoChange = (index, event) => {
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     if (reader.readyState === 2) {
+  //       handleChange(index, 'profile_picture', reader.result);
+  //     }
+  //   };
+  //   reader.readAsDataURL(event.target.files[0]);
+  // };
 
   const isNextButtonDisabled = () => {
     const currentJudge = judges[activeStep];
