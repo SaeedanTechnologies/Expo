@@ -73,7 +73,7 @@ export default function Router() {
                     path: 'contest/:id',
                     element: <SignUpForm />,
                 },
-                
+
             ]
         },
         {
