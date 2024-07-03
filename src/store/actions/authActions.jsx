@@ -14,6 +14,9 @@ export const adminLogin = (formValues) => async (dispatch) => {
   try {
     const res = await api.post("admin/login", formValues);
     const { token, user } = res.data.payload;
+
+    console.log(token, 'token', user, 'user')
+
     dispatch({
       type: "LOGIN_SUCCESS",
       payload: {
@@ -23,6 +26,7 @@ export const adminLogin = (formValues) => async (dispatch) => {
         },
       },
     });
+
     return res;
   } catch (err) {
     throw err;
@@ -78,16 +82,9 @@ export const otpConfirmation = (otp) => async (dispatch) => {
     throw err;
   }
 };
-export const resetPassword = (formValues) => async (dispatch) => {
-  try {
 
-    const res = await api.post("/reset-password", formValues);
 
-    return res;
-  } catch (err) {
-    throw err;
-  }
-};
+
 
 
 export const logout = () => async (dispatch) => {
@@ -103,18 +100,6 @@ export const logout = () => async (dispatch) => {
 };
 
 
-export const getMenus = () => async (dispatch) => {
-  try {
-      const res = await api.get(`all/menus`);
-      dispatch({
-          type: "GET_MENU",
-          payload: res.data,
-      });
-      return res;
-  } catch (err) {
-      throw err;
-  }
-};
 
 
 
@@ -139,5 +124,39 @@ export const getFormFields = (contest_id) => async (dispatch) => {
       return res;
   } catch (err) {
       throw err;
+  }
+};
+
+
+// -------------------------Admin file upload Post API--------
+
+// export const fileUpload = ({formData}) => async (dispatch) => {
+//   try {
+
+//     const res = await api.post("admin/upload-file", {formData});
+
+//     return res;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
+
+
+export const fileUpload = ({ formData }) => async (dispatch) => {
+  try {
+
+    if (!formData) {
+      throw new Error('Missing formData argument in fileUpload action');
+    }
+
+    const hasFile = formData instanceof FormData;
+
+    const res = await api.post("admin/upload-file", hasFile ? formData : {
+      ...formData,
+    });
+
+    return res;
+  } catch (err) {
+    throw err;
   }
 };

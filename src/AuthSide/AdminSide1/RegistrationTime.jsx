@@ -28,10 +28,10 @@ const AddRegistration = () => {
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
-  
+
     // Set end date to start from the selected start date
     setEndDate(dayjs(date).add(1, "day"));
-  
+
     // Adjust end time if end date is the same as start date
     if (dayjs(endDate).isSame(date, "day")) {
       setEndTime((prevEndTime) => {
@@ -39,13 +39,13 @@ const AddRegistration = () => {
       });
     }
   };
-  
+
   const handleEndDateChange = (date) => {
     setEndDate(date);
-  
+
     // Set end time to start from the selected end date
     setEndTime(dayjs(date));
-  
+
     // Check for datetime error based on new end date
     if (date.isBefore(startDate) || date.isAfter(dayjs())) {
       setDateTimeError(true);
@@ -53,12 +53,12 @@ const AddRegistration = () => {
       setDateTimeError(false);
     }
   };
-  
-  
+
+
 
   const handleStartTimeChange = (time) => {
     setStartTime(time);
-  
+
     // Adjust minTime for end time picker if start and end date are the same
     if (endDate.isSame(startDate, "day")) {
       setEndTime((prevEndTime) => {
@@ -69,20 +69,20 @@ const AddRegistration = () => {
       });
     }
   };
-  
-  
 
- 
-  
+
+
+
+
   const handleEndTimeChange = (time) => {
     setEndTime(time);
-  
-    // Ensure end time is at least 10 minutes after start time
-    const minEndTime = dayjs(startTime).add(10, 'minute');
+
+    // Ensure end time is at least 5 minutes after start time
+    const minEndTime = dayjs(startTime).add(5, 'minute');
     if (time.isBefore(minEndTime)) {
       setEndTime(minEndTime);
     }
-  
+
     // Validate against start time if end date is the same as start date
     if (endDate.isSame(startDate, 'day')) {
       if (time.isBefore(startTime)) {
@@ -92,7 +92,7 @@ const AddRegistration = () => {
       }
     }
   };
-  
+
 
   const handleMaxContestantChange = (event) => {
     setMaxContestant(event.target.value);
@@ -226,7 +226,7 @@ const AddRegistration = () => {
           helperText={timeError ? "End time cannot be before or the same as start time, or exceed the current time" : ""}
           sx={{ marginBottom: "16px" }}
         />
-        
+
 
           </Grid>
           <Grid item xs={12}>

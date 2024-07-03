@@ -10,7 +10,9 @@ const Page = ({ title, children }) => {
   return (
     <div>
       <Helmet>
-        <title>{title}</title>
+        {/* <title>{title}</title> */}
+        <title>Expo</title>
+
       </Helmet>
       {children}
     </div>
