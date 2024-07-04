@@ -362,17 +362,21 @@ import { useNavigate, useParams } from "react-router";
 import {
   getStartContest,
   setNextParticipant,
+  setApprovidParticipant,
 } from "../../store/actions/contestStartActions";
 import { useDispatch } from "react-redux";
 
 const AdminOperator = () => {
   const { id } = useParams();
+  const contest_id=id;
   const [loadingbtn, setLoadingbtn] = useState(false);
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const [judges, setJudges] = useState([]);
   const [score, setScore] = useState([]);
-
+  const contestId = localStorage.getItem('add_register_response');
+   console.log(contest_id,"kllkkkk")
+  
   const [participants, setParticipants] = useState([]);
   const [allScoresGiven, setAllScoresGiven] = useState(false);
   const dispatch = useDispatch();
@@ -440,6 +444,7 @@ const AdminOperator = () => {
     }
   }, [participants]);
 
+
   const handleClick = async (id, contestId) => {
     try {
       const res = await dispatch(setNextParticipant(contestId, id));
@@ -449,6 +454,24 @@ const AdminOperator = () => {
       console.error("Failed to send request:", error);
     }
   };
+
+
+ 
+ 
+
+const handleApproved = async (id, contest_id) => {
+ 
+  try {
+
+    const res = await dispatch(setApprovidParticipant(contest_id, id));
+
+    setClickedParticipantId(id);
+  } catch (error) {
+    console.error("Failed to send request:", error);
+  }
+};
+
+
 
   useEffect(() => {
     const fetchContestData = async () => {
@@ -707,6 +730,17 @@ const AdminOperator = () => {
                 sx={{ textTransform: "none" }}
               >
                 Now Judge {participants[0]?.name}
+              </Button>
+                <Button
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  handleApproved(participants[0]?.id, participants[0]?.contest_id)
+                }
+                disabled={participants[0]?.id === clickedParticipantId}
+                sx={{ textTransform: "none" }}
+              >
+               Approved
               </Button>
             </Box>
           </>

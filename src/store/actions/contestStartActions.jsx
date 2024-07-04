@@ -31,6 +31,17 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
 
 
 
+  export const setApprovidParticipant = (contest_id, participant_id) => async (dispatch) => {
+    try {
+      const payload = { participant_id, contest_id }; // Create the payload object
+      const res = await api.post(`admin/approve-judge-score`, payload);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+  
+
 
 
   export const getAllRecords = (contestId) => async (dispatch) => {
