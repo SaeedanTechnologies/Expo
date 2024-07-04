@@ -32,6 +32,7 @@ import LoginAdminPanel from "./AuthSide/JudgePanel/LoginAdminPanel";
 import AdminRegisterForm from "./AuthSide/AdminSide1/AdminRegisterForm";
 import AdminLoginForm from "./AuthSide/AdminSide1/AdminLoginForm";
 import ParticipantRegistered from "./AuthSide/AdminSide1/ParticipantRegistered";
+import PublicScreen from "./AuthSide/AdminSideJudge/PublicScreen";
 export default function Router() {
 
 
@@ -124,6 +125,10 @@ export default function Router() {
         {
             path: 'participant-page/:id',
             element: <ParticipantPage />
+        },
+        {
+            path: 'public-screen/:id',
+            element: <PublicScreen />
         },
         {
             path: 'all-records',

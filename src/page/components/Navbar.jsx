@@ -52,7 +52,7 @@ const dispatch = useDispatch()
   // }
 
 
-  const participantPageRegex = /^\/participant-page\/[^\/]+$/;
+  const participantPageRegex = /^\/public-screen\/[^\/]+$/;
   const participantRegisterPage = /^\/admin\/contest\/[^\/]+$/;
 
   const currentPath = location.pathname;

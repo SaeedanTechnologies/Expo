@@ -372,13 +372,11 @@ const AdminOperator = () => {
   const navigate = useNavigate();
   const [judges, setJudges] = useState([]);
   const [score, setScore] = useState([]);
-
   const [participants, setParticipants] = useState([]);
   const [allScoresGiven, setAllScoresGiven] = useState(false);
   const dispatch = useDispatch();
   const [allJudges, setAllJudges] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [openModal, setOpenModal] = useState(false);
   const [selectedJudge, setSelectedJudge] = useState(null);
 

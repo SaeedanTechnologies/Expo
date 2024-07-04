@@ -340,9 +340,15 @@ import { useDispatch } from 'react-redux'; // Assuming you are using Redux
 import { getBehindScreen } from '../../store/actions/contestStartActions'; // Update action import as needed
 
 const ParticipantCard = ({ judge, scores }) => {
-    const totalScore = scores.reduce((acc, curr) => acc + parseInt(curr.total_score, 10), 0);
+
+
+  const totalScore = scores.reduce((acc, curr) => acc + parseInt(curr.total_score, 10), 0);
   const totalCount = scores.length;
   if (totalCount === 0) return null;
+
+
+
+
   return(
     <Card>
     <Box>
@@ -381,7 +387,7 @@ const ParticipantPage = () => {
   const [participants, setParticipants] = useState([]);
   const [participantsName, setParticipantsName] = useState("");
   const [image, setImages] = useState([]);
-  const [participantId, setParticipantId] = useState(""); // State to hold participant ID
+  const [participantId, setParticipantId] = useState("");
   const dispatch = useDispatch();
 
 
