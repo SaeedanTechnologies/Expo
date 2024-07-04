@@ -12,7 +12,7 @@ const Links = () => {
 const navigate = useNavigate()
   const adminlink = `https://frontend.saeedantechpvt.com/admin-contest-start/${contest_id}`;
   const judgelink = `https://frontend.saeedantechpvt.com/judge-login`;
-  const behindscreenlink = `https://frontend.saeedantechpvt.com/participant-page/${contest_id}`;
+  const behindscreenlink = `https://frontend.saeedantechpvt.com/public-screen/${contest_id}`;
 
 
 const theme = useTheme()

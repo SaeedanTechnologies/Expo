@@ -374,15 +374,11 @@ const AdminOperator = () => {
   const navigate = useNavigate();
   const [judges, setJudges] = useState([]);
   const [score, setScore] = useState([]);
-  const contestId = localStorage.getItem('add_register_response');
-   console.log(contest_id,"kllkkkk")
-  
   const [participants, setParticipants] = useState([]);
   const [allScoresGiven, setAllScoresGiven] = useState(false);
   const dispatch = useDispatch();
   const [allJudges, setAllJudges] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [openModal, setOpenModal] = useState(false);
   const [selectedJudge, setSelectedJudge] = useState(null);
 
@@ -456,11 +452,11 @@ const AdminOperator = () => {
   };
 
 
- 
- 
+
+
 
 const handleApproved = async (id, contest_id) => {
- 
+
   try {
 
     const res = await dispatch(setApprovidParticipant(contest_id, id));

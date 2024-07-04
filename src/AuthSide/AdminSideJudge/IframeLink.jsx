@@ -18,7 +18,7 @@ const IframeLink = () => {
 
   const navigate = useNavigate()
   const handleNext = ()=>{
-    navigate('/participant-page')
+    navigate('/pblic-screen')
   }
 
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
