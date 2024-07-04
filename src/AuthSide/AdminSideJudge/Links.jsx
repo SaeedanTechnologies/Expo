@@ -34,6 +34,10 @@ const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
 const handleNext = (()=>{
   navigate(`/admin-contest-start/${contest_id}`)
 })
+
+const handleFile = (()=>{
+  navigate(`/upload-file/${contest_id}`)
+})
   return (
     <Box sx={{ flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', padding: isSmall ? '0rem 10%': '0rem 30%' }}>
       <Box>
@@ -126,6 +130,8 @@ const handleNext = (()=>{
 
       </Box>
       <Button variant='contained' sx={{width:'100%'}} onClick={handleNext}>Next</Button>
+      <br/>
+      <Button variant='contained' sx={{width:'100%'}} onClick={handleFile}>Upload File</Button>
 
     </Box>
 

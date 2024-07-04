@@ -124,7 +124,7 @@ const SignUpForm = () => {
       ) : (
         <>
 
-         { !registrationExpired ? (
+         { registrationExpired ? (
 <>
 <Typography sx={{fontWeight:600, textAlign:'center', fontSize:'2rem'}}>Registration Completed</Typography>
 </>

@@ -3,9 +3,10 @@ import { Box, Typography, Button, useTheme, useMediaQuery } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/system';
 import { useDropzone } from 'react-dropzone';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { fileUpload } from '../../store/actions/authActions'; // Assuming this is your Redux action to handle file upload
+import { fileUpload } from '../../store/actions/authActions';
+import { useSnackbar } from 'notistack';
 
 const UploadBox = styled(Box)(({ theme }) => ({
   border: '2px dashed #d32f2f',
@@ -24,13 +25,15 @@ const PreviewBox = styled(Box)(({ theme }) => ({
 
 const UploadVideo = () => {
   const dispatch = useDispatch();
+  const {id} = useParams()
   const admin_id = useSelector(state => state?.admin?.user?.id);
-  const [file, setFile] = useState(null); // Change to single file state
+  const [file, setFile] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*,video/*',
     onDrop: acceptedFiles => {
-      // Set only the first file from acceptedFiles array
+
       if (acceptedFiles && acceptedFiles.length > 0) {
         const selectedFile = acceptedFiles[0];
         setFile(Object.assign(selectedFile, {
@@ -41,18 +44,36 @@ const UploadVideo = () => {
   });
 
   const navigate = useNavigate();
-  
-const contest_id = 105
+
+
+// const handleUpload = () => {
+//     if (file) {
+//       const formData = new FormData();
+//       formData.append('file', file);
+//       formData.append('admin_id', admin_id);
+//       formData.append('contest_id', id);
+//       dispatch(fileUpload({ formData }));
+//     }
+//   };
 
 const handleUpload = () => {
-    if (file) {
+  if (file) {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('admin_id', admin_id);
-      formData.append('contest_id', contest_id); // Append admin_id to formData
-      dispatch(fileUpload({ formData })); // Pass formData directly
-    }
-  };
+      formData.append('contest_id', id);
+
+      dispatch(fileUpload({formData}))
+          .then(() => {
+              // On success
+              enqueueSnackbar('File uploaded successfully', { variant: 'success' });
+          })
+          .catch((error) => {
+              // On failure
+              enqueueSnackbar('File upload failed', { variant: 'error' });
+          });
+  }
+};
 
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -68,16 +89,13 @@ const handleUpload = () => {
         padding: isSmall ? '0rem 10%' : '0rem 30%'
       }}
     >
-      <Typography variant="h4" fontWeight={600} gutterBottom sx={{ textAlign: 'center' }}>
+      <Typography variant="h4" fontWeight={600} gutterBottom sx={{ fontSize:'2rem', textAlign: 'center' }}>
         Upload Photo Or Video
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body1" gutterBottom sx={{textAlign:'center'}}>
         Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet
       </Typography>
 
-      <Typography variant="subtitle1" gutterBottom sx={{ width: '100%', textAlign: 'left', fontWeight: 600 }}>
-        Upload Photo Or Video
-      </Typography>
       <UploadBox {...getRootProps()}>
         <input {...getInputProps()} />
         <CloudUploadIcon sx={{ fontSize: 60 }} />

@@ -94,7 +94,7 @@ export default function Router() {
             element: <Links />
         },
         {
-            path: 'upload-file',
+            path: 'upload-file/:id',
             element: <UploadVideo />
         },
         {

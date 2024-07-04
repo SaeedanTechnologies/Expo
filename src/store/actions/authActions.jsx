@@ -94,7 +94,6 @@ export const logout = () => async (dispatch) => {
       type: "SUCCESS_LOGOUT"
     });
   } catch (err) {
-    console.error("Logout failed:", err);
     throw err;
   }
 };
@@ -128,18 +127,7 @@ export const getFormFields = (contest_id) => async (dispatch) => {
 };
 
 
-// -------------------------Admin file upload Post API--------
 
-// export const fileUpload = ({formData}) => async (dispatch) => {
-//   try {
-
-//     const res = await api.post("admin/upload-file", {formData});
-
-//     return res;
-//   } catch (err) {
-//     throw err;
-//   }
-// };
 
 
 export const fileUpload = ({ formData }) => async (dispatch) => {

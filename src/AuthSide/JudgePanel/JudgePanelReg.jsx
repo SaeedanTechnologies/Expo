@@ -1,28 +1,67 @@
-// import React, { useState, useEffect } from 'react';
-// import { Box, Container, Typography, TextField, Button, FormControl, InputLabel } from '@mui/material';
-// import { useDispatch } from 'react-redux';
-// import { fetchFormJudegForm, submitJudegFormData } from '../../store/actions/addJudegsActions';
-// import { useParams } from 'react-router';
-// import { useSnackbar } from 'notistack';
+// import React, { useState, useEffect } from "react";
+// import {
+//   Box,
+//   Container,
+//   Typography,
+//   TextField,
+//   Button,
+//   FormControl,
+//   InputLabel,
+// } from "@mui/material";
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   fetchFormJudegForm,
+//   submitJudegFormData,
+// } from "../../store/actions/addJudegsActions";
+// import { useParams } from "react-router";
+// import { useSnackbar } from "notistack";
 
 // const JudgePanelReg = () => {
-//   const {id} = useParams()
-
+//   const { id } = useParams();
 //   const dispatch = useDispatch();
 //   const [formFields, setFormFields] = useState([]);
-//   const [particeipentName, setParticeipentName] = useState([]);
-//   const PArticepentName=particeipentName.map(name=>name.current_participant_name)
-//   console.log(PArticepentName,"response")
+//   const [participantName, setParticipantName] = useState("");
 //   const [formData, setFormData] = useState({});
 //   const [judgeId, setJudgeId] = useState(null);
 //   const [participantId, setParticipantId] = useState(null);
 //   const [contestId, setContestId] = useState(null);
 //   const [submitDisabled, setSubmitDisabled] = useState(true);
-
-//   console.log(formData,"FormData");
 //   const { enqueueSnackbar } = useSnackbar();
+//   const judge_idd = useSelector((state) => state?.admin?.user?.id);
+//   console.log(judge_idd, "dhadjkfsdkfsdjfh");
+//   // useEffect(() => {
+//   //   dispatch(fetchFormJudegForm(id))
+//   //     .then(response => {
+//   //       if (Array.isArray(response.data) && response.data.length > 0) {
+//   //         const firstItem = response.data[0];
+//   //         const fields = JSON.parse(firstItem.fields);
 
-//   useEffect(() => {
+//   //         const mappedFields = fields.map(item => ({
+//   //           id: item.name,
+//   //           label: item.label,
+//   //           name: item.name,
+//   //           type: item.type,
+//   //           required: item.required,
+//   //         }));
+//   //         setParticipantName(firstItem.current_participant_name); // Set the participant name
+
+//   //         setFormFields(mappedFields);
+//   //         setJudgeId(firstItem.judge_id);
+//   //         setParticipantId(firstItem.current_participant_id);
+//   //         setContestId(firstItem.contest_id);
+//   //         localStorage.setItem("judge_response", JSON.stringify(firstItem));
+//   //       } else {
+//   //         console.error('Unexpected response structure:', response);
+//   //       }
+//   //     })
+//   //     .catch(error => {
+//   //       console.error('Error fetching form fields:', error);
+//   //     });
+//   // }, [dispatch, id]);
+
+
+
+//     useEffect(() => {
 //     dispatch(fetchFormJudegForm(id))
 //       .then(response => {
 //         if (Array.isArray(response.data) && response.data.length > 0) {
@@ -36,14 +75,12 @@
 //             type: item.type,
 //             required: item.required,
 //           }));
-//           setParticeipentName(response.data)
+//           setParticipantName(firstItem.current_participant_name); // Set the participant name
 
 //           setFormFields(mappedFields);
-
 //           setJudgeId(firstItem.judge_id);
 //           setParticipantId(firstItem.current_participant_id);
 //           setContestId(firstItem.contest_id);
-
 //           localStorage.setItem("judge_response", JSON.stringify(firstItem));
 //         } else {
 //           console.error('Unexpected response structure:', response);
@@ -52,10 +89,45 @@
 //       .catch(error => {
 //         console.error('Error fetching form fields:', error);
 //       });
-//   }, [dispatch]);
+//   }, [dispatch, id]);
+
 
 //   useEffect(() => {
+//     // Function to fetch form fields and participant info
+//     const fetchFormFields = async () => {
+//       try {
+//         const response = await dispatch(fetchFormJudegForm(id));
+//         if (Array.isArray(response.data) && response.data.length > 0) {
+//           const firstItem = response.data[0];
+//           const fields = JSON.parse(firstItem.fields);
 
+//           const mappedFields = fields.map((item) => ({
+//             id: item.name,
+//             label: item.label,
+//             name: item.name,
+//             type: item.type,
+//             required: item.required,
+//           }));
+
+//           setParticipantName(firstItem.current_participant_name);
+//           setFormFields(mappedFields);
+//           setJudgeId(firstItem.judge_id);
+//           setParticipantId(firstItem.current_participant_id);
+//           setContestId(firstItem.contest_id);
+//           localStorage.setItem("judge_response", JSON.stringify(firstItem));
+//         } else {
+//           console.error("Unexpected response structure:", response);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching form fields:", error);
+//       }
+//     };
+//     fetchFormFields();
+//     const intervalId = setInterval(fetchFormFields, 2000);
+//     return () => clearInterval(intervalId);
+//   }, [dispatch, id]);
+
+//   useEffect(() => {
 //     if (participantId === null) {
 //       setSubmitDisabled(true);
 //     } else {
@@ -63,83 +135,44 @@
 //     }
 //   }, [participantId]);
 
-//   // const handleChange = (event) => {
-//   //   const { name, value } = event.target;
-
-//   //   if (name === 'linework') {
-//   //     setFormData(prevState => ({
-//   //       ...prevState,
-//   //       linework: value,
-//   //     }));
-//   //   } else {
-//   //     setFormData(prevState => ({
-//   //       ...prevState,
-//   //       [name]: value,
-//   //     }));
-//   //   }
-//   // };
-
 //   const handleChange = (event) => {
 //     const { name, value } = event.target;
-
 //     if (!isNaN(value) && value >= 0 && value <= 10) {
-//       if (name === 'linework') {
-//         setFormData(prevState => ({
-//           ...prevState,
-//           linework: value,
-//         }));
-//       } else {
-//         setFormData(prevState => ({
-//           ...prevState,
-//           [name]: value,
-//         }));
-//       }
+//       setFormData((prevState) => ({
+//         ...prevState,
+//         [name]: value,
+//       }));
 //     } else {
-
-//       enqueueSnackbar('Please enter a number between 0 and 10 for the score.', {variant:'error'});
+//       enqueueSnackbar("Please enter a number between 0 and 10 for the score.", {
+//         variant: "error",
+//       });
 //     }
 //   };
 
-
 //   const handleSubmit = (event) => {
 //     event.preventDefault();
-
-
-//     const scoresArray = formFields.map(field => ({
+//     const scoresArray = formFields.map((field) => ({
 //       field_name: field.name,
-//       score: formData[field.name] || '',
-//     }))
-
+//       score: formData[field.name] || "",
+//     }));
 //     const dataToSubmit = {
 //       scores: scoresArray,
-//       judge_id: judgeId,
+//       judge_id: judge_idd,
 //       participant_id: participantId,
-//       contest_id: contestId
+//       contest_id: contestId,
 //     };
 
-//     console.log('Form submitted:', dataToSubmit);
-
 //     dispatch(submitJudegFormData(dataToSubmit))
-//       .then(response => {
-//         // Handle success response
-//         console.log('Submission success:', response);
-//       setSubmitDisabled(true);
-//       setFormData({})
-//       enqueueSnackbar("Score Assigned", { variant: "success" });
-
-
+//       .then((response) => {
+//         setSubmitDisabled(true);
+//         setFormData({});
+//         enqueueSnackbar("Score Assigned", { variant: "success" });
 //       })
-//       .catch(error => {
+//       .catch((error) => {
 //         if (error.response && error.response.data) {
-//           const { payload } = error.response.data;
-
-//           console.log(error, 'errorrrr')
-//           // enqueueSnackbar(error.response.data.error, { variant: "error" });
-//           enqueueSnackbar('Score is not Assigned ', { variant: "error" });
-
-
+//           enqueueSnackbar("Score is not Assigned ", { variant: "error" });
 //         } else {
-//           console.error('Unexpected error:', error);
+//           console.error("Unexpected error:", error);
 //         }
 //       });
 //   };
@@ -147,41 +180,41 @@
 //   return (
 //     <Box
 //       sx={{
-//         display: 'flex',
-//         flexDirection: 'column',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         minHeight: '100vh',
-//         backgroundSize: 'cover',
-//         backgroundPosition: 'center',
-//         backgroundRepeat: 'no-repeat'
+//         display: "flex",
+//         flexDirection: "column",
+//         justifyContent: "center",
+//         alignItems: "center",
+//         minHeight: "80vh",
+//         backgroundSize: "cover",
+//         backgroundPosition: "center",
+//         backgroundRepeat: "no-repeat",
+//         padding: "1rem 8%",
 //       }}
 //     >
 //       <Container>
 //         <Box
 //           sx={{
-//             display: 'flex',
-//             flexDirection: 'column',
-//             alignItems: 'center',
-//             marginTop: '12px',
+//             display: "flex",
+//             flexDirection: "column",
+//             alignItems: "center",
+//             marginTop: "12px",
 //           }}
 //         >
 //           <Typography
-//             variant='h4'
+//             variant="h4"
 //             sx={{
-//               color: 'black',
-//               fontFamily: 'Roboto',
-//               fontSize: { xs: '22px', md: '46px' },
+//               color: "black",
+//               fontFamily: "Roboto",
+//               fontSize: { xs: "22px", md: "46px" },
 //               fontWeight: 800,
-//               lineHeight: '36px',
-//               textAlign: 'center',
-//               marginBottom: '1rem',
+//               lineHeight: "36px",
+//               textAlign: "center",
+//               marginBottom: "1rem",
 //             }}
 //           >
-//           {PArticepentName}
-
+//             {participantName ? participantName : "Participant Name"}
 //           </Typography>
-//           <Typography
+//           {/* <Typography
 //             variant='h6'
 //             sx={{
 //               fontFamily: 'Roboto',
@@ -193,76 +226,75 @@
 //               color: '#949494',
 //             }}
 //           >
-//             Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br />
+//             Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br/>
 //             sit amet consectetur lorem ipsum dolor sit amet.
-//           </Typography>
+//           </Typography> */}
 
-//           <Box sx={{ width: '100%', maxWidth: '500px' }}>
-//           <Typography
-//           variant="h5"
-//           sx={{
-//             fontFamily: 'Roboto',
-//             fontSize: '34px',
-//             fontWeight: 700,
-//             lineHeight: '28px',
-//             letterSpacing: '0.25px',
-//             textAlign: 'left',
-//             color: '#000000',
-//             marginBottom: '1rem',
-//           }}
-//         >
-//           Give Score
-//         </Typography>
+//           <Box sx={{ width: "100%", maxWidth: "500px" }}>
+//             <Typography
+//               variant="h5"
+//               sx={{
+//                 fontFamily: "Roboto",
+//                 fontSize: "1.4rem",
+//                 fontWeight: 700,
+//                 lineHeight: "28px",
+//                 letterSpacing: "0.25px",
+//                 textAlign: "left",
+//                 color: "#000000",
+//                 marginBottom: "1rem",
+//                 textAlign: "center",
+//               }}
+//             >
+//               Give Score
+//             </Typography>
 //             <form onSubmit={handleSubmit}>
-//               {formFields?.map(field => (
+//               {formFields?.map((field) => (
 //                 <Box key={field.id}>
 //                   <InputLabel
 //                     htmlFor={field.name}
 //                     sx={{
-//                       marginBottom: '0.5rem',
-//                       fontFamily: 'Roboto',
-//                       fontSize: '22px',
+//                       marginBottom: "0.5rem",
+//                       fontFamily: "Roboto",
+//                       fontSize: "1.1rem",
 //                       fontWeight: 1000,
-//                       lineHeight: '28px',
-//                       letterSpacing: '0.25px',
-//                       textAlign: 'left',
-//                       color: '#000000',
+//                       lineHeight: "13px",
+//                       letterSpacing: "0.25px",
+//                       textAlign: "left",
+//                       color: "#000000",
 //                     }}
 //                   >
 //                     {field.label}
-
-//                     {/* {field.current_participant_id} */}
-
-
 //                   </InputLabel>
-//                   <FormControl fullWidth sx={{ marginBottom: '1rem' }}>
+//                   <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
 //                     <TextField
 //                       id={field.name}
 //                       name={field.name}
-//                       // type={field.type}
 //                       placeholder={field.label}
-//                       value={formData[field.name] || ''}
+//                       value={formData[field.name] || ""}
 //                       onChange={handleChange}
 //                       fullWidth
 //                       type="number"
-//                       variant='outlined'
-//                       margin='normal'
+//                       variant="outlined"
+//                       margin="normal"
+//                       size="small"
 //                       required={field.required}
-//                       InputProps={{ style: { height: '60px' } }}
-//                       sx={{ height: '60px' }}
+//                       InputProps={{ style: { height: "60px" } }}
+//                       sx={{ height: "60px" }}
 //                     />
 //                   </FormControl>
-
-
 //                 </Box>
 //               ))}
-
 //               <Button
-//               disabled={submitDisabled}
-//                 type='submit'
-//                 variant='contained'
+//                 disabled={submitDisabled}
+//                 type="submit"
+//                 variant="contained"
 //                 fullWidth
-//                 sx={{ marginTop: '1rem', marginBottom: "12px", padding: '12px', fontFamily: 'Roboto', }}
+//                 sx={{
+//                   marginTop: "1rem",
+//                   marginBottom: "12px",
+//                   padding: "12px",
+//                   fontFamily: "Roboto",
+//                 }}
 //               >
 //                 Submit
 //               </Button>
@@ -277,8 +309,11 @@
 // export default JudgePanelReg;
 
 
+
+
+
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, TextField, Button, FormControl, InputLabel } from '@mui/material';
+import { Box, Container, Typography, TextField, Button, FormControl, InputLabel, CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFormJudegForm, submitJudegFormData } from '../../store/actions/addJudegsActions';
 import { useParams } from 'react-router';
@@ -289,17 +324,22 @@ const JudgePanelReg = () => {
   const dispatch = useDispatch();
   const [formFields, setFormFields] = useState([]);
   const [participantName, setParticipantName] = useState("");
+  const [showParticipantId, setShowParticipantId] = useState("");
+
   const [formData, setFormData] = useState({});
   const [judgeId, setJudgeId] = useState(null);
   const [participantId, setParticipantId] = useState(null);
   const [contestId, setContestId] = useState(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [loading, setLoading] = useState(false); // Loading state for submit button
   const { enqueueSnackbar } = useSnackbar();
   const judge_idd = useSelector(state => state?.admin?.user?.id);
-  console.log(judge_idd, 'dhadjkfsdkfsdjfh')
+  const [fetchError, setFetchError] = useState(null);
+
   useEffect(() => {
-    dispatch(fetchFormJudegForm(id))
-      .then(response => {
+    const fetchFormFields = async () => {
+      try {
+        const response = await dispatch(fetchFormJudegForm(id));
         if (Array.isArray(response.data) && response.data.length > 0) {
           const firstItem = response.data[0];
           const fields = JSON.parse(firstItem.fields);
@@ -311,20 +351,25 @@ const JudgePanelReg = () => {
             type: item.type,
             required: item.required,
           }));
-          setParticipantName(firstItem.current_participant_name); // Set the participant name
 
+          setParticipantName(firstItem.current_participant_name);
+          setShowParticipantId(firstItem.current_participant_id);
           setFormFields(mappedFields);
           setJudgeId(firstItem.judge_id);
           setParticipantId(firstItem.current_participant_id);
           setContestId(firstItem.contest_id);
           localStorage.setItem("judge_response", JSON.stringify(firstItem));
         } else {
-          console.error('Unexpected response structure:', response);
+          console.log('Unexpected response structure:', response.response.data.message);
         }
-      })
-      .catch(error => {
-        console.error('Error fetching form fields:', error);
-      });
+      } catch (error) {
+        setFetchError(error.response.data.message);
+      }
+    };
+
+    fetchFormFields();
+    const intervalId = setInterval(fetchFormFields, 2000);
+    return () => clearInterval(intervalId);
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -349,10 +394,13 @@ const JudgePanelReg = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true); // Start loading
+
     const scoresArray = formFields.map(field => ({
       field_name: field.name,
       score: formData[field.name] || '',
     }));
+
     const dataToSubmit = {
       scores: scoresArray,
       judge_id: judge_idd,
@@ -360,19 +408,18 @@ const JudgePanelReg = () => {
       contest_id: contestId
     };
 
-
-
     dispatch(submitJudegFormData(dataToSubmit))
       .then(response => {
-        // Handle success response
-        console.log('Submission success:', response);
-      setSubmitDisabled(true);
-      setFormData({})
-      enqueueSnackbar("Score Assigned", { variant: "success" });
+        setLoading(false); // Stop loading
+        setSubmitDisabled(true);
+        setFormData({});
+        enqueueSnackbar("Score Assigned ", { variant: "success" });
       })
       .catch(error => {
+        setLoading(false); // Stop loading
         if (error.response && error.response.data) {
-          enqueueSnackbar('Score is not Assigned ', { variant: "error" });
+
+          enqueueSnackbar(error.response.data.error, { variant: "error" });
         } else {
           console.error('Unexpected error:', error);
         }
@@ -390,9 +437,28 @@ const JudgePanelReg = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        padding:'1rem 8%'
+        padding: '1rem 8%'
       }}
+
     >
+
+
+{fetchError ? (
+      <Typography
+        variant="h5"
+        sx={{
+          color: 'red',
+          fontWeight:800,
+          fontSize:'2rem',
+          textAlign: 'center',
+          marginBottom: '1rem',
+        }}
+      >
+        {fetchError}
+      </Typography>
+
+    ) : (
+
       <Container>
         <Box
           sx={{
@@ -416,21 +482,24 @@ const JudgePanelReg = () => {
           >
             {participantName ? participantName : "Participant Name"}
           </Typography>
-          {/* <Typography
-            variant='h6'
+
+          <Typography
+            variant='h4'
             sx={{
+              color: 'black',
               fontFamily: 'Roboto',
-              fontSize: '20px',
-              fontWeight: '400',
-              lineHeight: '28px',
+              fontSize: { xs: '10px', md: '24px' },
+              fontWeight: 800,
+              lineHeight: '26px',
               textAlign: 'center',
-              marginBottom: '2rem',
-              color: '#949494',
+              marginBottom: '1rem',
             }}
           >
-            Lorem ipsum dolor sit amet consectetur lorem ipsum dolor <br/>
-            sit amet consectetur lorem ipsum dolor sit amet.
-          </Typography> */}
+            {showParticipantId ? showParticipantId : 'Participant ID'}
+          </Typography>
+
+
+
 
           <Box sx={{ width: '100%', maxWidth: '500px' }}>
             <Typography
@@ -444,7 +513,7 @@ const JudgePanelReg = () => {
                 textAlign: 'left',
                 color: '#000000',
                 marginBottom: '1rem',
-                textAlign:'center'
+                textAlign: 'center'
               }}
             >
               Give Score
@@ -487,18 +556,21 @@ const JudgePanelReg = () => {
                 </Box>
               ))}
               <Button
-                disabled={submitDisabled}
+                disabled={submitDisabled || loading} // Disable when loading
                 type='submit'
                 variant='contained'
                 fullWidth
-                sx={{ marginTop: '1rem', marginBottom: "12px", padding: '12px', fontFamily: 'Roboto', }}
+                sx={{ marginTop: '1rem', marginBottom: "12px", padding: '12px', fontFamily: 'Roboto', position: 'relative' }}
               >
-                Submit
+                {loading && <CircularProgress size={24} sx={{ position: 'absolute', top: '50%', left: '50%', marginTop: '-12px', marginLeft: '-12px' }} />} {/* Loader */}
+                {loading ? 'Submitting...' : 'Submit'}
               </Button>
             </form>
           </Box>
         </Box>
       </Container>
+
+    )}
     </Box>
   );
 };

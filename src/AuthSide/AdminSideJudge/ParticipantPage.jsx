@@ -343,7 +343,7 @@ const ParticipantCard = ({ judge, scores }) => {
     const totalScore = scores.reduce((acc, curr) => acc + parseInt(curr.total_score, 10), 0);
   const totalCount = scores.length;
   if (totalCount === 0) return null;
-  return( 
+  return(
     <Card>
     <Box>
       <img src='/person.png' alt='image' width={'100%'} />
@@ -362,7 +362,7 @@ const ParticipantCard = ({ judge, scores }) => {
 
     </Box>
   </Card>)
- 
+
     }
 
 const ScoreBoard = ({ judgeName, totalScore, participantId, participantsName }) => (
@@ -384,6 +384,7 @@ const ParticipantPage = () => {
   const [participantId, setParticipantId] = useState(""); // State to hold participant ID
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     const fetchContestData = async () => {
       try {
@@ -394,6 +395,7 @@ const ParticipantPage = () => {
         setTotalScores(total_scores);
         setParticipants(participants);
         setParticipantsName(now_in_progress);
+
 
         // Extract participant ID from participants array
         if (participants.length > 0) {
@@ -419,10 +421,15 @@ const ParticipantPage = () => {
   const judgeName = judges.length > 0 ? judges[0].name : "Unknown";
   const totalScore = totalScores.reduce((acc, curr) => acc + parseInt(curr.total_score, 10), 0);
 
+  console.log(image[0]?.file_url, 'immm')
+  const defaultImage = '/bgimage.png';
+    const backgroundImage = image?.length > 0 && image[0]?.file_url ? `url(${image[0]?.file_url})` : `url(${defaultImage})`;
+
   return (
     <Box
       sx={{
-        backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%),url(${"/bgimage.png"})`,
+        // backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%),url(${image[0].file_url})`,
+        backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), ${backgroundImage}`,
         backgroundPosition: "center",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
