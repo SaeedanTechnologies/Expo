@@ -2,21 +2,10 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  Avatar,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
   useMediaQuery,
-  Divider,
-  CircularProgress,
-  Modal,
   Grid,
   Card,
+  CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { useNavigate, useParams } from "react-router";
@@ -45,17 +34,21 @@ const PublicScreen = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+
+
     const fetchContestData = async () => {
+
       try {
+
         const result = await dispatch(getBehindScreen(id));
         // console.log(result.data.data.judges, 'dddsdhdgd')
-        setJudges(result.data.data.judges);
-        setScore(result?.data?.data?.total_scores);
-        setImages(result?.data?.data?.files);
-        setData(result?.data?.data);
+        setJudges(result?.data?.data?.judges || []);
+        setScore(result?.data?.data?.total_scores || []);
+        setImages(result?.data?.data?.files || []);
+        setData(result?.data?.data || {});
 
         const filteredParticipants = result?.data?.data?.participants?.filter(
-          (participant) => participant.is_judged === 0
+          (participant) => participant?.is_judged === 0
         );
         setParticipants(
           filteredParticipants?.map((participant) => {
@@ -66,10 +59,11 @@ const PublicScreen = () => {
             return { ...participant, ...fieldsValues };
           })
         );
-        setAllJudges(result?.data?.data?.participants);
+        setAllJudges(result?.data?.data?.participants || []);
         setLoading(false);
       } catch (err) {
-        console.log(err);
+        console.log('jdhfsdjhf');
+        setLoading(false); // End loading
       }
     };
 
@@ -81,18 +75,30 @@ const PublicScreen = () => {
 
     return () => clearInterval(intervalId);
 
-  }, [dispatch, id]);
+  }, []);
 
   useEffect(() => {
     setParticipants(participants);
   }, [participants]);
 
-  console.log(judges,'sdhdjd')
+  console.log(participants,'sdhdjd')
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  const totalCount = scores?.length;
-  if (totalCount === 0) return null;
 
-  console.log(image[0]?.file_url, "immm");
+
 
 
   const defaultImage = "/bgimage.png";
@@ -184,81 +190,6 @@ const PublicScreen = () => {
             </Grid>
             <Grid item xs={12} sm={9} md={9.5}>
               <Grid container spacing={2}>
-                {/* {judges.map((judge, index) => {
-                    const participantScore = scores.find(score => score.participant_id === participants[0]?.id);
-                  return (
-                    <Grid item xs={12} sm={6} md={3} key={index}>
-                      <Card>
-                        <Box>
-                          <img src="/person.png" alt="image" width={"100%"} />
-                          <Typography
-                            variant="h6"
-                            sx={{
-                              fontSize: "1rem",
-                              textAlign: "center",
-                              backgroundColor: "#7c8385",
-                              color: "white",
-                            }}
-                          >
-                            {judge.name}
-                          </Typography>
-
-                          {scores.map((score, index) => (
-                            <Box
-                              key={index}
-                              sx={{
-                                display: "flex",
-                                padding: "0.2rem",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                              }}
-                            >
-                              <Typography
-                                variant="subtitle1"
-                                sx={{ fontSize: "0.9rem", fontWeight: 600 }}
-                              >
-                                {score.field_name}
-                              </Typography>
-                              <Typography
-                                variant="h5"
-                                sx={{
-                                  fontSize: "0.9rem",
-                                  color: "red",
-                                  fontWeight: 600,
-                                }}
-                              >
-                                {score.total_score}
-                              </Typography>
-                            </Box>
-                          ))}
-
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              backgroundColor: "#e0e0e0",
-                              padding: "0.3rem",
-                            }}
-                          >
-
-                            <Typography
-                              variant="h5"
-                              sx={{
-                                fontSize: "0.9rem",
-                                color: "red",
-                                fontWeight: 600,
-                              }}
-                            >
-                             Total :  {totalScore}
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </Card>
-                    </Grid>
-                  );
-                })} */}
-
                 {judges?.map((judge, index) => {
                   const participantScore = scores?.find(
                     (score) => score?.participant_id === participants[0]?.id
@@ -365,6 +296,7 @@ const PublicScreen = () => {
           </Grid>
         </Box>
       </Box>
+
     </>
   );
 };
