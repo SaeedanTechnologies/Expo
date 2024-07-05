@@ -80,6 +80,22 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
       }
     };
 
+    export const pdfApi = (file) => async (dispatch) => {
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+    
+        const res = await api.post('admin/send-pdf', formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+    
+        return res.data; // Assuming you want to return data from the response
+      } catch (err) {
+        throw err; // Re-throwing the error to handle it in components or other parts of your application
+      }
+    };
 
   export const singleContest = (contestId) => async (dispatch) => {
 
