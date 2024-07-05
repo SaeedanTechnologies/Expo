@@ -36,8 +36,7 @@ const SignUpForm = () => {
         const endDateTime = new Date(result.data.payload.end_date_time);
         setEndDateTime(endDateTime);
         setLoading(false);
-
-        if (maxparticipant === registeredParticipant.length) {
+        if (maxparticipant == registeredParticipant.length) {
           setRegistrationExpired(true);
         }
 
@@ -68,7 +67,8 @@ const SignUpForm = () => {
           setTimeDiff({ hours: diffHours, minutes: diffMinutes, seconds: diffSeconds });
         } else {
           clearInterval(interval);
-          setRegistrationEnded(true); // Set registrationEnded to true when registration time ends
+          setRegistrationEnded(true);
+
         }
       }
     }, 1000);
@@ -126,15 +126,33 @@ const SignUpForm = () => {
 
          { registrationExpired ? (
 <>
-<Typography sx={{fontWeight:600, textAlign:'center', fontSize:'2rem'}}>Registration Completed</Typography>
+<Box sx={{displa:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center'}}>
+
+<Box>
+  <img src="/mainLogo.png" alt="expo"/>
+</Box>
+
+<br/>
+
+<Typography sx={{fontWeight:600, textAlign:'center', fontSize:'2rem'}}>Registration Closed</Typography>
+</Box>
+
+
 </>
 
          ):(
 <>
 {registrationEnded ? (
-            <Typography variant="h5" color="error" align="center" gutterBottom>
-              Registration time has ended.
-            </Typography>
+  <Box sx={{displa:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center'}}>
+
+<Box>
+  <img src="/mainLogo.png" alt="expo"/>
+</Box>
+
+<br/>
+
+<Typography sx={{fontWeight:600, textAlign:'center', fontSize:'2rem'}}>Registration Time has been ended</Typography>
+</Box>
           ) : (
             <Box
               sx={{

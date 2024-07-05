@@ -235,7 +235,7 @@ const CreateScoreCard = () => {
   const { judges } = location.state || { judges: [] };
   const names = judges.map(judge => judge.judge_name);
   const profile = judges.map(judge => judge.profile_picture);
-  
+
   const { enqueueSnackbar } = useSnackbar();
 
 
@@ -293,14 +293,14 @@ const CreateScoreCard = () => {
       .then(response => {
 
         enqueueSnackbar('Judges Added Successfully', {variant:'success'})
-
+        localStorage.removeItem('judges');
         navigate('/links', { state: { contest_id: contest_id } });
       })
       .catch(error => {
         console.error('There was an error!', error);
         setLoading(false)
       }
-      
+
     )
   }
 

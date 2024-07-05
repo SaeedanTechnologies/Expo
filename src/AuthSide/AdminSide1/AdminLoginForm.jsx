@@ -20,6 +20,7 @@ import { adminLogin } from "../../store/actions/authActions";
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom'
 import { ThemeContext } from "@emotion/react";
+import { useSnackbar } from "notistack";
 const AdminLoginForm = () => {
   const navigate = useNavigate();
   const theme = useTheme()
@@ -33,6 +34,7 @@ const AdminLoginForm = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
+  const {enqueueSnackbar} = useSnackbar()
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -55,15 +57,15 @@ const AdminLoginForm = () => {
       .then((res) => {
 
         setFormValues(res.data.payload);
-        console.log('user login by redux')
-        // enqueueSnackbar("User Registered Successfully", { variant: "success" });
+
+        enqueueSnackbar("Login Successfully", { variant: "success" });
         navigate("/admin/welcome", { state: res.data.payload });
       })
       .catch((err) => {
         setLoading(false);
-        alert('errorrrrrr')
 
-        // enqueueSnackbar(err.message, { variant: "error" });
+
+        enqueueSnackbar('Login Failed', { variant: "error" });
       });
 
 

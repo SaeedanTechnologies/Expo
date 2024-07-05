@@ -92,7 +92,7 @@ const dispatch = useDispatch()
         setSnackbarOpen(true);
         navigate("/admin-login");
       } catch (err) {
-        console.error("Registration failed:", err);
+        
         setSnackbarMessage("Failed to Register");
         setSnackbarOpen(true);
       } finally {
@@ -116,7 +116,7 @@ const dispatch = useDispatch()
     if (!formData.phone.trim()) {
       errors.phone = "Phone is required";
       valid = false;
-    } 
+    }
 
     // Validate email
     if (!formData.email.trim()) {

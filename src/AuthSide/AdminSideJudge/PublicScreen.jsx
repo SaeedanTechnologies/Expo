@@ -48,24 +48,25 @@ const PublicScreen = () => {
     const fetchContestData = async () => {
       try {
         const result = await dispatch(getBehindScreen(id));
+        // console.log(result.data.data.judges, 'dddsdhdgd')
         setJudges(result.data.data.judges);
-        setScore(result.data.data.total_scores);
-        setImages(result.data.data.files);
-        setData(result.data.data);
+        setScore(result?.data?.data?.total_scores);
+        setImages(result?.data?.data?.files);
+        setData(result?.data?.data);
 
-        const filteredParticipants = result.data.data.participants.filter(
+        const filteredParticipants = result?.data?.data?.participants?.filter(
           (participant) => participant.is_judged === 0
         );
         setParticipants(
-          filteredParticipants.map((participant) => {
-            const fieldsValuesString = participant.fields_values.slice(1, -1);
+          filteredParticipants?.map((participant) => {
+            const fieldsValuesString = participant?.fields_values?.slice(1, -1);
             const fieldsValues = JSON.parse(
               fieldsValuesString.replace(/\\/g, "")
             );
             return { ...participant, ...fieldsValues };
           })
         );
-        setAllJudges(result.data.data.participants);
+        setAllJudges(result?.data?.data?.participants);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -79,41 +80,46 @@ const PublicScreen = () => {
     }, 5000);
 
     return () => clearInterval(intervalId);
+
   }, [dispatch, id]);
 
   useEffect(() => {
     setParticipants(participants);
   }, [participants]);
 
-  const totalCount = scores.length;
+  console.log(judges,'sdhdjd')
+
+  const totalCount = scores?.length;
   if (totalCount === 0) return null;
 
   console.log(image[0]?.file_url, "immm");
+
+
   const defaultImage = "/bgimage.png";
   const backgroundImage =
     image?.length > 0 && image[0]?.file_url
       ? `url(${image[0]?.file_url})`
       : `url(${defaultImage})`;
 
-  const allTotal = data.total_scores_by_participant;
-  const participantId = participants[0].id;
+  const allTotal = data?.total_scores_by_participant;
+  const participantId = participants[0]?.id;
   const totalScoress = allTotal[participantId];
 
-  const filteredScores = scores.filter(score => (
-    score.judge_id === judges.id && score.participant_id === participants[0].id
+  const filteredScores = scores?.filter(score => (
+    score?.judge_id === judges?.id && score?.participant_id === participants[0]?.id
   ));
 
   // Calculate total score
   let totalSingleScore = 0;
-  filteredScores.forEach(score => {
-    totalSingleScore += score.total_score;
+  filteredScores?.forEach(score => {
+    totalSingleScore += score?.total_score;
   });
 
 
-  console.log(scores, 'kddsd')
-
   return (
     <>
+
+
       <Box
         sx={{
           backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), ${backgroundImage}`,
@@ -253,9 +259,9 @@ const PublicScreen = () => {
                   );
                 })} */}
 
-                {judges.map((judge, index) => {
-                  const participantScore = scores.find(
-                    (score) => score.participant_id === participants[0]?.id
+                {judges?.map((judge, index) => {
+                  const participantScore = scores?.find(
+                    (score) => score?.participant_id === participants[0]?.id
                   );
 
                   return (
@@ -272,7 +278,7 @@ const PublicScreen = () => {
                               color: "white",
                             }}
                           >
-                            {judge.name}
+                            {judge?.name}
                           </Typography>
 
                           {participantScore ? (
@@ -280,10 +286,10 @@ const PublicScreen = () => {
                               <Box
 
                               >
-                                {scores.map((score, scoreIndex) => {
+                                {scores?.map((score, scoreIndex) => {
                                   if (
-                                    score.judge_id === judge.id &&
-                                    score.participant_id === participants[0].id
+                                    score?.judge_id === judge?.id &&
+                                    score?.participant_id === participants[0]?.id
                                   ) {
                                     return (
                                       <Box key={scoreIndex}>
@@ -302,7 +308,7 @@ const PublicScreen = () => {
                                               fontWeight: 600,
                                             }}
                                           >
-                                            {score.field_name}
+                                            {score?.field_name}
                                           </Typography>
                                           <Typography
                                             variant="h5"
@@ -312,7 +318,7 @@ const PublicScreen = () => {
                                               fontWeight: 600,
                                             }}
                                           >
-                                            {score.total_score}
+                                            {score?.total_score}
                                           </Typography>
                                         </Box>
                                       </Box>
