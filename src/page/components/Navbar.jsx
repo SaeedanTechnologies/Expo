@@ -54,11 +54,14 @@ const dispatch = useDispatch()
 
   const participantPageRegex = /^\/public-screen\/[^\/]+$/;
   const participantRegisterPage = /^\/admin\/contest\/[^\/]+$/;
+  const publicResultPage = /^\/public-screen-result\/[^\/]+$/;
 
   const currentPath = location.pathname;
 
   const isHidden = participantPageRegex.test(currentPath)
                   || participantRegisterPage.test(currentPath)
+                  || publicResultPage.test(currentPath)
+                  || currentPath === "/public-screen-result"
                   || currentPath === "/admin_side_screen1"
                   || currentPath === "/admin_side_screen2"
                   || currentPath === "/participant-registered";

@@ -107,7 +107,7 @@ export default function Router() {
             element: <AdminSideScreen />,
         },
         {
-            path: 'admin_side_screen2',
+            path: 'public-screen-result/:id',
             element: <AdminSideScreen2 />,
         },
             {

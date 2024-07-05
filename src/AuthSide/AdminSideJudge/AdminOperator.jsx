@@ -409,19 +409,8 @@ const AdminOperator = () => {
 
     fetchContestData();
   }, [dispatch, id]);
-  console.log(fieldScores, "fieldddddddddddd");
 
-  // const handleOpenModal = (judge) => {
-  //   setSelectedJudge(judge);
 
-  //   console.log(judge, 'ddfsdfdfdf')
-  //   setOpenModal(true);
-  // };
-
-  // const handleCloseModal = () => {
-  //   setOpenModal(false);
-  //   setSelectedJudge(null);
-  // };
 
   const [selectedJudgeScores, setSelectedJudgeScores] = useState([]);
   console.log(selectedJudgeScores, "scoreee");
@@ -858,7 +847,7 @@ const AdminOperator = () => {
                         fontWeight: 600,
                       }}
                     >
-                      {fieldScore.total_score}
+                      {fieldScore.total_score.toFixed(2)}
                     </Typography>
                   </Box>
                 </Box>
