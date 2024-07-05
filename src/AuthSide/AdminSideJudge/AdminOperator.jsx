@@ -465,13 +465,17 @@ const AdminOperator = () => {
       console.error("Failed to send request:", error);
     }
   };
-
+const [loadingPublish, setLoadingPublish] = useState(false)
   const handleApproved = async (id, contest_id) => {
+    setLoadingPublish(true)
     try {
       const res = await dispatch(setApprovidParticipant(contest_id, id));
 
       setClickedParticipantId(id);
+      setLoadingPublish(true)
+
     } catch (error) {
+
       console.error("Failed to send request:", error);
     }
   };
@@ -734,22 +738,15 @@ const AdminOperator = () => {
               >
                 Now Judge {participants[0]?.name}
               </Button>
-              {/* <Button
-                variant="contained"
-                color="primary"
-                onClick={() =>
-                  handleApproved(participants[0]?.id, participants[0]?.contest_id)
-                }
-                disabled={participants[0]?.id === clickedParticipantId}
-                sx={{ textTransform: "none" }}
-              >
-               Publish
-              </Button> */}
+
             </Box>
 
             {allScoresGiven ? (
-              <Button
-                variant="contained"
+
+
+
+
+              <Button  variant="contained"
                 color="primary"
                 onClick={() =>
                   handleApproved(
@@ -757,11 +754,11 @@ const AdminOperator = () => {
                     participants[0]?.contest_id
                   )
                 }
-                // disabled={participants[0]?.id === clickedParticipantId}
-                sx={{ textTransform: "none", width: "100%" }}
-              >
-                Publish
-              </Button>
+
+                sx={{ textTransform: "none", width: "100%" }} >{loadingPublish ? <CircularProgress size={24} /> : "Publish"}</Button>
+
+
+
             ) : null}
           </>
         )}
