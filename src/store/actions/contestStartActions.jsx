@@ -47,7 +47,7 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
   export const getAllRecords = (contestId) => async (dispatch) => {
     try {
       const token=localStorage.getItem("token")
-      const res = await api.get(`admin/contest-result/${contestId}`);
+      const res = await api.get(`contest-result/${contestId}`);
       return res;
     } catch (err) {
       throw err;
