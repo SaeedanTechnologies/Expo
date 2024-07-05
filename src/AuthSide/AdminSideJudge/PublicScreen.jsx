@@ -283,9 +283,7 @@ const PublicScreen = () => {
 
                           {participantScore ? (
                             <Box>
-                              <Box
-
-                              >
+                              <Box>
                                 {scores?.map((score, scoreIndex) => {
                                   if (
                                     score?.judge_id === judge?.id &&
