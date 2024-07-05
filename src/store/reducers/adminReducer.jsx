@@ -15,7 +15,7 @@ const adminReducer = (state=initialState, action) => {
                 isAuthenticated: true
             };
         };
-        case 'LOGOUT_SUUCCESS' : {
+        case 'LOGOUT_SUCCESS' : {
             localStorage.removeItem('token')
             return {
                 token: null,

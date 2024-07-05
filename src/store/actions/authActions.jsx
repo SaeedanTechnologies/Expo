@@ -91,7 +91,7 @@ export const logout = () => async (dispatch) => {
   try {
 
     dispatch({
-      type: "SUCCESS_LOGOUT"
+      type: "LOGOUT_SUCCESS"
     });
   } catch (err) {
     throw err;
