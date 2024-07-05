@@ -332,7 +332,7 @@
 //   const [participantId, setParticipantId] = useState(null);
 //   const [contestId, setContestId] = useState(null);
 //   const [submitDisabled, setSubmitDisabled] = useState(true);
-//   const [loading, setLoading] = useState(false); 
+//   const [loading, setLoading] = useState(false);
 //   const { enqueueSnackbar } = useSnackbar();
 //   const judge_idd = useSelector(state => state?.admin?.user?.id);
 //   const [fetchError, setFetchError] = useState(null);
@@ -598,7 +598,7 @@ const JudgePanelReg = () => {
   const [participantId, setParticipantId] = useState(null);
   const [contestId, setContestId] = useState(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const judge_idd = useSelector(state => state?.admin?.user?.id);
   const [fetchError, setFetchError] = useState(null);
@@ -609,8 +609,12 @@ const JudgePanelReg = () => {
     const fetchFormFields = async () => {
       try {
         const response = await dispatch(fetchFormJudegForm(id));
+
+console.log(response, 'asdhdh')
+
         if (Array.isArray(response.data) && response.data.length > 0) {
           const firstItem = response.data[0];
+          console.log(firstItem, 'sdjfhsdfsdhfgsdfhsdgfsdfghsdgfhsdgfhsdfg')
           const fields = JSON.parse(firstItem.fields);
 
           const mappedFields = fields.map(item => ({
@@ -619,9 +623,8 @@ const JudgePanelReg = () => {
             name: item.name,
             type: item.type,
             required: item.required,
-            is_important: item.is_important // Assuming the API includes is_important field
+            is_important: item.is_important
           }));
-
           setParticipantName(firstItem.current_participant_name);
           setShowParticipantId(firstItem.current_participant_id);
           setFormFields(mappedFields);
@@ -633,7 +636,9 @@ const JudgePanelReg = () => {
           console.log('Unexpected response structure:', response.response.data.message);
         }
       } catch (error) {
-        setFetchError(error.response.data.message);
+        // setFetchError(error.response.data.message);
+        setFetchError(error?.response?.data?.message);
+
       }
     };
 

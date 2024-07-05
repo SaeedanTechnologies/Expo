@@ -736,7 +736,7 @@ const handleApproved = async (id, contest_id) => {
                 disabled={participants[0]?.id === clickedParticipantId}
                 sx={{ textTransform: "none" }}
               >
-               Approved
+               Publish
               </Button>
             </Box>
           </>
