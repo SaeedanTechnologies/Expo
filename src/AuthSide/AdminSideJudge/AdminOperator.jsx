@@ -734,17 +734,7 @@ const AdminOperator = () => {
               >
                 Now Judge {participants[0]?.name}
               </Button>
-              {/* <Button
-                variant="contained"
-                color="primary"
-                onClick={() =>
-                  handleApproved(participants[0]?.id, participants[0]?.contest_id)
-                }
-                disabled={participants[0]?.id === clickedParticipantId}
-                sx={{ textTransform: "none" }}
-              >
-               Publish
-              </Button> */}
+      
             </Box>
 
             {allScoresGiven ? (
