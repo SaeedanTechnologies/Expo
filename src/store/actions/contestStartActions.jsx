@@ -67,7 +67,18 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
       }
     };
 
-
+    export const rematchApi = (contest_id, participant_id) => async (dispatch) => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await api.post('admin/manual-rematch-contest', {
+          contest_id,
+          participant_id
+        },);
+        return res.data; // Assuming you want to return data from the response
+      } catch (err) {
+        throw err;
+      }
+    };
 
 
   export const singleContest = (contestId) => async (dispatch) => {
