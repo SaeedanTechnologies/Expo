@@ -717,7 +717,7 @@ width:'100%'
                 onClick={() =>
                   handleClick(participants[0]?.id, participants[0]?.contest_id)
                 }
-                disabled={participants[0]?.id === clickedParticipantId || !allScoresGiven}
+                disabled={participants[0]?.id === clickedParticipantId}
                 sx={{ textTransform: "none" }}
               >
                 Now Judge {participants[0]?.name}
@@ -743,14 +743,14 @@ width:'100%'
 
             </Box>
 
-            {!allScoresGiven ? (
+            {allScoresGiven ? (
   <Button
                 variant="contained"
                 color="primary"
                 onClick={() =>
                   handleApproved(participants[0]?.id, participants[0]?.contest_id)
                 }
-                disabled={participants[0]?.id === clickedParticipantId || !allScoresGiven}
+                // disabled={participants[0]?.id === clickedParticipantId}
                 sx={{ textTransform: "none", width:'100%' }}
               >
                 Publish
