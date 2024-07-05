@@ -338,7 +338,6 @@
 
 // export default AdminOperator;
 
-
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -363,12 +362,13 @@ import {
   getStartContest,
   setNextParticipant,
   setApprovidParticipant,
+  getBehindScreen,
 } from "../../store/actions/contestStartActions";
 import { useDispatch } from "react-redux";
 
 const AdminOperator = () => {
   const { id } = useParams();
-  const contest_id=id;
+  const contest_id = id;
   const [loadingbtn, setLoadingbtn] = useState(false);
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const navigate = useNavigate();
@@ -381,10 +381,38 @@ const AdminOperator = () => {
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [selectedJudge, setSelectedJudge] = useState(null);
+  const [fieldScores, setFieldScores] = useState([]);
+
+  useEffect(() => {
+    const fetchContestData = async () => {
+      try {
+        const result = await dispatch(getBehindScreen(id));
+
+        setFieldScores(result?.data?.data?.total_scores);
+
+        const filteredParticipants = result?.data?.data?.participants?.filter(
+          (participant) => participant.is_judged === 0
+        );
+        setParticipants(
+          filteredParticipants?.map((participant) => {
+            const fieldsValuesString = participant?.fields_values?.slice(1, -1);
+            const fieldsValues = JSON.parse(
+              fieldsValuesString.replace(/\\/g, "")
+            );
+            return { ...participant, ...fieldsValues };
+          })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchContestData();
+  }, [dispatch, id]);
+  console.log(fieldScores, "fieldddddddddddd");
 
   // const handleOpenModal = (judge) => {
   //   setSelectedJudge(judge);
-
 
   //   console.log(judge, 'ddfsdfdfdf')
   //   setOpenModal(true);
@@ -396,12 +424,11 @@ const AdminOperator = () => {
   // };
 
   const [selectedJudgeScores, setSelectedJudgeScores] = useState([]);
+  console.log(selectedJudgeScores, "scoreee");
   // const [allScoresGiven, setAllScoresGiven] = useState(false);
   const handleOpenModal = (judge) => {
     setSelectedJudge(judge);
-    const judgeScores = score.filter(
-      (score) => score.judge_id === judge.id
-    );
+    const judgeScores = score.filter((score) => score.judge_id === judge.id);
     setSelectedJudgeScores(judgeScores);
     setOpenModal(true);
   };
@@ -440,7 +467,6 @@ const AdminOperator = () => {
     }
   }, [participants]);
 
-
   const handleClick = async (id, contestId) => {
     try {
       const res = await dispatch(setNextParticipant(contestId, id));
@@ -451,23 +477,15 @@ const AdminOperator = () => {
     }
   };
 
+  const handleApproved = async (id, contest_id) => {
+    try {
+      const res = await dispatch(setApprovidParticipant(contest_id, id));
 
-
-
-
-const handleApproved = async (id, contest_id) => {
-
-  try {
-
-    const res = await dispatch(setApprovidParticipant(contest_id, id));
-
-    setClickedParticipantId(id);
-  } catch (error) {
-    console.error("Failed to send request:", error);
-  }
-};
-
-
+      setClickedParticipantId(id);
+    } catch (error) {
+      console.error("Failed to send request:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchContestData = async () => {
@@ -490,14 +508,13 @@ const handleApproved = async (id, contest_id) => {
         setAllJudges(result.data.data.participants);
         setLoading(false);
 
-
-
-
         const currentParticipantId = result.data.data.participants[0]?.id;
         const currentScores = result.data.data.total_scores.filter(
           (score) => score.participant_id === currentParticipantId
         );
-        setAllScoresGiven(currentScores.length === result.data.data.judges.length);
+        setAllScoresGiven(
+          currentScores.length === result.data.data.judges.length
+        );
       } catch (err) {
         console.log(err);
       }
@@ -544,16 +561,17 @@ const handleApproved = async (id, contest_id) => {
         alignItems: "center",
         minHeight: "90vh",
         padding: isSmall ? "1rem 5%" : "1rem 30%",
-
       }}
     >
       <Box
         sx={{
-display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
 
-
-// backgroundColor:'red',
-width:'100%'
+          // backgroundColor:'red',
+          width: "100%",
         }}
       >
         <Typography
@@ -569,7 +587,7 @@ width:'100%'
           consectetur lorem ipsum dolor sit amet.
         </Typography>
 
-        <TableContainer sx={{ marginY: 1, width:'100%' }}>
+        <TableContainer sx={{ marginY: 1, width: "100%" }}>
           <Table>
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow sx={{ display: "flex" }}>
@@ -577,7 +595,6 @@ width:'100%'
                 <TableCell sx={{ flex: 1 }}>Status</TableCell>
               </TableRow>
             </TableHead>
-
 
             <TableBody>
               {participants.length === 0 ? (
@@ -627,8 +644,14 @@ width:'100%'
           Judges
         </Typography>
 
-
-        <Box sx={{ display: "flex", justifyContent: "space-between", width:'100%', overflow:'auto' }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            overflow: "auto",
+          }}
+        >
           {judges?.map((judge, index) => (
             <Box
               key={index}
@@ -722,7 +745,7 @@ width:'100%'
               >
                 Now Judge {participants[0]?.name}
               </Button>
-                {/* <Button
+              {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={() =>
@@ -733,30 +756,24 @@ width:'100%'
               >
                Publish
               </Button> */}
-
-
-
-
-
-
-
-
             </Box>
 
             {allScoresGiven ? (
-  <Button
+              <Button
                 variant="contained"
                 color="primary"
                 onClick={() =>
-                  handleApproved(participants[0]?.id, participants[0]?.contest_id)
+                  handleApproved(
+                    participants[0]?.id,
+                    participants[0]?.contest_id
+                  )
                 }
                 // disabled={participants[0]?.id === clickedParticipantId}
-                sx={{ textTransform: "none", width:'100%' }}
+                sx={{ textTransform: "none", width: "100%" }}
               >
                 Publish
               </Button>
-):null}
-
+            ) : null}
           </>
         )}
       </Box>
@@ -772,28 +789,109 @@ width:'100%'
             border: "2px solid #000",
             boxShadow: 24,
             p: 4,
+            maxHeight:'80vh',
+            overflowY:'auto'
           }}
         >
-          <Typography variant="h6" component="h2">
-            Judge Details
-          </Typography>
           {selectedJudge && (
             <>
-
               <Typography sx={{ mt: 2 }}>
                 <strong>Scores:</strong>
               </Typography>
               {selectedJudgeScores.length === 0 ? (
-                <Typography sx={{ mt: 2 }}>
-                  No scores available.
-                </Typography>
+                <Typography sx={{ mt: 2 }}>No scores available.</Typography>
               ) : (
-                selectedJudgeScores.map((score, index) => (
-                  <Typography key={index} sx={{ mt: 1 }}>
-                    Participant ID {score.participant_id}:{" "}
-                    {score.total_score ? score.total_score.toFixed(2) : "No Score"}
-                  </Typography>
-                ))
+                <>
+
+                {/* --------------modal ka data ---------- */}
+
+                <div>
+      {selectedJudgeScores.map((score, index) => {
+        // Parse the participant name
+        const participantName = (() => {
+          try {
+            const outerParsed = JSON.parse(score.participant.fields_values);
+            const innerParsed = JSON.parse(outerParsed);
+            return innerParsed.name || "Unknown";
+          } catch (e) {
+            console.error("Failed to parse fields_values:", e);
+            return "Unknown";
+          }
+        })();
+
+        // Get the scores for the current participant
+        const participantFieldScores = fieldScores.filter(
+          (val) => val.participant_id === score.participant_id
+        );
+
+        return (
+          <React.Fragment key={index}>
+            <Typography sx={{ mt: 1, fontWeight: "700" }}>
+              Participant Name {participantName}:
+            </Typography>
+
+            <Box>
+              {participantFieldScores.map((fieldScore, scoreIndex) => (
+                <Box key={scoreIndex}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "0.2rem",
+                    }}
+                  >
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        fontSize: "0.9rem",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {fieldScore.field_name}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontSize: "0.9rem",
+                        color: "red",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {fieldScore.total_score}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mt: 1,
+              }}
+            >
+              <Typography>Total</Typography>
+              <Typography>
+                {score.total_score
+                  ? score.total_score.toFixed(2)
+                  : "No Score"}
+              </Typography>
+            </Box>
+
+
+
+            {index < selectedJudgeScores.length - 1 && <Divider sx={{ my: 2 }} />}
+          </React.Fragment>
+        );
+      })}
+    </div>
+
+{/* -----------------------modal ka data end---------- */}
+
+                </>
               )}
             </>
           )}
