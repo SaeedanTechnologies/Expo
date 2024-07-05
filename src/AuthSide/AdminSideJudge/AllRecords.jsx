@@ -1640,7 +1640,7 @@
 //   );
 // };
 
-// export default AllRecords;
+//export default AllRecords;
 
 
 // import React, { useEffect, useState } from "react";
@@ -2272,3 +2272,5 @@ const AllRecords = () => {
 };
 
 export default AllRecords;
+
+
