@@ -533,12 +533,18 @@ const handleApproved = async (id, contest_id) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "80vh",
+        minHeight: "90vh",
+        padding: isSmall ? "1rem 5%" : "1rem 30%",
+
       }}
     >
       <Box
         sx={{
-          padding: isSmall ? "1rem 5%" : "1rem 30%",
+display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column',
+
+
+// backgroundColor:'red',
+width:'100%'
         }}
       >
         <Typography
@@ -554,7 +560,7 @@ const handleApproved = async (id, contest_id) => {
           consectetur lorem ipsum dolor sit amet.
         </Typography>
 
-        <TableContainer sx={{ marginY: 1 }}>
+        <TableContainer sx={{ marginY: 1, width:'100%' }}>
           <Table>
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow sx={{ display: "flex" }}>
@@ -562,29 +568,7 @@ const handleApproved = async (id, contest_id) => {
                 <TableCell sx={{ flex: 1 }}>Status</TableCell>
               </TableRow>
             </TableHead>
-            {/* <TableBody>
-              <TableRow sx={{ display: "flex" }}>
-                <TableCell sx={{ flex: 3 }}>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Avatar
-                      src={participants[0]?.image}
-                      alt={participants[0]?.name}
-                      sx={{ marginRight: 2, height: "30px", width: "30px" }}
-                    />
-                    <Typography sx={{ fontSize: "0.9rem" }}>
-                      {participants[0]?.name}
-                    </Typography>
-                  </Box>
-                </TableCell>
-                <TableCell sx={{ flex: 1 }}>
-                  <Typography
-                    sx={{ color: "green", fontWeight: 600, fontSize: "0.8rem" }}
-                  >
-                    Now in Progress
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            </TableBody> */}
+
 
             <TableBody>
               {participants.length === 0 ? (
@@ -633,7 +617,9 @@ const handleApproved = async (id, contest_id) => {
         >
           Judges
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", width:'100%', overflow:'auto' }}>
           {judges?.map((judge, index) => (
             <Box
               key={index}
@@ -692,7 +678,7 @@ const handleApproved = async (id, contest_id) => {
                 padding: 2,
                 borderRadius: "8px",
                 width: "100%",
-                maxWidth: 500,
+                maxWidth: 400,
               }}
             >
               <Box
@@ -761,12 +747,7 @@ const handleApproved = async (id, contest_id) => {
           </Typography>
           {selectedJudge && (
             <>
-              <Typography sx={{ mt: 2 }}>
-                Name: {selectedJudge.name}
-              </Typography>
-              <Typography sx={{ mt: 2 }}>
-                Email: {selectedJudge.email}
-              </Typography>
+             
               <Typography sx={{ mt: 2 }}>
                 <strong>Scores:</strong>
               </Typography>

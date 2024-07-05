@@ -1,4 +1,5 @@
 
+
 // import React, { useState, useEffect } from 'react';
 // import {
 //   Box,
@@ -51,34 +52,15 @@
 //     setJudges(newJudges);
 //   };
 
-
 //   const handlePhotoChange = (index, event) => {
-//     const formData = new FormData();
-//     formData.append('profile_picture', event.target.files[0]);
-
-//     // Now you can send this formData object wherever you need, such as an API call
-//     // For example, you can send it to a backend server using fetch or axios
-
-//     // Assuming you want to keep it locally updated, you can update the state with base64 representation
 //     const reader = new FileReader();
 //     reader.onload = () => {
 //       if (reader.readyState === 2) {
-//         handleChange(index, 'profile_picture', reader.result); // Update state with base64 representation
+//         handleChange(index, 'profile_picture', reader.result);
 //       }
 //     };
-//     reader.readAsDataURL(event.target.files[0]); // Read the file as data URL
+//     reader.readAsDataURL(event.target.files[0]);
 //   };
-
-
-//   // const handlePhotoChange = (index, event) => {
-//   //   const reader = new FileReader();
-//   //   reader.onload = () => {
-//   //     if (reader.readyState === 2) {
-//   //       handleChange(index, 'profile_picture', reader.result);
-//   //     }
-//   //   };
-//   //   reader.readAsDataURL(event.target.files[0]);
-//   // };
 
 //   const isNextButtonDisabled = () => {
 //     const currentJudge = judges[activeStep];
@@ -89,7 +71,15 @@
 //   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
 //   return (
-//     <Box sx={{ padding: isSmall ? '2rem 8%' : '2rem 30%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+//     <Box
+//       sx={{
+//         padding: isSmall ? '2rem 8%' : '2rem 30%',
+//         display: 'flex',
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         height: '100vh',
+//       }}
+//     >
 //       <Box>
 //         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
 //           Add Judges
@@ -100,7 +90,7 @@
 //         <Box sx={{ overflowX: 'auto', width: isSmall ? '80vw' : '40vw' }}>
 //           <Stepper activeStep={activeStep} alternativeLabel sx={{ width: '100%' }}>
 //             {judges.map((_, index) => (
-//               <Step key={index} >
+//               <Step key={index} onClick={() => setActiveStep(index)}>
 //                 <StepLabel>{`Judge ${index + 1}`}</StepLabel>
 //               </Step>
 //             ))}
@@ -142,10 +132,8 @@
 //               onChange={(e) => handleChange(activeStep, 'email', e.target.value)}
 //               sx={{ mb: 2 }}
 //             />
-
 //             <br />
 //             <br />
-
 //             <Box gap={3} sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
 //               <Button
 //                 variant="outlined"
@@ -176,6 +164,7 @@
 
 
 
+
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -188,7 +177,9 @@ import {
   Avatar,
   useMediaQuery,
   useTheme,
+  IconButton,
 } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const AddJudgeMain = () => {
@@ -238,6 +229,12 @@ const AddJudgeMain = () => {
     reader.readAsDataURL(event.target.files[0]);
   };
 
+  const handleRemoveJudge = (index) => {
+    const newJudges = judges.filter((_, i) => i !== index);
+    setJudges(newJudges);
+    setActiveStep((prevActiveStep) => (prevActiveStep > 0 ? prevActiveStep - 1 : 0));
+  };
+
   const isNextButtonDisabled = () => {
     const currentJudge = judges[activeStep];
     return !currentJudge.judge_name || !currentJudge.email;
@@ -267,7 +264,18 @@ const AddJudgeMain = () => {
           <Stepper activeStep={activeStep} alternativeLabel sx={{ width: '100%' }}>
             {judges.map((_, index) => (
               <Step key={index} onClick={() => setActiveStep(index)}>
-                <StepLabel>{`Judge ${index + 1}`}</StepLabel>
+                <StepLabel>
+                  {`Judge ${index + 1}`}
+                  <IconButton
+                    size="small"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveJudge(index);
+                    }}
+                  >
+                    <Close fontSize="small" />
+                  </IconButton>
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
