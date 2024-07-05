@@ -396,7 +396,7 @@ const AdminOperator = () => {
   // };
 
   const [selectedJudgeScores, setSelectedJudgeScores] = useState([]);
-
+  // const [allScoresGiven, setAllScoresGiven] = useState(false);
   const handleOpenModal = (judge) => {
     setSelectedJudge(judge);
     const judgeScores = score.filter(
@@ -489,6 +489,15 @@ const handleApproved = async (id, contest_id) => {
         );
         setAllJudges(result.data.data.participants);
         setLoading(false);
+
+
+
+
+        const currentParticipantId = result.data.data.participants[0]?.id;
+        const currentScores = result.data.data.total_scores.filter(
+          (score) => score.participant_id === currentParticipantId
+        );
+        setAllScoresGiven(currentScores.length === result.data.data.judges.length);
       } catch (err) {
         console.log(err);
       }
@@ -678,7 +687,7 @@ width:'100%'
                 padding: 2,
                 borderRadius: "8px",
                 width: "100%",
-                maxWidth: 400,
+                maxWidth: 500,
               }}
             >
               <Box
@@ -708,12 +717,12 @@ width:'100%'
                 onClick={() =>
                   handleClick(participants[0]?.id, participants[0]?.contest_id)
                 }
-                disabled={participants[0]?.id === clickedParticipantId}
+                disabled={participants[0]?.id === clickedParticipantId || !allScoresGiven}
                 sx={{ textTransform: "none" }}
               >
                 Now Judge {participants[0]?.name}
               </Button>
-                <Button
+                {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={() =>
@@ -723,8 +732,31 @@ width:'100%'
                 sx={{ textTransform: "none" }}
               >
                Publish
-              </Button>
+              </Button> */}
+
+
+
+
+
+
+
+
             </Box>
+
+            {!allScoresGiven ? (
+  <Button
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  handleApproved(participants[0]?.id, participants[0]?.contest_id)
+                }
+                disabled={participants[0]?.id === clickedParticipantId || !allScoresGiven}
+                sx={{ textTransform: "none", width:'100%' }}
+              >
+                Publish
+              </Button>
+):null}
+
           </>
         )}
       </Box>
@@ -747,7 +779,7 @@ width:'100%'
           </Typography>
           {selectedJudge && (
             <>
-             
+
               <Typography sx={{ mt: 2 }}>
                 <strong>Scores:</strong>
               </Typography>
