@@ -131,7 +131,7 @@ const handleFile = (()=>{
       </Box>
       <Button variant='contained' sx={{width:'100%'}} onClick={handleNext}>Next</Button>
       <br/>
-      <Button variant='contained' sx={{width:'100%'}} onClick={handleFile}>Upload File</Button>
+     {/*<Button variant='contained' sx={{width:'100%'}} onClick={handleFile}>Upload File</Button> */} 
 
     </Box>
 

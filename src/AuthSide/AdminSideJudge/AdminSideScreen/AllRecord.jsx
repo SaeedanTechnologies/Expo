@@ -50,8 +50,8 @@ const AllRecord = () => {
               textAlign: 'center',
               marginBottom: '1rem'
             }}
-          >
-          All Records
+          > 
+          All Records   
           </Typography>
           <Typography
             variant='h6'

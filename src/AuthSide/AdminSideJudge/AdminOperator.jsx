@@ -365,7 +365,8 @@ import {
   getBehindScreen,
 } from "../../store/actions/contestStartActions";
 import { useDispatch } from "react-redux";
-
+import UploadVideoDialogBox from "./UploadVideo";
+import {Dialog} from "@mui/material";
 const AdminOperator = () => {
   const { id } = useParams();
   const contest_id = id;
@@ -382,7 +383,7 @@ const AdminOperator = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedJudge, setSelectedJudge] = useState(null);
   const [fieldScores, setFieldScores] = useState([]);
-
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   useEffect(() => {
     const fetchContestData = async () => {
       try {
@@ -410,8 +411,17 @@ const AdminOperator = () => {
     fetchContestData();
   }, [dispatch, id]);
 
+  const handleFile = (()=>{
+    navigate(`/upload-file/${contest_id}`)
+  })
 
+  const handleOpenUploadDialog = () => {
+    setUploadDialogOpen(true);
+  };
 
+  const handleCloseUploadDialog = () => {
+    setUploadDialogOpen(false);
+  };
   const [selectedJudgeScores, setSelectedJudgeScores] = useState([]);
   console.log(selectedJudgeScores, "scoreee");
   // const [allScoresGiven, setAllScoresGiven] = useState(false);
@@ -421,6 +431,12 @@ const AdminOperator = () => {
     setSelectedJudgeScores(judgeScores);
     setOpenModal(true);
   };
+
+
+  const handleNext = (()=>{
+    navigate(`/admin-contest-start/${contest_id}`)
+  })
+
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -688,8 +704,9 @@ const [loadingPublish, setLoadingPublish] = useState(false)
                 onClick={handleAllRecords}
                 sx={{ width: "100%", textTransform: "none" }}
               >
-                All Records
+                All Records 
               </Button>
+             
             </Box>
           </>
         ) : (
@@ -762,7 +779,12 @@ const [loadingPublish, setLoadingPublish] = useState(false)
             ) : null}
           </>
         )}
+<br />
+           <Box sx={{marginTop:'12px'}}>
+        <Button variant='contained' sx={{width:'100%'}} onClick={handleOpenUploadDialog}>Upload File</Button>
       </Box>
+      </Box>
+   
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box
           sx={{
@@ -886,6 +908,18 @@ const [loadingPublish, setLoadingPublish] = useState(false)
           </Button>
         </Box>
       </Modal>
+
+
+
+
+        <Dialog
+        open={uploadDialogOpen}
+        onClose={handleCloseUploadDialog}
+        maxWidth="md"
+        fullWidth
+      >
+        <UploadVideoDialogBox contest_id={contest_id} onClose={handleCloseUploadDialog} />
+      </Dialog>
     </Box>
   );
 };

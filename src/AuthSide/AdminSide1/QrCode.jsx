@@ -105,6 +105,8 @@ import { Box, Typography } from "@mui/material";
 import MyButton from "../../page/components/MyButton";
 import { useLocation, useNavigate } from "react-router";
 import QRCode from "qrcode.react";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 const QrCode = () => {
   const navigate = useNavigate();
@@ -127,6 +129,18 @@ const QrCode = () => {
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+  };
+
+  const downloadPdf = async () => {
+    const element = qrRef.current;
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF();
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("qrcode.pdf");
   };
 
   return (
@@ -187,11 +201,15 @@ const QrCode = () => {
         <Box
           sx={{ display: "flex", justifyContent: "space-between", gap: "20px" }}
         >
-          <MyButton
+       {/*<MyButton
             onClick={downloadQRCode}
-            text="Save"
+            text="Save as PNG"
             sx={{ width: "100%" }}
-
+          />  */}   
+          <MyButton
+            onClick={downloadPdf}
+            text="Save as PDF"
+            sx={{ width: "100%" }}
           />
           <MyButton
             onClick={() => navigate(`/add-judges`)}
@@ -205,3 +223,4 @@ const QrCode = () => {
 };
 
 export default QrCode;
+
