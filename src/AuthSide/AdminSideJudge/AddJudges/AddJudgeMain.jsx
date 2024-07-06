@@ -1,5 +1,6 @@
 
 
+
 // import React, { useState, useEffect } from 'react';
 // import {
 //   Box,
@@ -16,6 +17,7 @@
 // import { useNavigate } from 'react-router-dom';
 
 // const AddJudgeMain = () => {
+  
 //   const [activeStep, setActiveStep] = useState(0);
 //   const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: '' }]);
 //   const navigate = useNavigate();
@@ -62,24 +64,11 @@
 //     reader.readAsDataURL(event.target.files[0]);
 //   };
 
-//   const isNextButtonDisabled = () => {
-//     const currentJudge = judges[activeStep];
-//     return !currentJudge.judge_name || !currentJudge.email;
-//   };
-
 //   const theme = useTheme();
 //   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
 //   return (
-//     <Box
-//       sx={{
-//         padding: isSmall ? '2rem 8%' : '2rem 30%',
-//         display: 'flex',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         height: '100vh',
-//       }}
-//     >
+//     <Box sx={{ padding: isSmall ? '2rem 8%' : '2rem 30%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
 //       <Box>
 //         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
 //           Add Judges
@@ -90,7 +79,7 @@
 //         <Box sx={{ overflowX: 'auto', width: isSmall ? '80vw' : '40vw' }}>
 //           <Stepper activeStep={activeStep} alternativeLabel sx={{ width: '100%' }}>
 //             {judges.map((_, index) => (
-//               <Step key={index} onClick={() => setActiveStep(index)}>
+//               <Step key={index}>
 //                 <StepLabel>{`Judge ${index + 1}`}</StepLabel>
 //               </Step>
 //             ))}
@@ -132,8 +121,6 @@
 //               onChange={(e) => handleChange(activeStep, 'email', e.target.value)}
 //               sx={{ mb: 2 }}
 //             />
-//             <br />
-//             <br />
 //             <Box gap={3} sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
 //               <Button
 //                 variant="outlined"
@@ -147,7 +134,6 @@
 //                 color="primary"
 //                 onClick={handleNext}
 //                 sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
-//                 disabled={isNextButtonDisabled()}
 //               >
 //                 {activeStep === judges.length - 1 ? 'Finish' : 'Next'}
 //               </Button>
@@ -160,10 +146,6 @@
 // };
 
 // export default AddJudgeMain;
-
-
-
-
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -184,7 +166,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AddJudgeMain = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: '' }]);
+  const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: null }]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -208,7 +190,7 @@ const AddJudgeMain = () => {
   };
 
   const handleAddNewJudge = () => {
-    const newJudges = [...judges, { judge_name: '', email: '', phone: '', profile_picture: '' }];
+    const newJudges = [...judges, { judge_name: '', email: '', phone: '', profile_picture: null }];
     setJudges(newJudges);
     setActiveStep(newJudges.length - 1);
   };
@@ -220,13 +202,10 @@ const AddJudgeMain = () => {
   };
 
   const handlePhotoChange = (index, event) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        handleChange(index, 'profile_picture', reader.result);
-      }
-    };
-    reader.readAsDataURL(event.target.files[0]);
+    const file = event.target.files[0];
+    if (file) {
+      handleChange(index, 'profile_picture', file);
+    }
   };
 
   const handleRemoveJudge = (index) => {
@@ -281,61 +260,64 @@ const AddJudgeMain = () => {
           </Stepper>
         </Box>
         <Box sx={{ mt: 3 }}>
-          <Box sx={{ mb: 3, p: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Avatar src={judges[activeStep]?.profile_picture} sx={{ width: 76, height: 76, mr: 2 }} />
-              <Box>
-                <Button variant="outlined" component="label">
-                  Upload Your Photo
-                  <input type="file" hidden onChange={(e) => handlePhotoChange(activeStep, e)} />
-                </Button>
-                <Typography sx={{ fontSize: '0.8rem', color: 'grey', width: '80%' }}>
-                  Image format must be PNG/JPG and size less than 500 kb
-                </Typography>
+          {judges.map((judge, index) => (
+            <Box key={index} sx={{ mb: 3, p: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Avatar
+                  src={judge.profile_picture ? URL.createObjectURL(judge.profile_picture) : null}
+                  sx={{ width: 76, height: 76, mr: 2 }}
+                />
+                <Box>
+                  <Button variant="outlined" component="label">
+                    Upload Your Photo
+                    <input type="file" hidden onChange={(e) => handlePhotoChange(index, e)} accept="image/jpeg,image/png" />
+                  </Button>
+                  <Typography sx={{ fontSize: '0.8rem', color: 'grey', width: '80%' }}>
+                    Image format must be PNG/JPG and size less than 500 kb
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-            <label style={{ fontWeight: 600 }}>Judge Name</label>
-            <br />
-            <br />
-            <TextField
-              label="Judge Name"
-              variant="outlined"
-              fullWidth
-              value={judges[activeStep]?.judge_name || ''}
-              onChange={(e) => handleChange(activeStep, 'judge_name', e.target.value)}
-              sx={{ mb: 2 }}
-            />
-            <label style={{ fontWeight: 600 }}>Email</label>
-            <br />
-            <br />
-            <TextField
-              label="Email"
-              variant="outlined"
-              fullWidth
-              value={judges[activeStep]?.email || ''}
-              onChange={(e) => handleChange(activeStep, 'email', e.target.value)}
-              sx={{ mb: 2 }}
-            />
-            <br />
-            <br />
-            <Box gap={3} sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
-              <Button
+              <label style={{ fontWeight: 600 }}>Judge Name</label>
+              <br />
+              <br />
+              <TextField
+                label="Judge Name"
                 variant="outlined"
-                onClick={handleAddNewJudge}
-                sx={{ mr: 2, width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
-              >
-                + Add New Judge
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
-                disabled={isNextButtonDisabled()}
-              >
-                {activeStep === judges.length - 1 ? 'Finish' : 'Next'}
-              </Button>
+                fullWidth
+                value={judge.judge_name || ''}
+                onChange={(e) => handleChange(index, 'judge_name', e.target.value)}
+                sx={{ mb: 2 }}
+              />
+              <label style={{ fontWeight: 600 }}>Email</label>
+              <br />
+              <br />
+              <TextField
+                label="Email"
+                variant="outlined"
+                fullWidth
+                value={judge.email || ''}
+                onChange={(e) => handleChange(index, 'email', e.target.value)}
+                sx={{ mb: 2 }}
+              />
             </Box>
+          ))}
+          <Box gap={3} sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
+            <Button
+              variant="outlined"
+              onClick={handleAddNewJudge}
+              sx={{ mr: 2, width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
+            >
+              + Add New Judge
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNext}
+              sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
+              disabled={isNextButtonDisabled()}
+            >
+              {activeStep === judges.length - 1 ? 'Finish' : 'Next'}
+            </Button>
           </Box>
         </Box>
       </Box>
@@ -344,3 +326,6 @@ const AddJudgeMain = () => {
 };
 
 export default AddJudgeMain;
+
+
+
