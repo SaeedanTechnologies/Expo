@@ -21,16 +21,20 @@ const SignUpForm = () => {
   const [submitting, setSubmitting] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [startDateTime, setStartDateTime] = useState(null);
   const [endDateTime, setEndDateTime] = useState(null);
   const [timeDiff, setTimeDiff] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [registrationEnded, setRegistrationEnded] = useState(false);
+  const [registrationNotStarted, setRegistrationNotStarted] = useState(true);
   const { handleSubmit, control, formState: { errors } } = useForm();
 
   useEffect(() => {
     dispatch(singleContest(id))
       .then((result) => {
         const endDateTime = new Date(result.data.payload.end_date_time);
+        const startDateTime = new Date(result.data.payload.start_date_time);
         setEndDateTime(endDateTime);
+        setStartDateTime(startDateTime);
         setLoading(false);
       })
       .catch((err) => {
@@ -49,6 +53,13 @@ const SignUpForm = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      if (startDateTime) {
+        const currentDateTime = new Date();
+        if (currentDateTime >= startDateTime) {
+          setRegistrationNotStarted(false);
+        }
+      }
+
       if (endDateTime) {
         const currentDateTime = new Date();
         const diffMillis = endDateTime - currentDateTime;
@@ -59,15 +70,22 @@ const SignUpForm = () => {
           setTimeDiff({ hours: diffHours, minutes: diffMinutes, seconds: diffSeconds });
         } else {
           clearInterval(interval);
-          setRegistrationEnded(true); // Set registrationEnded to true when registration time ends
+          setRegistrationEnded(true);
         }
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [endDateTime]);
+  }, [startDateTime, endDateTime]);
 
   const onSubmit = (formData) => {
+    const currentDateTime = new Date();
+    if (currentDateTime < startDateTime) {
+      setSnackbarMessage('Registration has not started yet.');
+      setSnackbarOpen(true);
+      return;
+    }
+
     setSubmitting(true);
     const payload = {
       contest_id: id,
@@ -76,7 +94,7 @@ const SignUpForm = () => {
 
     axios.post('https://expoproject.saeedantechpvt.com/api/participients', payload)
       .then(response => {
-        setSnackbarMessage('You are Registered ');
+        setSnackbarMessage('You are Registered');
         navigate("/participant-registered");
       })
       .catch(error => {
@@ -114,7 +132,11 @@ const SignUpForm = () => {
         <CircularProgress />
       ) : (
         <>
-          {registrationEnded ? (
+          {registrationNotStarted ? (
+            <Typography variant="h5" color="error" align="center" gutterBottom>
+              Registration has not started yet.
+            </Typography>
+          ) : registrationEnded ? (
             <Typography variant="h5" color="error" align="center" gutterBottom>
               Registration time has ended.
             </Typography>
