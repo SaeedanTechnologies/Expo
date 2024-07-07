@@ -33,6 +33,7 @@ import AdminRegisterForm from "./AuthSide/AdminSide1/AdminRegisterForm";
 import AdminLoginForm from "./AuthSide/AdminSide1/AdminLoginForm";
 import ParticipantRegistered from "./AuthSide/AdminSide1/ParticipantRegistered";
 import PublicScreen from "./AuthSide/AdminSideJudge/PublicScreen";
+import Stripe from "./Stripe";
 export default function Router() {
 
 
@@ -40,6 +41,10 @@ export default function Router() {
         {
             path: '/',
             element: <Navigate to="/admin-login" replace />,
+        },
+        {
+            path: '/paypal',
+            element: <Stripe />,
         },
         {
             path: '/admin',
@@ -79,7 +84,7 @@ export default function Router() {
         },
         {
             path: 'participant-registered',
-            element: <ParticipantRegistered/>,
+            element: <ParticipantRegistered />,
         },
         {
             path: 'add-judges',
@@ -110,7 +115,7 @@ export default function Router() {
             path: 'public-screen-result/:id',
             element: <AdminSideScreen2 />,
         },
-            {
+        {
             path: 'admin-operator2',
             element: <AdminOperator2 />
         },
