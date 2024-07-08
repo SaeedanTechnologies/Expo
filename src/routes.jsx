@@ -33,6 +33,8 @@ import AdminRegisterForm from "./AuthSide/AdminSide1/AdminRegisterForm";
 import AdminLoginForm from "./AuthSide/AdminSide1/AdminLoginForm";
 import ParticipantRegistered from "./AuthSide/AdminSide1/ParticipantRegistered";
 import PublicScreen from "./AuthSide/AdminSideJudge/PublicScreen";
+import Allevents from "./AuthSide/AdminSide1/AllEvents/Allevents";
+import AllContest from "./AuthSide/AdminSide1/AllEvents/AllContest";
 export default function Router() {
 
 
@@ -169,6 +171,14 @@ export default function Router() {
         {
             path: 'admin-login',
             element: <AdminLoginForm />,
+        },
+        {
+            path: 'all-events',
+            element: <Allevents />,
+        },
+        {
+            path: 'all-contest/:id',
+            element: <AllContest />,
         },
     ]);
     return element;
