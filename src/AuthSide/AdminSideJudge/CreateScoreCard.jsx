@@ -209,7 +209,10 @@ const DraggableButton = () => {
       >
         Role
       </Button>
-      <Typography sx={{ fontSize: "15px", fontWeight: 600, marginTop: '12px' }}>Please Drag and Drop Left to right <FaArrowRight style={{fontSize:'14px'}}/></Typography>
+<Box style={{display:'flex'}}>
+
+<Box> <Typography sx={{ fontSize: "15px", fontWeight: 600, marginTop: '12px', color: '#be272a' }}>Please Drag and Drop Left to right </Typography></Box><Box style={{marginLeft:'12px', color: '#be272a'}}><FaArrowRight size="2em" style={{marginTop:'7px'}} /></Box>
+</Box>
     </Box>
   );
 };
