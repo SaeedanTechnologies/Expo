@@ -1,0 +1,221 @@
+import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Paper,
+  Box,
+  useMediaQuery,
+  useTheme,
+  Snackbar,
+} from "@mui/material";
+import Positions from "../../../page/components/Positions";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import { useDispatch } from "react-redux";
+
+import {  
+    getAllRecordsPublic,
+    saveToPublicScreen,
+    rematchApi,
+    pdfApi } from "../../../store/actions/contestStartActions";
+import { useLocation, useNavigate } from "react-router-dom";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+const AdminPublicAllRecords = () => {
+    const { id } = useParams();
+  //  const { id } = useParams();
+    console.log(id,"idvalue");
+  const navigate = useNavigate();
+
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const dispatch = useDispatch();
+
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [tied, setTied] = useState(false);
+  const [selectedParticipants, setSelectedParticipants] = useState([]);
+  const [showScreenloading, setShowScreenLoading] = useState(false);
+  const [rematchloading, setResmatchLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(getAllRecordsPublic(id));
+        const { data, tied: isTied } = response.data;
+        setRecords(data);
+        setLoading(false);
+        setTied(isTied);
+
+        if (isTied) {
+          const firstSixRecords = data.slice(0, 6);
+          const maxScore = Math.max(
+            ...firstSixRecords.map((record) => record.total_score)
+          );
+          const tiedParticipants = firstSixRecords
+            .filter((record) => record.total_score === maxScore)
+            .map((record) => record.participant_id);
+          setSelectedParticipants(tiedParticipants);
+        }
+      } catch (error) {
+        console.error("Error fetching records:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, id]);
+
+ 
+
+  const handleSelectParticipant = (participantId) => {
+    setSelectedParticipants((prevSelected) =>
+      prevSelected.includes(participantId)
+        ? prevSelected.filter((id) => id !== participantId)
+        : [...prevSelected, participantId]
+    );
+  };
+
+
+
+
+
+
+  const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+      };
+  const parseFormFields = (fieldsValuesString) => {
+    try {
+      const fieldsValues = JSON.parse(JSON.parse(fieldsValuesString));
+      return fieldsValues.name;
+    } catch (error) {
+      console.error("Error parsing fields_values:", error);
+      return "Unknown";
+    }
+  };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  const firstSixRecords = records.slice(0, 6);
+  const maxScore = Math.max(
+    ...firstSixRecords.map((record) => record.total_score)
+  );
+  const tiedParticipants = firstSixRecords
+    .filter((record) => record.total_score === maxScore)
+    .map((record) => record.participant_id);
+
+  const hasTieInFirstSix = tiedParticipants.length > 1;
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "80vh",
+      }}
+    >
+      <Box sx={{ padding: isSmall ? "2rem 10%" : "2rem 30%" }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          All Records
+        </Typography>
+        <Typography variant="body1" align="center" gutterBottom>
+          Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet
+          consectetur lorem ipsum dolor sit amet.
+        </Typography>
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
+              <TableRow>
+                <TableCell>Position</TableCell>
+                <TableCell>Participant Name</TableCell>
+                <TableCell>Score</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {records.map((record, index) => (
+                <TableRow
+                  key={record.participant_id}
+                  sx={{
+                    border:
+                      index < 6 &&
+                      selectedParticipants.includes(
+                        record.participant_id
+                      )
+                        ? "2px solid red"
+                        : "none",
+                  }}
+                  onClick={() =>
+                    index < 6 &&
+                    handleSelectParticipant(record.participant_id)
+                  }
+                >
+                  <TableCell>
+                    <Positions
+                      number={record.position}
+                      color={record.color}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Avatar
+                        src={record.avatar}
+                        alt={record.participant.name}
+                        sx={{ marginRight: 2 }}
+                      />
+                      {parseFormFields(
+                        record.participant.fields_values
+                      )}
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    {record.total_score.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+     
+      </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+      />
+    </Box>
+  );
+};
+
+export default AdminPublicAllRecords;

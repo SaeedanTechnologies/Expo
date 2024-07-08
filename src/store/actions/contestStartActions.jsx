@@ -63,7 +63,15 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     }
   };
 
-
+  export const getAllRecordsPublic = (contestId) => async (dispatch) => {
+    try {
+      const token=localStorage.getItem("token")
+      const res = await api.get(`public-contest-result/${contestId}`);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
 
   export const saveToPublicScreen = (contestId) => async (dispatch) => {
 

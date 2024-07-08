@@ -188,7 +188,6 @@
 
 // export default Allevents;
 
-
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -214,7 +213,7 @@ import {
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import MyTextField from "../../../page/components/MyTextField";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
@@ -225,7 +224,8 @@ import { DatePicker } from "@mui/x-date-pickers";
 const Allevents = () => {
   const location = useLocation();
   const { id } = useParams();
-  
+  const navigate = useNavigate();
+
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -240,6 +240,8 @@ const Allevents = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [dateFilter, setDateFilter] = useState(null);
 
+  const recordId=records.map(ids=>ids.id);
+  console.log(recordId,"klkkkk");
   useEffect(() => {
     fetchData();
   }, [page, rowsPerPage, monthFilter, yearFilter, dateFilter]);
@@ -300,6 +302,12 @@ const Allevents = () => {
     setDateFilter(newDate);
   };
 
+  const handleRowClick = (recorId) => {
+    navigate(`/public_all-records/${recordId}`);
+};
+
+
+
   if (loading) {
     return (
       <Box
@@ -349,7 +357,7 @@ const Allevents = () => {
             </TableHead>
             <TableBody>
               {records.map((record) => (
-                <TableRow key={record.id}>
+                <TableRow key={record.id} onClick={() => handleRowClick(record.id)}>
                   <TableCell>{record.name}</TableCell>
                   <TableCell>{new Date(record.start_date_time).toLocaleDateString()}</TableCell>
                 </TableRow>
@@ -377,3 +385,4 @@ const Allevents = () => {
 };
 
 export default Allevents;
+

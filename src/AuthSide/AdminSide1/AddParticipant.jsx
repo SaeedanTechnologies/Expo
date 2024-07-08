@@ -730,7 +730,7 @@ const AddParticipant = () => {
                 </Typography>
                 <Typography
                     sx={{
-                        color: '#D90B0F',
+                        color: '#be272a',
                         fontSize: '16px',
                         fontWeight: 300,
                         textAlign: 'center'
@@ -763,11 +763,17 @@ const AddParticipant = () => {
                                 onTouchEnd={(event) => handleTouchEnd(event, 'textField')}
                                 sx={{
                                     textTransform: 'none',
-                                    backgroundColor: '#F7F7F7',
+                                    backgroundColor: '#c61013',
                                     border: '1px solid #D1D1D1',
                                     borderRadius: '4px',
                                     color: 'black',
-                                    padding: '5px 10px'
+                                    padding: '5px 10px',
+                                    color:'white',
+                                    '&:hover': {
+                                        backgroundColor: '#c61013', // Same as the background color to avoid hover effect
+                                        border: '1px solid #D1D1D1',
+                                      },
+                                
                                 }}
                             >
                                 Text Field
@@ -779,17 +785,22 @@ const AddParticipant = () => {
                                 onTouchEnd={(event) => handleTouchEnd(event, 'picture')}
                                 sx={{
                                     textTransform: 'none',
-                                    backgroundColor: '#F7F7F7',
+                                    backgroundColor: '#c61013;',
                                     border: '1px solid #D1D1D1',
                                     borderRadius: '4px',
-                                    color: 'black',
-                                    padding: '5px 10px'
+                                    color: 'white',
+                                    padding: '5px 10px',
+                                    '&:hover': {
+                                        backgroundColor: '#c61013', // Same as the background color to avoid hover effect
+                                        border: '1px solid #D1D1D1',
+                                      },
+                                
                                 }}
                             >
                                 Picture
                             </Button>
                         </Box>
-                        <Typography sx={{ fontWeight: 500, fontSize: '16px', padding: '20px 10px', display: 'flex', alignItems: 'center' }}>Drag & Drop field from left to right <FaArrowRight /></Typography>
+                        <Typography sx={{ fontWeight: 500, fontSize: '16px', padding: '20px 10px', display: 'flex', alignItems: 'center', color: '#be272a', }}>Drag & Drop field from left to right <FaArrowRight size="2em" /></Typography>
                     </Box>
                     <Box
                         flex={1}
