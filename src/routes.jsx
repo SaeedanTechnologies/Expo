@@ -35,6 +35,7 @@ import ParticipantRegistered from "./AuthSide/AdminSide1/ParticipantRegistered";
 import PublicScreen from "./AuthSide/AdminSideJudge/PublicScreen";
 import Allevents from "./AuthSide/AdminSide1/AllEvents/Allevents";
 import AllContest from "./AuthSide/AdminSide1/AllEvents/AllContest";
+import TestingApi from "./AuthSide/JudgePanel/TestingApi";
 export default function Router() {
 
 
@@ -179,6 +180,10 @@ export default function Router() {
         {
             path: 'all-contest/:id',
             element: <AllContest />,
+        },
+        {
+            path: 'judge-score-card-testingApi/:id',
+            element: <TestingApi ></TestingApi>,
         },
     ]);
     return element;

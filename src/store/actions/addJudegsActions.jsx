@@ -24,3 +24,18 @@ export const submitJudegFormData = (dataToSubmit) => async (dispatch) => {
       throw err;
     }
   };
+
+
+  
+export const fetchFormJudegFormTesting = (id) => async (dispatch) => {
+  try {
+    const res = await api.get(`judge/Judge-score-card/${id}`);
+    dispatch({ type: "GET_JUDEG_RESP", payload: res.data });
+    return res;
+  } catch (err) {
+    dispatch({ type: "ADD_EVENT_FAILURE", error: err });
+    throw err;
+  }
+};
+
+

@@ -149,7 +149,7 @@ const JudgePanelReg2 = () => {
                   marginBottom: '1rem',
                 }}
               >
-                Give Score
+                Give Score hghg
               </Typography>
               <Box sx={{ marginBottom: '1rem' }}>
                 <InputLabel
