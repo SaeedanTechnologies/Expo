@@ -1999,7 +1999,9 @@ const AllRecords = () => {
       const response = await dispatch(saveToPublicScreen(contestId));
       setSnackbarOpen(true);
       setSnackbarMessage(response.data.message);
+      localStorage.setItem("public-screen", response.data.success);
 
+      console.log(response.data.success,"apiresponse")
       console.log("Response from public screen API:", response);
     } catch (error) {
       setSnackbarOpen(true);

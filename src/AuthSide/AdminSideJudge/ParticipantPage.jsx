@@ -338,6 +338,8 @@ import { Card, Typography, Grid, Box } from '@mui/material';
 import { useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux'; // Assuming you are using Redux
 import { getBehindScreen } from '../../store/actions/contestStartActions'; // Update action import as needed
+import AdminOperator2 from './AdminOperator2';
+import AdminSideScreen2 from './AdminSideScreen/AdminSideScreen2';
 
 const ParticipantCard = ({ judge, scores }) => {
 
@@ -390,7 +392,17 @@ const ParticipantPage = () => {
   const [participantId, setParticipantId] = useState("");
   const dispatch = useDispatch();
 
+  const [publicScreenValue, setPublicScreenValue] = useState('');
+  console.log(publicScreenValue,"kdskfsdkfk")
+  useEffect(() => {
+    const storedValue = localStorage.getItem("public-screen");
+    console.log(storedValue,"storedValue")
+    if (storedValue) {
+      setPublicScreenValue(storedValue);
+    }
+  }, []);
 
+  
   useEffect(() => {
     const fetchContestData = async () => {
       try {
@@ -430,45 +442,54 @@ const ParticipantPage = () => {
   console.log(image[0]?.file_url, 'immm')
   const defaultImage = '/bgimage.png';
     const backgroundImage = image?.length > 0 && image[0]?.file_url ? `url(${image[0]?.file_url})` : `url(${defaultImage})`;
-
+  
   return (
-    <Box
-      sx={{
-        // backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%),url(${image[0].file_url})`,
-        backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), ${backgroundImage}`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        width: "100%",
-      }}
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '90vh', padding: '1rem 5%' }}>
-        <Grid container spacing={4} sx={{ alignItems: 'start' }}>
-          <Grid item xs={12} sm={3} md={2.5}>
-            <Box>
-              <ScoreBoard judgeName={judgeName} totalScore={totalScore} participantId={participantId} participantsName={participantsName} />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={9} md={9.5}>
-            <Grid container spacing={2}>
-              {judges.map((judge, index) => {
-                const scores = totalScores.filter(score => score.judge_id === judge.id && participants.some(participant => participant.id === score.participant_id));
-                return (
-                  <Grid item xs={12} sm={6} md={3} key={index}>
-                    <ParticipantCard
-                      judge={judge}
-                      scores={scores}
-                    />
-                  </Grid>
-                );
-              })}
+  <>
+    {publicScreenValue  ? (
+
+      <AdminSideScreen2 />
+     
+    ) : (
+     <Box
+        sx={{
+          // backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%),url(${image[0].file_url})`,
+          backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), ${backgroundImage}`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          minHeight: "100vh",
+          width: "100%",
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '90vh', padding: '1rem 5%' }}>
+          <Grid container spacing={4} sx={{ alignItems: 'start' }}>
+            <Grid item xs={12} sm={3} md={2.5}>
+              <Box>
+                <ScoreBoard judgeName={judgeName} totalScore={totalScore} participantId={participantId} participantsName={participantsName} />
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={9} md={9.5}>
+              <Grid container spacing={2}>
+                {judges.map((judge, index) => {
+                  const scores = totalScores.filter(score => score.judge_id === judge.id && participants.some(participant => participant.id === score.participant_id));
+                  return (
+                    <Grid item xs={12} sm={6} md={3} key={index}>
+                      <ParticipantCard
+                        judge={judge}
+                        scores={scores}
+                      />
+                    </Grid>
+                  );
+                })}
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Box>
-    </Box>
-  );
+    )}
+  </>
+);
+
 };
 
 export default ParticipantPage;
