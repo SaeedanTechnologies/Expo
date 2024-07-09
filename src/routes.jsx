@@ -37,14 +37,21 @@ import Allevents from "./AuthSide/AdminSide1/AllEvents/Allevents";
 import AllContest from "./AuthSide/AdminSide1/AllEvents/AllContest";
 import TestingApi from "./AuthSide/JudgePanel/TestingApi";
 import AdminPublicAllRecords from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminPublicAllRecords";
+import HomePage from "./AuthSide/HomePage";
 export default function Router() {
 
 
     let element = useRoutes([
+        // {
+        //     path: '/',
+        //     element: <Navigate to="/admin-login" replace />,
+        // },
+
         {
-            path: '/',
-            element: <Navigate to="/admin-login" replace />,
-        },
+                 path: '/',
+                 element: <HomePage/>,
+            },
+
         {
             path: '/admin',
             element: <AdminHome />,
@@ -182,7 +189,7 @@ export default function Router() {
             path: 'all-contest/:id',
             element: <AllContest />,
         },
-       
+
         {
             path: 'judge-score-card-testingApi/:id',
             element: <TestingApi ></TestingApi>,
