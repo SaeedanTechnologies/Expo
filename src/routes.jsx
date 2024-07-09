@@ -38,6 +38,7 @@ import AllContest from "./AuthSide/AdminSide1/AllEvents/AllContest";
 import TestingApi from "./AuthSide/JudgePanel/TestingApi";
 import AdminPublicAllRecords from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminPublicAllRecords";
 import HomePage from "./AuthSide/HomePage";
+import Stripe from "./Stripe";
 export default function Router() {
 
 
@@ -52,6 +53,10 @@ export default function Router() {
                  element: <HomePage/>,
             },
 
+        {
+            path: '/paypal',
+            element: <Stripe />,
+        },
         {
             path: '/admin',
             element: <AdminHome />,
@@ -90,7 +95,7 @@ export default function Router() {
         },
         {
             path: 'participant-registered',
-            element: <ParticipantRegistered/>,
+            element: <ParticipantRegistered />,
         },
         {
             path: 'add-judges',
@@ -121,7 +126,7 @@ export default function Router() {
             path: 'public-screen-result/:id',
             element: <AdminSideScreen2 />,
         },
-            {
+        {
             path: 'admin-operator2',
             element: <AdminOperator2 />
         },

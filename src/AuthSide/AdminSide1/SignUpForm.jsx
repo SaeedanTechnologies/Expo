@@ -21,25 +21,21 @@ const SignUpForm = () => {
   const [submitting, setSubmitting] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [startDateTime, setStartDateTime] = useState(null);
   const [endDateTime, setEndDateTime] = useState(null);
   const [timeDiff, setTimeDiff] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [registrationEnded, setRegistrationEnded] = useState(false);
+  const [registrationNotStarted, setRegistrationNotStarted] = useState(true);
   const { handleSubmit, control, formState: { errors } } = useForm();
-  const [registrationExpired, setRegistrationExpired] = useState(false);
 
   useEffect(() => {
     dispatch(singleContest(id))
       .then((result) => {
-        const maxparticipant = result.data.payload.max_contestent
-        const registeredParticipant = result.data.payload.participient
-
         const endDateTime = new Date(result.data.payload.end_date_time);
+        const startDateTime = new Date(result.data.payload.start_date_time);
         setEndDateTime(endDateTime);
+        setStartDateTime(startDateTime);
         setLoading(false);
-        if (maxparticipant == registeredParticipant.length) {
-          setRegistrationExpired(true);
-        }
-
       })
       .catch((err) => {
         console.log(err);
@@ -57,6 +53,13 @@ const SignUpForm = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      if (startDateTime) {
+        const currentDateTime = new Date();
+        if (currentDateTime >= startDateTime) {
+          setRegistrationNotStarted(false);
+        }
+      }
+
       if (endDateTime) {
         const currentDateTime = new Date();
         const diffMillis = endDateTime - currentDateTime;
@@ -68,15 +71,21 @@ const SignUpForm = () => {
         } else {
           clearInterval(interval);
           setRegistrationEnded(true);
-
         }
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [endDateTime]);
+  }, [startDateTime, endDateTime]);
 
   const onSubmit = (formData) => {
+    const currentDateTime = new Date();
+    if (currentDateTime < startDateTime) {
+      setSnackbarMessage('Registration has not started yet.');
+      setSnackbarOpen(true);
+      return;
+    }
+
     setSubmitting(true);
     const payload = {
       contest_id: id,
@@ -85,7 +94,7 @@ const SignUpForm = () => {
 
     axios.post('https://expoproject.saeedantechpvt.com/api/participients', payload)
       .then(response => {
-        setSnackbarMessage('You are Registered ');
+        setSnackbarMessage('You are Registered');
         navigate("/participant-registered");
       })
       .catch(error => {
@@ -116,43 +125,21 @@ const SignUpForm = () => {
         alignItems: "center",
         justifyContent: "center",
         padding: "1rem 10%",
-        minHeight: isSmall ? "80vh" : "80vh",
+        height: isSmall ? "80vh" : "80vh",
       }}
     >
       {loading ? (
         <CircularProgress />
       ) : (
         <>
-
-         { registrationExpired ? (
-<>
-<Box sx={{displa:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center'}}>
-
-<Box>
-  <img src="/mainLogo.png" alt="expo"/>
-</Box>
-
-<br/>
-
-<Typography sx={{fontWeight:600, textAlign:'center', fontSize:'2rem'}}>Registration Closed</Typography>
-</Box>
-
-
-</>
-
-         ):(
-<>
-{registrationEnded ? (
-  <Box sx={{displa:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center'}}>
-
-<Box>
-  <img src="/mainLogo.png" alt="expo"/>
-</Box>
-
-<br/>
-
-<Typography sx={{fontWeight:600, textAlign:'center', fontSize:'2rem'}}>Registration Time has been ended</Typography>
-</Box>
+          {registrationNotStarted ? (
+            <Typography variant="h5" color="error" align="center" gutterBottom>
+              Registration has not started yet.
+            </Typography>
+          ) : registrationEnded ? (
+            <Typography variant="h5" color="error" align="center" gutterBottom>
+              Registration time has ended.
+            </Typography>
           ) : (
             <Box
               sx={{
@@ -195,7 +182,7 @@ const SignUpForm = () => {
               >
                 Sign Up As a Participant
               </Typography>
-              {!registrationEnded && data  && (
+              {!registrationEnded && data && (
                 <form onSubmit={handleSubmit(onSubmit)}>
                   {data.map((field) => (
                     <Controller
@@ -223,30 +210,11 @@ const SignUpForm = () => {
                       )}
                     />
                   ))}
-
-
-                  {/* <MyButton type="submit" text="Submit" disabled={submitting} /> */}
-                  <MyButton
-    type="submit"
-    text={submitting ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Submit'}
-    disabled={submitting}
-/>
-
-
-
+                  <MyButton type="submit" text="Submit" disabled={submitting} />
                 </form>
               )}
             </Box>
           )}
-
-
-</>
-         )
-
-         }
-
-
-
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={6000}
