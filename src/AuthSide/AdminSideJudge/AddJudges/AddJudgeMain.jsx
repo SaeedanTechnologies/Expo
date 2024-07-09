@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -12,37 +11,42 @@ import {
   useMediaQuery,
   useTheme,
   IconButton,
-} from '@mui/material';
-import { Close } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+} from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const AddJudgeMain = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: '' }]);
+  const [judges, setJudges] = useState([
+    { judge_name: "", email: "", phone: "", profile_picture: null },
+  ]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedJudges = JSON.parse(localStorage.getItem('judges'));
+    const savedJudges = JSON.parse(localStorage.getItem("judges"));
     if (savedJudges) {
       setJudges(savedJudges);
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('judges', JSON.stringify(judges));
+    localStorage.setItem("judges", JSON.stringify(judges));
   }, [judges]);
 
   const handleNext = () => {
-    localStorage.setItem('judges', JSON.stringify(judges));
+    localStorage.setItem("judges", JSON.stringify(judges));
     if (activeStep === judges.length - 1) {
-      navigate('/create-score-card', { state: { judges } });
+      navigate("/create-score-card", { state: { judges } });
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 
   const handleAddNewJudge = () => {
-    const newJudges = [...judges, { judge_name: '', email: '', phone: '', profile_picture: '' }];
+    const newJudges = [
+      ...judges,
+      { judge_name: "", email: "", phone: "", profile_picture: "" },
+    ];
     setJudges(newJudges);
     setActiveStep(newJudges.length - 1);
   };
@@ -54,19 +58,16 @@ const AddJudgeMain = () => {
   };
 
   const handlePhotoChange = (index, event) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        handleChange(index, 'profile_picture', reader.result);
-      }
-    };
-    reader.readAsDataURL(event.target.files[0]);
+    const file = event.target.files[0];
+    handleChange(index, "profile_picture", file);
   };
 
   const handleRemoveJudge = (index) => {
     const newJudges = judges.filter((_, i) => i !== index);
     setJudges(newJudges);
-    setActiveStep((prevActiveStep) => (prevActiveStep > 0 ? prevActiveStep - 1 : 0));
+    setActiveStep((prevActiveStep) =>
+      prevActiveStep > 0 ? prevActiveStep - 1 : 0
+    );
   };
 
   const isNextButtonDisabled = () => {
@@ -75,27 +76,32 @@ const AddJudgeMain = () => {
   };
 
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box
       sx={{
-        padding: isSmall ? '2rem 8%' : '2rem 30%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
+        padding: isSmall ? "2rem 8%" : "2rem 30%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
       }}
     >
       <Box>
-        <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
           Add Judges
         </Typography>
-        <Typography variant="body1" gutterBottom sx={{ textAlign: 'center' }}>
-          Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
+        <Typography variant="body1" gutterBottom sx={{ textAlign: "center" }}>
+          Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet
+          consectetur lorem ipsum dolor sit amet.
         </Typography>
-        <Box sx={{ overflowX: 'auto', width: isSmall ? '80vw' : '40vw' }}>
-          <Stepper activeStep={activeStep} alternativeLabel sx={{ width: '100%' }}>
+        <Box sx={{ overflowX: "auto", width: isSmall ? "80vw" : "40vw" }}>
+          <Stepper
+            activeStep={activeStep}
+            alternativeLabel
+            sx={{ width: "100%" }}
+          >
             {judges.map((_, index) => (
               <Step key={index} onClick={() => setActiveStep(index)}>
                 <StepLabel>
@@ -116,14 +122,27 @@ const AddJudgeMain = () => {
         </Box>
         <Box sx={{ mt: 3 }}>
           <Box sx={{ mb: 3, p: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Avatar src={judges[activeStep]?.profile_picture} sx={{ width: 76, height: 76, mr: 2 }} />
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+              <Avatar
+                src={
+                  judges[activeStep]?.profile_picture
+                    ? URL.createObjectURL(judges[activeStep]?.profile_picture)
+                    : ""
+                }
+                sx={{ width: 76, height: 76, mr: 2 }}
+              />
               <Box>
                 <Button variant="outlined" component="label">
                   Upload Your Photo
-                  <input type="file" hidden onChange={(e) => handlePhotoChange(activeStep, e)} />
+                  <input
+                    type="file"
+                    hidden
+                    onChange={(e) => handlePhotoChange(activeStep, e)}
+                  />
                 </Button>
-                <Typography sx={{ fontSize: '0.8rem', color: 'grey', width: '80%' }}>
+                <Typography
+                  sx={{ fontSize: "0.8rem", color: "grey", width: "80%" }}
+                >
                   Image format must be PNG/JPG and size less than 500 kb
                 </Typography>
               </Box>
@@ -135,8 +154,10 @@ const AddJudgeMain = () => {
               label="Judge Name"
               variant="outlined"
               fullWidth
-              value={judges[activeStep]?.judge_name || ''}
-              onChange={(e) => handleChange(activeStep, 'judge_name', e.target.value)}
+              value={judges[activeStep]?.judge_name || ""}
+              onChange={(e) =>
+                handleChange(activeStep, "judge_name", e.target.value)
+              }
               sx={{ mb: 2 }}
             />
             <label style={{ fontWeight: 600 }}>Email</label>
@@ -146,17 +167,24 @@ const AddJudgeMain = () => {
               label="Email"
               variant="outlined"
               fullWidth
-              value={judges[activeStep]?.email || ''}
-              onChange={(e) => handleChange(activeStep, 'email', e.target.value)}
+              value={judges[activeStep]?.email || ""}
+              onChange={(e) =>
+                handleChange(activeStep, "email", e.target.value)
+              }
               sx={{ mb: 2 }}
             />
             <br />
             <br />
-            <Box gap={3} sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
+            <Box gap={3} sx={{ display: "flex", alignItems: "center", mt: 3 }}>
               <Button
                 variant="outlined"
                 onClick={handleAddNewJudge}
-                sx={{ mr: 2, width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
+                sx={{
+                  mr: 2,
+                  width: "100%",
+                  fontSize: isSmall ? "0.7rem" : "0.9rem",
+                  textTransform: "none",
+                }}
               >
                 + Add New Judge
               </Button>
@@ -164,10 +192,14 @@ const AddJudgeMain = () => {
                 variant="contained"
                 color="primary"
                 onClick={handleNext}
-                sx={{ width: '100%', fontSize: isSmall ? '0.7rem' : '0.9rem', textTransform: 'none' }}
+                sx={{
+                  width: "100%",
+                  fontSize: isSmall ? "0.7rem" : "0.9rem",
+                  textTransform: "none",
+                }}
                 disabled={isNextButtonDisabled()}
               >
-                {activeStep === judges.length - 1 ? 'Finish' : 'Next'}
+                {activeStep === judges.length - 1 ? "Finish" : "Next"}
               </Button>
             </Box>
           </Box>
@@ -195,7 +227,7 @@ export default AddJudgeMain;
 // import { useNavigate } from 'react-router-dom';
 
 // const AddJudgeMain = () => {
-  
+
 //   const [activeStep, setActiveStep] = useState(0);
 //   const [judges, setJudges] = useState([{ judge_name: '', email: '', phone: '', profile_picture: '' }]);
 //   const navigate = useNavigate();
@@ -504,6 +536,3 @@ export default AddJudgeMain;
 // };
 
 // export default AddJudgeMain;
-
-
-

@@ -782,16 +782,16 @@ import {
   Card,
   CircularProgress,
 } from "@mui/material";
-import { styled } from "@mui/system";
 import { useNavigate, useParams } from "react-router";
+import { useDispatch } from "react-redux";
 import {
   getBehindScreen,
   getStartContest,
   setNextParticipant,
 } from "../../store/actions/contestStartActions";
-import { useDispatch } from "react-redux";
 
 import AdminSideScreen2 from "./AdminSideScreen/AdminSideScreen2";
+
 const PublicScreen = () => {
   const { id } = useParams();
   const [loadingbtn, setLoadingbtn] = useState(false);
@@ -819,6 +819,7 @@ const PublicScreen = () => {
       setPublicScreenValue(storedValue);
     }
   }, []);
+
   useEffect(() => {
     const fetchContestData = async () => {
       try {
@@ -879,10 +880,9 @@ const PublicScreen = () => {
   }
 
   const defaultImage = "/bgimage.png";
-  const backgroundImage =
-    image?.length > 0 && image[0]?.file_url
-      ? `url(${image[0]?.file_url})`
-      : `url(${defaultImage})`;
+  const backgroundMedia =
+    image?.length > 0 && image[0]?.file_url ? image[0]?.file_url : defaultImage;
+  const isVideo = backgroundMedia && backgroundMedia.endsWith(".mp4");
 
   const allTotal = data?.total_scores_by_participant;
   const participantId = participants[0]?.id;
@@ -907,14 +907,45 @@ const PublicScreen = () => {
       ) : (
         <Box
           sx={{
-            backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), ${backgroundImage}`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
+            position: "relative",
             minHeight: "100vh",
             width: "100%",
+            overflow: "hidden",
           }}
         >
+          {isVideo ? (
+            <video
+              autoPlay
+              loop
+              muted
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                zIndex: -1,
+              }}
+            >
+              <source src={backgroundMedia} type="video/mp4" />
+            </video>
+          ) : (
+            <Box
+              sx={{
+                backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), url(${backgroundMedia})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                minHeight: "100vh",
+                width: "100%",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                zIndex: -1,
+              }}
+            />
+          )}
           <Box
             sx={{
               display: "flex",

@@ -366,7 +366,7 @@ import {
 } from "../../store/actions/contestStartActions";
 import { useDispatch } from "react-redux";
 import UploadVideoDialogBox from "./UploadVideo";
-import {Dialog} from "@mui/material";
+import { Dialog } from "@mui/material";
 const AdminOperator = () => {
   const { id } = useParams();
   const contest_id = id;
@@ -411,9 +411,9 @@ const AdminOperator = () => {
     fetchContestData();
   }, [dispatch, id]);
 
-  const handleFile = (()=>{
-    navigate(`/upload-file/${contest_id}`)
-  })
+  const handleFile = () => {
+    navigate(`/upload-file/${contest_id}`);
+  };
 
   const handleOpenUploadDialog = () => {
     setUploadDialogOpen(true);
@@ -432,11 +432,9 @@ const AdminOperator = () => {
     setOpenModal(true);
   };
 
-
-  const handleNext = (()=>{
-    navigate(`/admin-contest-start/${contest_id}`)
-  })
-
+  const handleNext = () => {
+    navigate(`/admin-contest-start/${contest_id}`);
+  };
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -481,17 +479,15 @@ const AdminOperator = () => {
       console.error("Failed to send request:", error);
     }
   };
-const [loadingPublish, setLoadingPublish] = useState(false)
+  const [loadingPublish, setLoadingPublish] = useState(false);
   const handleApproved = async (id, contest_id) => {
-    setLoadingPublish(true)
+    setLoadingPublish(true);
     try {
       const res = await dispatch(setApprovidParticipant(contest_id, id));
 
       setClickedParticipantId(id);
-      setLoadingPublish(false)
-
+      setLoadingPublish(false);
     } catch (error) {
-
       console.error("Failed to send request:", error);
     }
   };
@@ -668,7 +664,7 @@ const [loadingPublish, setLoadingPublish] = useState(false)
               onClick={() => handleOpenModal(judge)}
             >
               <StyledAvatar
-                src={judge?.image}
+                src={judge?.profile_picture}
                 alt={judge?.name}
                 isCurrent={judge?.isCurrent}
                 judgeId={judge?.id}
@@ -704,9 +700,8 @@ const [loadingPublish, setLoadingPublish] = useState(false)
                 onClick={handleAllRecords}
                 sx={{ width: "100%", textTransform: "none" }}
               >
-                All Records 
+                All Records
               </Button>
-             
             </Box>
           </>
         ) : (
@@ -755,15 +750,11 @@ const [loadingPublish, setLoadingPublish] = useState(false)
               >
                 Now Judge {participants[0]?.name}
               </Button>
-
             </Box>
 
             {allScoresGiven ? (
-
-
-
-
-              <Button  variant="contained"
+              <Button
+                variant="contained"
                 color="primary"
                 onClick={() =>
                   handleApproved(
@@ -771,20 +762,29 @@ const [loadingPublish, setLoadingPublish] = useState(false)
                     participants[0]?.contest_id
                   )
                 }
-
-                sx={{ textTransform: "none", width: "100%" }} >{loadingPublish ? <CircularProgress size={24} /> : "Next Contestent"}</Button>
-
-
-
+                sx={{ textTransform: "none", width: "100%" }}
+              >
+                {loadingPublish ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Next Contestent"
+                )}
+              </Button>
             ) : null}
           </>
         )}
-<br />
-           <Box sx={{marginTop:'12px'}}>
-        <Button variant='contained' sx={{width:'100%'}} onClick={handleOpenUploadDialog}>Upload File</Button>
+        <br />
+        <Box sx={{ marginTop: "12px" }}>
+          <Button
+            variant="contained"
+            sx={{ width: "100%" }}
+            onClick={handleOpenUploadDialog}
+          >
+            Upload File
+          </Button>
+        </Box>
       </Box>
-      </Box>
-   
+
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box
           sx={{
@@ -797,8 +797,8 @@ const [loadingPublish, setLoadingPublish] = useState(false)
             border: "2px solid #000",
             boxShadow: 24,
             p: 4,
-            maxHeight:'80vh',
-            overflowY:'auto'
+            maxHeight: "80vh",
+            overflowY: "auto",
           }}
         >
           {selectedJudge && (
@@ -810,95 +810,97 @@ const [loadingPublish, setLoadingPublish] = useState(false)
                 <Typography sx={{ mt: 2 }}>No scores available.</Typography>
               ) : (
                 <>
+                  {/* --------------modal ka data ---------- */}
 
-                {/* --------------modal ka data ---------- */}
+                  <div>
+                    {selectedJudgeScores.map((score, index) => {
+                      // Parse the participant name
+                      const participantName = (() => {
+                        try {
+                          const outerParsed = JSON.parse(
+                            score.participant.fields_values
+                          );
+                          const innerParsed = JSON.parse(outerParsed);
+                          return innerParsed.name || "Unknown";
+                        } catch (e) {
+                          console.error("Failed to parse fields_values:", e);
+                          return "Unknown";
+                        }
+                      })();
 
-                <div>
-      {selectedJudgeScores.map((score, index) => {
-        // Parse the participant name
-        const participantName = (() => {
-          try {
-            const outerParsed = JSON.parse(score.participant.fields_values);
-            const innerParsed = JSON.parse(outerParsed);
-            return innerParsed.name || "Unknown";
-          } catch (e) {
-            console.error("Failed to parse fields_values:", e);
-            return "Unknown";
-          }
-        })();
+                      // Get the scores for the current participant
+                      const participantFieldScores = fieldScores.filter(
+                        (val) => val.participant_id === score.participant_id
+                      );
 
-        // Get the scores for the current participant
-        const participantFieldScores = fieldScores.filter(
-          (val) => val.participant_id === score.participant_id
-        );
+                      return (
+                        <React.Fragment key={index}>
+                          <Typography sx={{ mt: 1, fontWeight: "700" }}>
+                            Participant Name {participantName}:
+                          </Typography>
 
-        return (
-          <React.Fragment key={index}>
-            <Typography sx={{ mt: 1, fontWeight: "700" }}>
-              Participant Name {participantName}:
-            </Typography>
+                          <Box>
+                            {participantFieldScores.map(
+                              (fieldScore, scoreIndex) => (
+                                <Box key={scoreIndex}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                      padding: "0.2rem",
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="subtitle1"
+                                      sx={{
+                                        fontSize: "0.9rem",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      {fieldScore.field_name}
+                                    </Typography>
+                                    <Typography
+                                      variant="h5"
+                                      sx={{
+                                        fontSize: "0.9rem",
+                                        color: "red",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      {fieldScore.total_score.toFixed(2)}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              )
+                            )}
+                          </Box>
 
-            <Box>
-              {participantFieldScores.map((fieldScore, scoreIndex) => (
-                <Box key={scoreIndex}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "0.2rem",
-                    }}
-                  >
-                    <Typography
-                      variant="subtitle1"
-                      sx={{
-                        fontSize: "0.9rem",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {fieldScore.field_name}
-                    </Typography>
-                    <Typography
-                      variant="h5"
-                      sx={{
-                        fontSize: "0.9rem",
-                        color: "red",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {fieldScore.total_score.toFixed(2)}
-                    </Typography>
-                  </Box>
-                </Box>
-              ))}
-            </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              mt: 1,
+                            }}
+                          >
+                            <Typography>Total</Typography>
+                            <Typography>
+                              {score.total_score
+                                ? score.total_score.toFixed(2)
+                                : "No Score"}
+                            </Typography>
+                          </Box>
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mt: 1,
-              }}
-            >
-              <Typography>Total</Typography>
-              <Typography>
-                {score.total_score
-                  ? score.total_score.toFixed(2)
-                  : "No Score"}
-              </Typography>
-            </Box>
+                          {index < selectedJudgeScores.length - 1 && (
+                            <Divider sx={{ my: 2 }} />
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
 
-
-
-            {index < selectedJudgeScores.length - 1 && <Divider sx={{ my: 2 }} />}
-          </React.Fragment>
-        );
-      })}
-    </div>
-
-{/* -----------------------modal ka data end---------- */}
-
+                  {/* -----------------------modal ka data end---------- */}
                 </>
               )}
             </>
@@ -909,16 +911,16 @@ const [loadingPublish, setLoadingPublish] = useState(false)
         </Box>
       </Modal>
 
-
-
-
-        <Dialog
+      <Dialog
         open={uploadDialogOpen}
         onClose={handleCloseUploadDialog}
         maxWidth="md"
         fullWidth
       >
-        <UploadVideoDialogBox contest_id={contest_id} onClose={handleCloseUploadDialog} />
+        <UploadVideoDialogBox
+          contest_id={contest_id}
+          onClose={handleCloseUploadDialog}
+        />
       </Dialog>
     </Box>
   );
