@@ -37,13 +37,18 @@ import Allevents from "./AuthSide/AdminSide1/AllEvents/Allevents";
 import AllContest from "./AuthSide/AdminSide1/AllEvents/AllContest";
 import TestingApi from "./AuthSide/JudgePanel/TestingApi";
 import AdminPublicAllRecords from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminPublicAllRecords";
+import HomePage from "./AuthSide/HomePage";
 export default function Router() {
 
 
     let element = useRoutes([
+        // {
+        //     path: '/',
+        //     element: <Navigate to="/admin-login" replace />,
+        // },
         {
             path: '/',
-            element: <Navigate to="/admin-login" replace />,
+            element: <HomePage />,
         },
         {
             path: '/admin',

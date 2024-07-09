@@ -488,7 +488,7 @@ const [loadingPublish, setLoadingPublish] = useState(false)
       const res = await dispatch(setApprovidParticipant(contest_id, id));
 
       setClickedParticipantId(id);
-      setLoadingPublish(true)
+      setLoadingPublish(false)
 
     } catch (error) {
 
@@ -772,7 +772,7 @@ const [loadingPublish, setLoadingPublish] = useState(false)
                   )
                 }
 
-                sx={{ textTransform: "none", width: "100%" }} >{loadingPublish ? <CircularProgress size={24} /> : "Publish"}</Button>
+                sx={{ textTransform: "none", width: "100%" }} >{loadingPublish ? <CircularProgress size={24} /> : "Next Contestent"}</Button>
 
 
 

@@ -37,7 +37,7 @@ const AdminPublicAllRecords = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(getAllRecordsPublic(183));
+        const response = await dispatch(getAllRecordsPublic(id));
         const { data } = response.data;
         if (data.length === 0) {
           // Display snackbar if records are not found
