@@ -16,7 +16,7 @@ const ParticipantCard = ({ judge, scores }) => {
   return (
     <Card>
       <Box>
-        <img src="/person.png" alt="image" width={"100%"} />
+        <img src={judge.profile_picture} alt="image" width={"100%"} />
         <Typography
           variant="h6"
           sx={{
@@ -133,7 +133,6 @@ const ParticipantPage = () => {
     const fetchContestData = async () => {
       try {
         const result = await dispatch(getBehindScreen(id));
-        console.log(result, "+++++++++++++++++");
         const { judges, total_scores, participants, now_in_progress, files } =
           result.data.data;
 
@@ -192,7 +191,7 @@ const ParticipantPage = () => {
         backgroundRepeat: "no-repeat",
         minHeight: "100vh",
         width: "100%",
-        position: "relative", // Ensure content is above the video
+        position: "relative",
       }}
     >
       {media?.type === "video" && (
