@@ -445,11 +445,7 @@ const ParticipantPage = () => {
   
   return (
   <>
-    {publicScreenValue  ? (
 
-      <AdminSideScreen2 />
-     
-    ) : (
      <Box
         sx={{
           // backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%),url(${image[0].file_url})`,
@@ -486,7 +482,7 @@ const ParticipantPage = () => {
           </Grid>
         </Box>
       </Box>
-    )}
+   
   </>
 );
 
