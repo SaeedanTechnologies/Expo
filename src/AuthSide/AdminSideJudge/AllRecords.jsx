@@ -1976,13 +1976,26 @@ const AllRecords = () => {
 
         if (isTied) {
           const firstSixRecords = data.slice(0, 6);
-          const maxScore = Math.max(
-            ...firstSixRecords.map((record) => record.total_score)
-          );
+          const totalScores = firstSixRecords.map(record => record.total_score);
+
+          const scoreCount = totalScores.reduce((acc, score) => {
+            acc[score] = (acc[score] || 0) + 1;
+            return acc;
+          }, {});
+
+
+          const maxScore = Object.keys(scoreCount)
+            .filter(score => scoreCount[score] > 1)
+            .map(score => parseFloat(score));
+
+          console.log(maxScore, 'maxxxxx');
+
           const tiedParticipants = firstSixRecords
-            .filter((record) => record.total_score === maxScore)
-            .map((record) => record.participant_id);
+            .filter(record => maxScore.includes(record.total_score))
+            .map(record => record.participant_id);
+
           setSelectedParticipants(tiedParticipants);
+          console.log(tiedParticipants, 'tiedddddddddddddddddddddd');
         }
       } catch (error) {
         console.error("Error fetching records:", error);
@@ -2000,7 +2013,7 @@ const AllRecords = () => {
       setSnackbarOpen(true);
       setSnackbarMessage(response.data.message);
       localStorage.setItem("public-screen", response.data.success);
-
+    
       console.log(response.data.success,"apiresponse")
       console.log("Response from public screen API:", response);
     } catch (error) {
@@ -2029,7 +2042,7 @@ const AllRecords = () => {
         rematchApi(contestId, selectedParticipants)
       );
       setSnackbarOpen(true);
-      setSnackbarMessage(response.message); // Assuming response is { success: true, message: "Rematch initiated" }
+      setSnackbarMessage(response.message); 
       console.log("Response from rematch API:", response);
       navigate(`/admin-contest-start/${contestId}`);
     } catch (error) {

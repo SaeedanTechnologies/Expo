@@ -29,7 +29,7 @@ export const submitJudegFormData = (dataToSubmit) => async (dispatch) => {
   
 export const fetchFormJudegFormTesting = (id) => async (dispatch) => {
   try {
-    const res = await api.get(`judge/Judge-score-card/${id}`);
+    const res = await api.get(`judge/judge-score-card/${id}`);
     dispatch({ type: "GET_JUDEG_RESP", payload: res.data });
     return res;
   } catch (err) {

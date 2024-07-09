@@ -148,7 +148,7 @@ export default function Router() {
         },
         {
             path: 'judge-score-card/:id',
-            element: <JudgePanelReg />,
+            element: <TestingApi />,
         },
         {
             path: 'judge_panel_screen2',
@@ -183,10 +183,10 @@ export default function Router() {
             element: <AllContest />,
         },
        
-        {
-            path: 'judge-score-card-testingApi/:id',
-            element: <TestingApi />
-        },
+        // {
+        //     path: 'judge-score-card-testingApi/:id',
+        //     element: <TestingApi />
+        // },
         {
             path: 'public_all-records/:id',
             element: <AdminPublicAllRecords />,
