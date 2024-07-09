@@ -126,7 +126,7 @@ const Allevents = () => {
         minHeight: "80vh",
       }}
     >
-      <Box sx={{ padding: isSmall ? "2rem 10%" : "2rem 30%" }}>
+      <Box sx={{ padding: isSmall ? "2rem 10%" : "2rem 0%" }}>
         <Typography variant="h4" align="center" gutterBottom>
           All Events
         </Typography>

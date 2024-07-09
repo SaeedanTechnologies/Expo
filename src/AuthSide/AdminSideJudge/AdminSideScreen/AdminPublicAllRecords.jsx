@@ -27,7 +27,7 @@ const AdminPublicAllRecords = () => {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
-
+  console.log(id, "KLKKKK")
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -109,7 +109,7 @@ const AdminPublicAllRecords = () => {
         minHeight: "80vh",
       }}
     >
-      <Box sx={{ padding: isSmall ? "2rem 10%" : "2rem 30%" }}>
+      <Box sx={{ padding: isSmall ? "2rem 10%" : "2rem 0%" }}>
         <Typography variant="h4" align="center" gutterBottom>
           All Records
         </Typography>

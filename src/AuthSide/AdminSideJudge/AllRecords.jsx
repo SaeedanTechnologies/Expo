@@ -2136,7 +2136,7 @@ const AllRecords = () => {
     .map((record) => record.participant_id);
 
   const hasTieInFirstSix = tiedParticipants.length > 1;
-
+ 
   return (
     <Box
       sx={{
