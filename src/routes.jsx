@@ -197,7 +197,7 @@ export default function Router() {
 
         {
             path: 'judge-score-card-testingApi/:id',
-            element: <TestingApi ></TestingApi>,
+            element: <TestingApi />
         },
         {
             path: 'public_all-records/:id',
