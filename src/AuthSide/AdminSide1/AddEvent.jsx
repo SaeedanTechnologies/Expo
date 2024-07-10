@@ -42,7 +42,7 @@ const AddEvent = () => {
       console.log("expo_id", response.data.payload.id);
       setSnackbarMessage("Event added successfully!");
       setSnackbarOpen(true);
-      //navigate("/admin/add-content");
+      navigate("/admin/add-content");
     } catch (error) {
       console.error("Error:", error);
       setSnackbarMessage("An error occurred. Please try again later.");
