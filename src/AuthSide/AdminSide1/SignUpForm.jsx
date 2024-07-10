@@ -254,7 +254,7 @@
 
 // export default SignUpForm;
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import MyTextField from "../../page/components/MyTextField";
@@ -389,7 +389,7 @@ const SignUpForm = () => {
     setSnackbarOpen(false);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const interval = setInterval(() => {
       if (startDateTime) {
         const currentDateTime = new Date();
