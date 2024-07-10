@@ -54,7 +54,7 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     try {
       const payload = { participant_id, contest_id, }; // Create the payload object
 
-      const res = await api.post(`approved-behind-screen-results`, payload );
+      const res = await api.post(`admin/approved-behind-screen-results`, payload );
       console.log(res, 'API Response')
       return res;
     } catch (err) {
