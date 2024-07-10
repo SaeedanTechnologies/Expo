@@ -895,7 +895,7 @@ const PublicScreen = () => {
 
   const allTotal = data?.total_scores_by_participant;
   const participantId = participants[0]?.id;
-  const totalScoress = allTotal[participantId] ;
+  const totalScoress = allTotal[participantId];
 
   const filteredScores = scores?.filter(
     (score) =>
