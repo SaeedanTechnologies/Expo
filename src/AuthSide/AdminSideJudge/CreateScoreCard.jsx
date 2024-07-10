@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
-import { Grid, Button, TextField, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { TouchBackend } from 'react-dnd-touch-backend';
-import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import {
+  Grid,
+  Button,
+  TextField,
+  Box,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const ItemTypes = {
-  BUTTON: 'button',
+  BUTTON: "button",
 };
 
 const DraggableButton = () => {
@@ -20,16 +28,17 @@ const DraggableButton = () => {
 
   return (
     <Box>
-    <Button
-      ref={drag}
-      sx={{ textTransform: 'none', opacity: isDragging ? 0.5 : 1 }}
-      variant="outlined"
-      color="primary"
-    >
-      Role
-    </Button>
-    <Typography sx={{ fontSize: "11px", fontWeight: 600 , marginTop:'12px'}}>Please Drag and Drop Left to right</Typography>
-
+      <Button
+        ref={drag}
+        sx={{ textTransform: "none", opacity: isDragging ? 0.5 : 1 }}
+        variant="outlined"
+        color="primary"
+      >
+        Role
+      </Button>
+      <Typography sx={{ fontSize: "11px", fontWeight: 600, marginTop: "12px" }}>
+        Please Drag and Drop Left to right
+      </Typography>
     </Box>
   );
 };
@@ -43,26 +52,30 @@ const DropArea = ({ onDrop, children }) => {
   });
 
   return (
-    <Box ref={drop} sx={{ minHeight: '200px', padding: '1rem' }}>
+    <Box ref={drop} sx={{ minHeight: "200px", padding: "1rem" }}>
       {children}
     </Box>
   );
 };
 
 const CreateScoreCard = () => {
-
   const location = useLocation();
   const { judges } = location.state || { judges: [] };
-  const names = judges.map(judge => judge.judge_name);
-  const profile = judges.map(judge => judge.profile_picture);
+  const names = judges.map((judge) => judge.judge_name);
+  const profile = judges.map((judge) => judge.profile_picture);
   console.log(names, "JKLJKKL");
 
-  const [textFields, setTextFields] = useState([{ name: '', label: '', type: 'text', value: '', required: true }]);
-  console.log(textFields, "textFileds")
-  const token = localStorage.getItem('token');
-  const contest_id = localStorage.getItem('add_register_response');
+  const [textFields, setTextFields] = useState([
+    { name: "", label: "", type: "text", value: "", required: true },
+  ]);
+  console.log(textFields, "textFileds");
+  const token = localStorage.getItem("token");
+  const contest_id = localStorage.getItem("add_register_response");
   const handleDrop = () => {
-    setTextFields([...textFields, { name: '', label: '', type: 'text', value: '', required: true }]);
+    setTextFields([
+      ...textFields,
+      { name: "", label: "", type: "text", value: "", required: true },
+    ]);
   };
 
   const handleTextFieldChange = (index, field, value) => {
@@ -70,39 +83,85 @@ const CreateScoreCard = () => {
     newTextFields[index][field] = value;
     setTextFields(newTextFields);
   };
-
+  console.log(textFields);
   const navigate = useNavigate();
 
+  // const handleSubmit = () => {
+  //   const payload = {
+  //     contest_id: contest_id,
+  //     judge_name: names,
+  //     link: `https://frontend.saeedantechpvt.com/admin-login`,
+  //     email: judges.map((judge) => judge.email),
+  //     profile_picture: profile,
+  //     fields: textFields.map((field, index) => ({
+  //       name: field.value,
+  //       label: field.value,
+  //       type: field.type,
+  //       required: field.required,
+  //     })),
+  //   };
+
+  //   axios
+  //     .post(
+  //       "https://expoproject.saeedantechpvt.com/api/admin/judges",
+  //       payload,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       navigate("/links", { state: { contest_id: contest_id } });
+  //     })
+  //     .catch((error) => {
+  //       console.error("There was an error!", error);
+  //     });
+  // };
   const handleSubmit = () => {
-    const payload = {
-      contest_id: contest_id,
-      judge_name: names,
-      link:`https://frontend.saeedantechpvt.com/admin-login`,
-      email: judges.map(judge => judge.email),
-      profile_picture: profile,
-      fields: textFields.map((field, index) => ({
-        name: field.value,
-        label: field.value,
-        type: field.type,
-        required: field.required,
-
-      }))
-    };
-
-    axios.post('https://expoproject.saeedantechpvt.com/api/admin/judges', payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        console.log(response.data);
-        navigate('/links', { state: { contest_id: contest_id } });
+    // setLoading(true);
+    const formData = new FormData();
+    formData.append("contest_id", contest_id);
+    formData.append("link", `https://frontend.saeedantechpvt.com/admin-login`);
+    judges.forEach((field, index) => {
+      formData.append(`profile_picture[${index}]`, field.profile_picture);
+      formData.append(`email[${index}]`, field.email);
+      formData.append(`judge_name[${index}]`, field.judge_name);
+    });
+    textFields.forEach((field, index) => {
+      formData.append(`fields[${index}][name]`, field.value);
+      formData.append(`fields[${index}][label]`, field.value);
+      formData.append(`fields[${index}][type]`, field.type);
+      formData.append(`fields[${index}][required]`, field.required);
+    });
+    // const fields = textFields.map((field) => ({
+    //   name: field.value,
+    //   label: field.label,
+    //   type: field.type,
+    //   required: field.required,
+    // }));
+    // formData.append("fields", JSON.stringify(fields));
+    axios
+      .post(
+        "https://expoproject.saeedantechpvt.com/api/admin/judges",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        // enqueueSnackbar("Judges Added Successfully", { variant: "success" });
+        localStorage.removeItem("judges");
+        navigate("/links", { state: { contest_id: contest_id } });
       })
-      .catch(error => {
-        console.error('There was an error!', error);
+      .catch((error) => {
+        console.error("There was an error!", error);
+        // setLoading(false);
       });
   };
-
   // const handleSubmit = () => {
   //   const payload = {
   //     contest_id,
@@ -134,18 +193,47 @@ const CreateScoreCard = () => {
   // };
 
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isTouchDevice =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
   return (
     <DndProvider backend={isTouchDevice ? TouchBackend : HTML5Backend}>
-      <Box sx={{ flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: isSmall ? '3rem 5%' : '3rem 20%', minHeight: '80vh' }}>
-        <Typography sx={{ fontSize: '2rem', fontWeight: 600, textAlign: 'center' }}>Create Score Card</Typography>
-        <Typography sx={{ textAlign: 'center' }}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae sapiente inventore libero accusantium quisquam adipisci numquam quos harum fugiat quis.</Typography>
+      <Box
+        sx={{
+          flexDirection: "column",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: isSmall ? "3rem 5%" : "3rem 20%",
+          minHeight: "80vh",
+        }}
+      >
+        <Typography
+          sx={{ fontSize: "2rem", fontWeight: 600, textAlign: "center" }}
+        >
+          Create Score Card
+        </Typography>
+        <Typography sx={{ textAlign: "center" }}>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae
+          sapiente inventore libero accusantium quisquam adipisci numquam quos
+          harum fugiat quis.
+        </Typography>
         <Grid container spacing={2} mt={2}>
-          <Grid item xs={4} md={6} lg={6} sm={6} sx={{ backgroundColor: '#f9fafc' }}>
-            <Typography sx={{ fontSize: isSmall ? '0.9rem' : '1.3rem', fontWeight: 600 }}>Field Selection</Typography>
+          <Grid
+            item
+            xs={4}
+            md={6}
+            lg={6}
+            sm={6}
+            sx={{ backgroundColor: "#f9fafc" }}
+          >
+            <Typography
+              sx={{ fontSize: isSmall ? "0.9rem" : "1.3rem", fontWeight: 600 }}
+            >
+              Field Selection
+            </Typography>
             <br />
 
             <DraggableButton />
@@ -160,11 +248,15 @@ const CreateScoreCard = () => {
                   fullWidth
                   margin="normal"
                   value={field.value}
-                  onChange={(e) => handleTextFieldChange(index, 'value', e.target.value)}
+                  onChange={(e) =>
+                    handleTextFieldChange(index, "value", e.target.value)
+                  }
                 />
               ))}
             </DropArea>
-            <Button variant='contained' fullWidth onClick={handleSubmit}>Submit</Button>
+            <Button variant="contained" fullWidth onClick={handleSubmit}>
+              Submit
+            </Button>
           </Grid>
         </Grid>
       </Box>
@@ -173,37 +265,6 @@ const CreateScoreCard = () => {
 };
 
 export default CreateScoreCard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState } from "react";
 // import {
@@ -478,4 +539,3 @@ export default CreateScoreCard;
 // };
 
 // export default CreateScoreCard;
-

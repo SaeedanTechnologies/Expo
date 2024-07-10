@@ -254,7 +254,7 @@
 
 // export default SignUpForm;
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import MyTextField from "../../page/components/MyTextField";
@@ -389,7 +389,7 @@ const SignUpForm = () => {
     setSnackbarOpen(false);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const interval = setInterval(() => {
       if (startDateTime) {
         const currentDateTime = new Date();
@@ -432,195 +432,58 @@ const SignUpForm = () => {
         minHeight: isSmall ? "80vh" : "80vh",
       }}
     >
-      {loading ? (
-        <CircularProgress />
-      ) : (
+      {loading && <CircularProgress />}
+      {registrationExpired && (
         <>
-          {registrationExpired ? (
-            <>
-              <Box
-                sx={{
-                  displa: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
-                }}
-              >
-                <Box>
-                  <img src="/mainLogo.png" alt="expo" />
-                </Box>
+          <Box
+            sx={{
+              displa: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <Box>
+              <img src="/mainLogo.png" alt="expo" />
+            </Box>
 
-                <br />
+            <br />
 
-                <Typography
-                  sx={{
-                    fontWeight: 600,
-                    textAlign: "center",
-                    fontSize: "2rem",
-                  }}
-                >
-                  Registration Closed
-                </Typography>
-              </Box>
-            </>
-          ) : registrationNotStarted ? (
-            <Box
+            <Typography
               sx={{
-                displa: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
+                fontWeight: 600,
                 textAlign: "center",
+                fontSize: "2rem",
               }}
             >
-              <Box>
-                <img src="/mainLogo.png" alt="expo" />
-              </Box>
-
-              <br />
-
-              <Typography
-                sx={{ fontWeight: 600, textAlign: "center", fontSize: "2rem" }}
-              >
-                Registration is not Started yet
-              </Typography>
-            </Box>
-          ) : (
-            <>
-              {registrationEnded ? (
-                <Box
-                  sx={{
-                    displa: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    textAlign: "center",
-                  }}
-                >
-                  <Box>
-                    <img src="/mainLogo.png" alt="expo" />
-                  </Box>
-
-                  <br />
-
-                  <Typography
-                    sx={{
-                      fontWeight: 600,
-                      textAlign: "center",
-                      fontSize: "2rem",
-                    }}
-                  >
-                    Registration Time has been ended
-                  </Typography>
-                </Box>
-              ) : (
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                    justifyContent: "center",
-                    width: "400px",
-                    margin: "0 auto",
-                  }}
-                >
-                  {endDateTime && (
-                    <Box
-                      sx={{
-                        marginTop: "20px",
-                        textAlign: "center",
-                      }}
-                    >
-                      <Typography
-                        variant="subtitle1"
-                        sx={{ fontSize: "1.2rem", fontWeight: 600 }}
-                      >
-                        Registration Ends in:
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          fontSize: "1.5rem",
-                          fontWeight: 700,
-                          color: "#ff4500",
-                        }}
-                      >
-                        {`${timeDiff.hours} hours ${timeDiff.minutes} minutes ${timeDiff.seconds} seconds`}
-                      </Typography>
-                    </Box>
-                  )}
-
-                  <Typography
-                    sx={{
-                      fontSize: "2rem",
-                      fontWeight: 700,
-                      textAlign: "center",
-                    }}
-                  >
-                    Sign Up As a Participant
-                  </Typography>
-                  {!registrationEnded && data && (
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      {data.map((field) => (
-                        <Controller
-                          key={field.id}
-                          name={field.label}
-                          control={control}
-                          defaultValue=""
-                          rules={{
-                            required: `${field.label} is required`,
-                            pattern: {
-                              value:
-                                field.type === "email"
-                                  ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                                  : undefined,
-                              message: `Invalid ${field.label}`,
-                            },
-                          }}
-                          render={({ field: { onChange, value } }) => (
-                            <MyTextField
-                              label={field.label}
-                              placeholder={`Enter Your ${field.label}`}
-                              type={field.type}
-                              value={value}
-                              onChange={onChange}
-                              error={!!errors[field.label]}
-                              helperText={errors[field.label]?.message}
-                            />
-                          )}
-                        />
-                      ))}
-
-                      {/* <MyButton type="submit" text="Submit" disabled={submitting} /> */}
-                      <MyButton
-                        type="submit"
-                        text={
-                          submitting ? (
-                            <CircularProgress
-                              size={24}
-                              sx={{ color: "white" }}
-                            />
-                          ) : (
-                            "Submit"
-                          )
-                        }
-                        disabled={submitting}
-                      />
-                    </form>
-                  )}
-                </Box>
-              )}
-            </>
-          )}
-
-          <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={6000}
-            onClose={handleCloseSnackbar}
-            message={snackbarMessage}
-          />
+              Registration Closed
+            </Typography>
+          </Box>
         </>
+      )}
+      {registrationNotStarted && (
+        <Box
+          sx={{
+            displa: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <Box>
+            <img src="/mainLogo.png" alt="expo" />
+          </Box>
+
+          <br />
+
+          <Typography
+            sx={{ fontWeight: 600, textAlign: "center", fontSize: "2rem" }}
+          >
+            Registration is not Started yet
+          </Typography>
+        </Box>
       )}
     </Box>
   );
