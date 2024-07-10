@@ -368,6 +368,7 @@ import {
 import { useDispatch } from "react-redux";
 import UploadVideoDialogBox from "./UploadVideo";
 import { Dialog } from "@mui/material";
+import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 const AdminOperator = () => {
   const { id } = useParams();
   const contest_id = id;
@@ -386,6 +387,9 @@ const AdminOperator = () => {
   const [fieldScores, setFieldScores] = useState([]);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [publicButtonClicked, setPublicButtonClicked] = useState(false);
+
+  console.log(fieldScores, 'fieldsssssssss')
+
   useEffect(() => {
     const fetchContestData = async () => {
       try {
@@ -889,8 +893,9 @@ const AdminOperator = () => {
 
                       // Get the scores for the current participant
                       const participantFieldScores = fieldScores.filter(
-                        (val) => val.participant_id === score.participant_id
+                        (val) => val.participant_id === score.participant_id && val.judge_id === score.judge.id
                       );
+                      console.log(participantFieldScores, 'okk')
 
                       return (
                         <React.Fragment key={index}>
