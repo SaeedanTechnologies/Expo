@@ -363,6 +363,7 @@ import {
   setNextParticipant,
   setApprovidParticipant,
   getBehindScreen,
+  setPublicApproved,
 } from "../../store/actions/contestStartActions";
 import { useDispatch } from "react-redux";
 import UploadVideoDialogBox from "./UploadVideo";
@@ -384,6 +385,7 @@ const AdminOperator = () => {
   const [selectedJudge, setSelectedJudge] = useState(null);
   const [fieldScores, setFieldScores] = useState([]);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [publicButtonClicked, setPublicButtonClicked] = useState(false);
   useEffect(() => {
     const fetchContestData = async () => {
       try {
@@ -408,7 +410,15 @@ const AdminOperator = () => {
       }
     };
 
+
     fetchContestData();
+
+    const intervalId = setInterval(() => {
+      fetchContestData();
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+
   }, [dispatch, id]);
 
   const handleFile = () => {
@@ -476,10 +486,16 @@ const AdminOperator = () => {
 
       setClickedParticipantId(id);
     } catch (error) {
+
       console.error("Failed to send request:", error);
     }
   };
   const [loadingPublish, setLoadingPublish] = useState(false);
+  const [loadingPublic, setLoadingPublic] = useState(false);
+  const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
+
+
+
   const handleApproved = async (id, contest_id) => {
     setLoadingPublish(true);
     try {
@@ -487,7 +503,31 @@ const AdminOperator = () => {
 
       setClickedParticipantId(id);
       setLoadingPublish(false);
+      setNextButtonDisabled(false);
+      setPublicButtonClicked(false);
+
+
     } catch (error) {
+      console.error("Failed to send request:", error);
+      setLoadingPublish(false);
+
+    }
+
+  };
+
+
+  const handlePublic = async (id, contest_id) => {
+    setLoadingPublic(true);
+    try {
+      const res = await dispatch(setPublicApproved(id, contest_id));
+      setLoadingPublic(false);
+      setPublicButtonClicked(true);
+
+      setNextButtonDisabled(true);
+
+    } catch (error) {
+      setLoadingPublic(false);
+      setPublicButtonClicked(true);
       console.error("Failed to send request:", error);
     }
   };
@@ -543,7 +583,6 @@ const AdminOperator = () => {
   }, [participants]);
 
   if (loading) {
-    // Display loader while loading
     return (
       <Box
         sx={{
@@ -574,8 +613,6 @@ const AdminOperator = () => {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-
-          // backgroundColor:'red',
           width: "100%",
         }}
       >
@@ -693,7 +730,7 @@ const AdminOperator = () => {
         <Divider />
         {participants.length === 0 ? (
           <>
-            <Box>
+            <Box sx={{ width: "100%" }}>
               <Button
                 variant="contained"
                 color="primary"
@@ -753,23 +790,58 @@ const AdminOperator = () => {
             </Box>
 
             {allScoresGiven ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() =>
-                  handleApproved(
-                    participants[0]?.id,
-                    participants[0]?.contest_id
-                  )
-                }
-                sx={{ textTransform: "none", width: "100%" }}
-              >
-                {loadingPublish ? (
-                  <CircularProgress size={24} />
-                ) : (
-                  "Next Contestent"
-                )}
-              </Button>
+              <>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+        }}
+        gap={5}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={nextButtonDisabled}
+          onClick={() =>
+              handlePublic(
+                participants[0]?.id,
+                participants[0]?.contest_id
+              )
+            }
+
+          sx={{ textTransform: "none", width: "100%" }}
+        >
+          {loadingPublic ? (
+            <CircularProgress size={24} sx={{ color: "white" }} />
+          ) : (
+            "Show Publicly"
+          )}
+        </Button>
+
+
+        {publicButtonClicked && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              handleApproved(
+                participants[0]?.id,
+                participants[0]?.contest_id
+              )
+            }
+            sx={{ textTransform: "none", width: "100%" }}
+          >
+            {loadingPublish ? (
+              <CircularProgress size={24} sx={{ color: "white" }} />
+            ) : (
+              "Next Contestant"
+            )}
+          </Button>
+        )}
+      </Box>
+    </>
             ) : null}
           </>
         )}

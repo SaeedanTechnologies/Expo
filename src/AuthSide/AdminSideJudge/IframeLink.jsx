@@ -4,6 +4,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { iframeApi } from '../../store/actions/contestStartActions';
+import { useSnackbar } from "notistack";
 
 const IframeLink = () => {
   const { id } = useParams();
@@ -12,6 +13,8 @@ const IframeLink = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +33,8 @@ const IframeLink = () => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(link);
-    alert('Link Copied');
+          enqueueSnackbar("Link Copied", { variant: "success" });
+
   };
 
   const handleNext = () => {
@@ -40,6 +44,8 @@ const IframeLink = () => {
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
+
+
     <Box sx={{ padding: isSmall ? '2rem 10%' : '2rem 30%' }}>
       <Typography variant='h1' sx={{ fontWeight: 700, fontSize: '2rem', textAlign: 'center' }}>Iframe Link</Typography>
       <Typography>Copy iframe Link</Typography>
@@ -65,7 +71,7 @@ const IframeLink = () => {
       <br/>
       <Button variant='contained' fullWidth onClick={handleCopy}>Copy Link</Button>
       <br/><br/>
-    
+
     </Box>
   );
 };
