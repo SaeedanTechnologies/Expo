@@ -350,9 +350,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Box, Container, Typography, TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material';
-//import { TableContainer, Table, TableBody, TableRow, TableCell, Typography } from '@mui/material';
-
+import { Avatar, Box, Container, Typography, Grid } from '@mui/material';
 import { getBehindScreenResults, getBehindScreen } from '../../../store/actions/contestStartActions';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
@@ -362,10 +360,9 @@ const AdminSideScreen2 = () => {
   const [contestResults, setContestResults] = useState([]);
   const dispatch = useDispatch();
   const [image, setImages] = useState(null);
-  const [participants, setParticipants] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState([]);
-  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchContestData = async () => {
@@ -526,21 +523,15 @@ const AdminSideScreen2 = () => {
             ))}
           </Box>
 
-          {/* Render positions 4-6 in a table */}
-          <TableContainer sx={{ backgroundColor: '#333', width: '80%', marginTop: '20px' }}>
-            <Table>
-              <TableBody>
-                {contestResults.slice(3, 6).map((result) => (
-                  <TableRow key={result.participant_id}>
-                    <TableCell sx={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#fff', borderBottom: '1px solid red' }}>
-                    
-                      <Typography>{parseFieldsValues(result.participant.fields_values)}</Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          {/* Render positions 4-6 in a horizontal layout */}
+          <Grid container spacing={2} sx={{ backgroundColor: '#333', width: '80%', marginTop: '20px', padding: '10px', borderRadius: '8px' }}>
+            {contestResults?.slice(3, 6)?.map((result) => (
+              <Grid item key={result.participant_id} xs={12} md={4} sx={{ textAlign: 'center' }}>
+               
+                <Typography variant="body1" sx={{ color: 'white',paddingBottom:'12px' }} >{parseFieldsValues(result.participant.fields_values)}</Typography>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </Container>
     </Box>
@@ -548,5 +539,6 @@ const AdminSideScreen2 = () => {
 }
 
 export default AdminSideScreen2;
+
 
 
