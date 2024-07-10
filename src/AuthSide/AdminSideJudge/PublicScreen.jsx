@@ -909,10 +909,8 @@ const PublicScreen = () => {
     totalSingleScore += score?.total_score;
   });
 
-  const totalScore = scores.reduce((acc, curr) => acc + parseInt(curr.total_score, 10), 0);
-  const totalCount = scores.length;
-  if (totalCount === 0) return null;
-  
+
+
   return (
     <>
       {status ? (
