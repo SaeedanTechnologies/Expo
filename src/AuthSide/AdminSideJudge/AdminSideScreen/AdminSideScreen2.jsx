@@ -351,8 +351,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { Avatar, Box, Container, Typography, TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material';
-import imagebackground from "../../../assets/adim-screen/imageback.png";
-import { getBehindScreenResults } from '../../../store/actions/contestStartActions';
+//import { TableContainer, Table, TableBody, TableRow, TableCell, Typography } from '@mui/material';
+
+import { getBehindScreenResults, getBehindScreen } from '../../../store/actions/contestStartActions';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -360,6 +361,11 @@ const AdminSideScreen2 = () => {
   const { id } = useParams();
   const [contestResults, setContestResults] = useState([]);
   const dispatch = useDispatch();
+  const [image, setImages] = useState(null);
+  const [participants, setParticipants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchContestData = async () => {
@@ -371,9 +377,25 @@ const AdminSideScreen2 = () => {
       }
     };
 
-    fetchContestData();
+    const fetchBehindScreenData = async () => {
+      try {
+        const result = await dispatch(getBehindScreen(id));
+        setImages(result?.data?.data?.files || []);
+        setData(result?.data?.data || {});
+        setStatus(result?.data.status);
+        setLoading(false);
+      } catch (err) {
+        console.log("Error fetching behind screen data");
+        setLoading(false);
+      }
+    };
 
-    const intervalId = setInterval(fetchContestData, 3000);
+    fetchContestData();
+    fetchBehindScreenData();
+
+    const intervalId = setInterval(() => {
+      fetchBehindScreenData();
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, [dispatch, id]);
@@ -389,21 +411,53 @@ const AdminSideScreen2 = () => {
     }
   };
 
+  const defaultImage = "/bgimage.png";
+  const backgroundMedia =
+    image?.length > 0 && image[0]?.file_url ? image[0]?.file_url : defaultImage;
+  const isVideo = backgroundMedia && backgroundMedia.endsWith(".mp4");
+
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundImage: `url(${imagebackground})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        padding: { xs: '16px', md: '78px' }
+        position: "relative",
+        minHeight: "100vh",
+        width: "100%",
+        overflow: "hidden",
       }}
     >
+      {isVideo ? (
+        <video
+          autoPlay
+          loop
+          muted
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: -1,
+          }}
+        >
+          <source src={backgroundMedia} type="video/mp4" />
+        </video>
+      ) : (
+        <Box
+          sx={{
+            backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), url(${backgroundMedia})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            minHeight: "100vh",
+            width: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: -1,
+          }}
+        />
+      )}
       <Container>
         <Box
           sx={{

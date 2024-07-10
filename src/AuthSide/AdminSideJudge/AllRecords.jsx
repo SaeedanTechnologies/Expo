@@ -1964,12 +1964,13 @@ const AllRecords = () => {
   const [selectedParticipants, setSelectedParticipants] = useState([]);
   const [showScreenloading, setShowScreenLoading] = useState(false);
   const [rematchloading, setResmatchLoading] = useState(false);
-
+  console.log(tied,"istied")
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(getAllRecords(contestId));
         const { data, tied: isTied } = response.data;
+        console.log(isTied,"istied")
         setRecords(data);
         setLoading(false);
         setTied(isTied);
@@ -2007,13 +2008,17 @@ const AllRecords = () => {
   }, [dispatch, contestId]);
 
   const handleShowOnPublicScreen = async () => {
+    
     try {
+      
       setShowScreenLoading(true);
       const response = await dispatch(saveToPublicScreen(contestId));
       setSnackbarOpen(true);
       setSnackbarMessage(response.data.message);
+
       localStorage.setItem("public-screen", response.data.success);
-    
+    navigate(`/iframe/${contestId}`)
+      
       console.log(response.data.success,"apiresponse")
       console.log("Response from public screen API:", response);
     } catch (error) {
@@ -2127,16 +2132,11 @@ const AllRecords = () => {
     );
   }
 
-  const firstSixRecords = records.slice(0, 6);
-  const maxScore = Math.max(
-    ...firstSixRecords.map((record) => record.total_score)
-  );
-  const tiedParticipants = firstSixRecords
-    .filter((record) => record.total_score === maxScore)
-    .map((record) => record.participant_id);
 
-  const hasTieInFirstSix = tiedParticipants.length > 1;
+  const hasTieInFirstSix = tied;
  
+
+  console.log(hasTieInFirstSix, 'ti')
   return (
     <Box
       sx={{

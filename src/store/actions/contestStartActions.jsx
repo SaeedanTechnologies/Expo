@@ -83,7 +83,7 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
         throw err;
       }
     };
-
+   
     export const rematchApi = (contest_id, participant_id) => async (dispatch) => {
       try {
         const token = localStorage.getItem("token");
@@ -119,6 +119,17 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     try {
 
       const res = await api.get(`behind-screen-contestinfo/${contestId}`);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  export const iframeApi = (contestId) => async (dispatch) => {
+
+    try {
+     
+      const res = await api.get(`admin/generateIframeLink/${contestId}`);
       return res;
     } catch (err) {
       throw err;

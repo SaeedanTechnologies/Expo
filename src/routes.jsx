@@ -128,7 +128,7 @@ export default function Router() {
             element: <AdminOperator3 />
         },
         {
-            path: 'iframe',
+            path: 'iframe/:id',
             element: <IframeLink />
         },
         {
