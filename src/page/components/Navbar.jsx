@@ -28,6 +28,7 @@ const Navbar = () => {
 
   const handleLogin = () => {
     navigate("/admin-login");
+    setDrawerOpen(false);
   };
 
   const handleDrawerClose = () => {
@@ -281,13 +282,14 @@ const Navbar = () => {
                 </Box>
               ) : (
                 <Button
-                  // onClick={handleSignup}
+                  onClick={handleLogin}
                   variant="contained"
                   sx={{
                     backgroundColor: theme.palette.primary.main,
                     padding: "0.5rem 2rem",
                     textTransform: "none",
                     fontSize: "0.9rem",
+                    mt: 4,
                   }}
                 >
                   Login

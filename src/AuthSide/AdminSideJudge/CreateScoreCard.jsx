@@ -7,12 +7,14 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
 const ItemTypes = {
   BUTTON: "button",
@@ -60,17 +62,19 @@ const DropArea = ({ onDrop, children }) => {
 
 const CreateScoreCard = () => {
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
   const { judges } = location.state || { judges: [] };
   const names = judges.map((judge) => judge.judge_name);
   const profile = judges.map((judge) => judge.profile_picture);
-  console.log(names, "JKLJKKL");
+  // console.log(names, "JKLJKKL");
 
   const [textFields, setTextFields] = useState([
     { name: "", label: "", type: "text", value: "", required: true },
   ]);
-  console.log(textFields, "textFileds");
+  // console.log(textFields, "textFileds");
   const token = localStorage.getItem("token");
   const contest_id = localStorage.getItem("add_register_response");
+  const { enqueueSnackbar } = useSnackbar();
   const handleDrop = () => {
     setTextFields([
       ...textFields,
@@ -83,7 +87,7 @@ const CreateScoreCard = () => {
     newTextFields[index][field] = value;
     setTextFields(newTextFields);
   };
-  console.log(textFields);
+  // console.log(textFields);
   const navigate = useNavigate();
 
   // const handleSubmit = () => {
@@ -120,7 +124,7 @@ const CreateScoreCard = () => {
   //     });
   // };
   const handleSubmit = () => {
-    // setLoading(true);
+    setLoading(true);
     const formData = new FormData();
     formData.append("contest_id", contest_id);
     formData.append("link", `https://frontend.saeedantechpvt.com/admin-login`);
@@ -153,13 +157,13 @@ const CreateScoreCard = () => {
         }
       )
       .then((response) => {
-        // enqueueSnackbar("Judges Added Successfully", { variant: "success" });
+        enqueueSnackbar("Judges Added Successfully", { variant: "success" });
         localStorage.removeItem("judges");
         navigate("/links", { state: { contest_id: contest_id } });
       })
       .catch((error) => {
         console.error("There was an error!", error);
-        // setLoading(false);
+        setLoading(false);
       });
   };
   // const handleSubmit = () => {
@@ -254,8 +258,17 @@ const CreateScoreCard = () => {
                 />
               ))}
             </DropArea>
-            <Button variant="contained" fullWidth onClick={handleSubmit}>
-              Submit
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <CircularProgress sx={{ color: "red" }} size={20} />
+              ) : (
+                "Submit"
+              )}
             </Button>
           </Grid>
         </Grid>
