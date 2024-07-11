@@ -337,7 +337,7 @@ const Allevents = () => {
           All Contests
         </Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box sx={{textAlign:'end'}}>
+      {/*   <Box sx={{textAlign:'end'}}>
         <DatePicker
         label="Date"
         value={dateFilter}
@@ -345,7 +345,7 @@ const Allevents = () => {
         renderInput={(params) => <MyTextField {...params} />}
         sx={{ marginBottom: "16px" }}
       />
-        </Box>
+        </Box> */}
         </LocalizationProvider>
         <TableContainer component={Paper} sx={{ minWidth:  isSmall ? "100%" : "700px"}}>
           <Table aria-label="simple table">
