@@ -781,6 +781,7 @@ import {
   Grid,
   Card,
   CircularProgress,
+  Divider,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch } from "react-redux";
@@ -810,7 +811,10 @@ const PublicScreen = () => {
   const [data, setData] = useState([]);
   const [publicScreenValue, setPublicScreenValue] = useState("");
   const [status, setStatus] = useState([]);
-  console.log(status, "status code");
+  const [isPublished, setIsPublished] = useState(false);
+  const [isOk, setIsOk] = useState(false);
+
+  console.log(isPublished, "status code");
 
   useEffect(() => {
     const storedValue = localStorage.getItem("public-screen");
@@ -824,7 +828,10 @@ const PublicScreen = () => {
     const fetchContestData = async () => {
       try {
         const result = await dispatch(getBehindScreen(id));
-        // console.log(result.data.data.judges, 'dddsdhdgd')
+
+        console.log(result.data.data.status, "dddsdhdgd");
+
+        setIsPublished(result?.data?.data?.status || false);
         setJudges(result?.data?.data?.judges || []);
         setScore(result?.data?.data?.total_scores || []);
         setImages(result?.data?.data?.files || []);
@@ -863,7 +870,7 @@ const PublicScreen = () => {
     setParticipants(participants);
   }, [participants]);
 
-  console.log(participants, "sdhdjd");
+  // console.log(participants, "sdhdjd");
   if (loading) {
     return (
       <Box
@@ -946,170 +953,308 @@ const PublicScreen = () => {
               }}
             />
           )}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              minHeight: "90vh",
-              padding: "1rem 5%",
-            }}
-          >
-            <Grid container spacing={4} sx={{ alignItems: "start" }}>
-              <Grid item xs={12} sm={3} md={2.5}>
-                <Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      flexDirection: "column",
-                      height: "35vh",
-                      backgroundColor: "#162f33",
-                      color: "white",
-                    }}
-                  >
-                    <Typography
-                      variant="h4"
-                      sx={{ fontSize: "1rem", mt: "1rem" }}
-                    >
-                      {participants[0]?.id}
-                    </Typography>
 
-                    <Typography
-                      variant="h5"
-                      sx={{ fontSize: "1.3rem", fontWeight: 600 }}
-                    >
-                      Total Score : {totalScoress}
-                    </Typography>
-
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontSize: "1rem",
-                        textAlign: "center",
-                        color: "white",
-                        backgroundColor: "#7c8385",
-                        width: "100%",
-                      }}
-                    >
-                      {participants[0]?.name}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={9} md={9.5}>
-                <Grid container spacing={2}>
-                  {judges?.map((judge, index) => {
-                    const participantScore = scores?.find(
-                      (score) => score?.participant_id === participants[0]?.id
-                    );
-
-                    return (
-                      <Grid item xs={12} sm={6} md={3} key={index}>
-                        <Card>
-                          <Box>
-                            <img
-                              src={judge?.profile_picture}
-                              alt="image"
-                              width={"100%"}
-                            />
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontSize: "1rem",
-                                textAlign: "center",
-                                backgroundColor: "#7c8385",
-                                color: "white",
-                              }}
-                            >
-                              {judge?.name}
-                            </Typography>
-
-                            {participantScore ? (
-                              <Box>
-                                <Box>
-                                  {scores?.map((score, scoreIndex) => {
-                                    if (
-                                      score?.judge_id === judge?.id &&
-                                      score?.participant_id ===
-                                        participants[0]?.id
-                                    ) {
-                                      return (
-                                        <Box key={scoreIndex}>
-                                          <Box
-                                            sx={{
-                                              display: "flex",
-                                              justifyContent: "space-between",
-                                              alignItems: "center",
-                                              padding: "0.2rem",
-                                            }}
-                                          >
-                                            <Typography
-                                              variant="subtitle1"
-                                              sx={{
-                                                fontSize: "0.9rem",
-                                                fontWeight: 600,
-                                              }}
-                                            >
-                                              {score?.field_name}
-                                            </Typography>
-                                            <Typography
-                                              variant="h5"
-                                              sx={{
-                                                fontSize: "0.9rem",
-                                                color: "red",
-                                                fontWeight: 600,
-                                              }}
-                                            >
-                                              {score?.total_score}
-                                            </Typography>
-                                          </Box>
-                                        </Box>
-                                      );
-                                    }
-                                    return null;
-                                  })}
-                                </Box>
-
-                                {/* <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#e0e0e0",
-              padding: "0.3rem",
-            }}
-          >
-            <Typography
-              variant="h5"
+          {isPublished ? (
+            <Box
               sx={{
-                fontSize: "0.9rem",
-                color: "red",
-                fontWeight: 600,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "90vh",
+                padding: "1rem 5%",
               }}
             >
-              Total: {totalSingleScore}
-            </Typography>
-          </Box> */}
-                              </Box>
-                            ) : (
+              <Grid container spacing={4} sx={{ alignItems: "start" }}>
+                <Grid item xs={12} sm={3} md={2.5}>
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        height: "35vh",
+                        backgroundColor: "#162f33",
+                        color: "white",
+                      }}
+                    >
+                      <Typography
+                        variant="h4"
+                        sx={{ fontSize: "1rem", mt: "1rem" }}
+                      >
+                        {participants[0]?.id}
+                      </Typography>
+
+                      <Typography
+                        variant="h5"
+                        sx={{ fontSize: "1.3rem", fontWeight: 600 }}
+                      >
+                        Total Score : {totalScoress?.toFixed(2)}
+                      </Typography>
+
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "1rem",
+                          textAlign: "center",
+                          color: "white",
+                          backgroundColor: "#7c8385",
+                          width: "100%",
+                        }}
+                      >
+                        {participants[0]?.name}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+
+                <Grid item xs={12} sm={9} md={9.5}>
+                  <Grid container spacing={2}>
+                    {judges?.map((judge, index) => {
+                      const participantScore = scores?.find(
+                        (score) => score?.participant_id === participants[0]?.id
+                      );
+
+                      return (
+                        <Grid item xs={12} sm={6} md={3} key={index}>
+                          <Card>
+                            <Box>
+                              <img
+                                src={judge?.profile_picture}
+                                alt="image"
+                                width={"100%"}
+                                height={"200rem"}
+                                style={{
+                                  objectFit: "cover",
+                                }}
+                              />
                               <Typography
-                                variant="body1"
-                                sx={{ textAlign: "center", padding: "0.5rem" }}
+                                variant="h6"
+                                sx={{
+                                  fontSize: "1rem",
+                                  textAlign: "center",
+                                  backgroundColor: "#7c8385",
+                                  color: "white",
+                                }}
                               >
-                                Waiting
+                                {judge?.name}
                               </Typography>
-                            )}
-                          </Box>
-                        </Card>
-                      </Grid>
-                    );
-                  })}
+
+                              {participantScore ? (
+                                <Box>
+                                  {scores
+                                    ?.filter(
+                                      (score) =>
+                                        score?.judge_id === judge?.id &&
+                                        score?.participant_id ===
+                                          participants[0]?.id
+                                    )
+                                    .map((score, scoreIndex) => (
+                                      <Box key={scoreIndex}>
+                                        <Box
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            padding: "0.2rem",
+                                          }}
+                                        >
+                                          <Typography
+                                            variant="subtitle1"
+                                            sx={{
+                                              fontSize: "0.9rem",
+                                              fontWeight: 600,
+                                            }}
+                                          >
+                                            {score?.field_name}
+                                          </Typography>
+                                          <Typography
+                                            variant="h5"
+                                            sx={{
+                                              fontSize: "0.9rem",
+                                              color: "black",
+                                              fontWeight: 600,
+                                            }}
+                                          >
+                                            {score?.total_score.toFixed(2)}
+                                          </Typography>
+                                        </Box>
+                                      </Box>
+                                    ))}
+                                  <Divider />
+                                  {/* Subtotal section */}
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                      padding: "0.2rem",
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="h5"
+                                      sx={{
+                                        fontSize: "0.9rem",
+                                        color: "red",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      Total
+                                    </Typography>
+                                    <Typography
+                                      variant="h5"
+                                      sx={{
+                                        fontSize: "0.9rem",
+                                        color: "red",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      {scores
+                                        .filter(
+                                          (score) =>
+                                            score?.judge_id === judge?.id &&
+                                            score?.participant_id ===
+                                              participants[0]?.id
+                                        )
+                                        .reduce(
+                                          (total, score) =>
+                                            total +
+                                            parseFloat(score?.total_score || 0), // Ensure score is parsed as float
+                                          0
+                                        )
+                                        .toFixed(2)}{" "}
+                                      {/* Apply .toFixed(2) to format to 2 decimal places */}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              ) : (
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    textAlign: "center",
+                                    padding: "0.5rem",
+                                  }}
+                                >
+                                  Waiting
+                                </Typography>
+                              )}
+                            </Box>
+                          </Card>
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </Box>
+            </Box>
+          ) : (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: "90vh",
+                  padding: "1rem 5%",
+                }}
+              >
+                <Grid container spacing={4} sx={{ alignItems: "start" }}>
+                  <Grid item xs={12} sm={3} md={2.5}>
+                    <Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          height: "35vh",
+                          backgroundColor: "#162f33",
+                          color: "white",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ fontSize: "1rem", mt: "1rem" }}
+                        >
+                          {participants[0]?.id}
+                        </Typography>
+
+                        <Typography
+                          variant="h5"
+                          sx={{ fontSize: "1.3rem", fontWeight: 600 }}
+                        >
+                          Total Score :
+                        </Typography>
+
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            fontSize: "1rem",
+                            textAlign: "center",
+                            color: "white",
+                            backgroundColor: "#7c8385",
+                            width: "100%",
+                          }}
+                        >
+                          {participants[0]?.name}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} sm={9} md={9.5}>
+                    <Grid container spacing={2}>
+                      {judges?.map((judge, index) => {
+                        const participantScore = scores?.find(
+                          (score) =>
+                            score?.participant_id === participants[0]?.id
+                        );
+
+                        return (
+                          <Grid item xs={12} sm={6} md={3} key={index}>
+                            <Card>
+                              <Box>
+                                <img
+                                  src={judge?.profile_picture}
+                                  alt="image"
+                                  width={"100%"}
+                                  height={"200rem"}
+                                  style={{
+                                    objectFit: "cover",
+                                  }}
+                                />
+                                <Typography
+                                  variant="h6"
+                                  sx={{
+                                    fontSize: "1rem",
+                                    textAlign: "center",
+                                    backgroundColor: "#7c8385",
+                                    color: "white",
+                                  }}
+                                >
+                                  {judge?.name}
+                                </Typography>
+
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    textAlign: "center",
+                                    padding: "0.5rem",
+                                  }}
+                                >
+                                  Waiting
+                                </Typography>
+                              </Box>
+                            </Card>
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Box>
+            </>
+          )}
         </Box>
       )}
     </>
