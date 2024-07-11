@@ -388,7 +388,7 @@ const AdminOperator = () => {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [publicButtonClicked, setPublicButtonClicked] = useState(false);
 
-  console.log(fieldScores, 'fieldsssssssss')
+ 
 
   useEffect(() => {
     const fetchContestData = async () => {

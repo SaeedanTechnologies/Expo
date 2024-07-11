@@ -130,7 +130,7 @@ const Allevents = () => {
         <Typography variant="h4" align="center" gutterBottom>
           All Events
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+      {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
           <IconButton onClick={handleFilterClick}>
             <FilterListIcon />
           </IconButton>
@@ -185,7 +185,8 @@ const Allevents = () => {
               </Box>
             </Box>
           </Menu>
-        </Box>
+        </Box>  */}  
+     
         <TableContainer component={Paper} sx={{ minWidth:  isSmall ? "100%" : "700px"}}>
           <Table aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
