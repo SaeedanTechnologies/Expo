@@ -128,16 +128,19 @@ const AddEvent = () => {
 export default AddEvent;
 
 
+
+
+
 // import React, { useState, useEffect } from "react";
 // import MyTextField from "../../page/components/MyTextField";
-// import { Box, Typography, Snackbar, CircularProgress, IconButton, InputAdornment } from "@mui/material";
+// import { Box, Typography, Snackbar, CircularProgress, IconButton } from "@mui/material";
 // import MyButton from "../../page/components/MyButton";
 // import { useNavigate } from "react-router";
 // import { useDispatch } from "react-redux";
 // import { addEvent, editEvent, getEvent } from "../../store/actions/adminActions";
 // import EditIcon from "@mui/icons-material/Edit";
 
-// const AddEvent = ({ match }) => {
+// const AddEvent = () => {
 //   const dispatch = useDispatch();
 //   const navigate = useNavigate();
 //   const [eventName, setEventName] = useState("");
@@ -147,19 +150,23 @@ export default AddEvent;
 //   const [snackbarMessage, setSnackbarMessage] = useState("");
 //   const [isEditing, setIsEditing] = useState(false);
 //   const [eventId, setEventId] = useState(null);
-//   console.log(eventId,"eventId")
+//   console.log(eventName, "eventvalue")
 //   useEffect(() => {
-//     if (eventId) {
+//     // When entering edit mode, set the initial state
+//     if (isEditing && eventId) {
 //       fetchEventDetails(eventId);
+//     } else {
+//       setEventName(""); // Reset eventName if not editing or no eventId is set
 //     }
-//   }, [eventId]);
+//   }, [isEditing, eventId]);
 
 //   const fetchEventDetails = async (eventId) => {
 //     try {
 //       setLoading(true);
 //       const response = await dispatch(getEvent(eventId));
-//       setEventName(response.payload.name);
-//       setIsEditing(true);
+//       console.log(response.data.payload.name,"OPPPPP")
+//       const { name } = response.data.payload.name; // Add more fields as needed
+//       setEventName(response.data.payload.name);
 //     } catch (error) {
 //       console.error("Error fetching event details:", error);
 //       setSnackbarMessage("Failed to fetch event details.");
@@ -171,6 +178,21 @@ export default AddEvent;
 
 //   const handleEventNameChange = (event) => {
 //     setEventName(event.target.value);
+//   };
+
+//   const handleEditClick = async () => {
+//     setIsEditing(true);
+//     setEventName(""); // Clear eventName first
+//     try {
+//       // Fetch event details based on eventId
+//       if (eventId) {
+//         await fetchEventDetails(eventId);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching event details:", error);
+//       setSnackbarMessage("Failed to fetch event details.");
+//       setSnackbarOpen(true);
+//     }
 //   };
 
 //   const handleSubmit = async () => {
@@ -196,12 +218,13 @@ export default AddEvent;
 //         setSnackbarMessage("Event updated successfully!");
 //       } else {
 //         response = await dispatch(addEvent({ name: eventName }));
-//         localStorage.setItem("expo_id", response.data.payload.id);
 //         setEventId(response.data.payload.id);
+//         localStorage.setItem("expo_id", response.data.payload.id);
 //         setSnackbarMessage("Event added successfully!");
-//          navigate("/admin/add-content");
 //       }
 //       setSnackbarOpen(true);
+//       // Navigate once after operation completes
+//       navigate("/admin/add-content");
 //     } catch (error) {
 //       console.error("Error:", error);
 //       setSnackbarMessage("An error occurred. Please try again later.");
@@ -237,15 +260,20 @@ export default AddEvent;
 //           margin: "0 auto",
 //         }}
 //       >
-//         <Typography
-//           sx={{
-//             fontSize: "36px",
-//             fontWeight: 700,
-//             textAlign: "center",
-//           }}
-//         >
-//           {isEditing ? "Edit Event" : "Add Event"}
-//         </Typography>
+//         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+//           <Typography
+//             sx={{
+//               fontSize: "36px",
+//               fontWeight: 700,
+//               textAlign: "center",
+//             }}
+//           >
+//             {isEditing ? "Edit Event" : "Add Event"}
+//           </Typography>
+//           <IconButton onClick={handleEditClick}>
+//             <EditIcon />
+//           </IconButton>
+//         </Box>
 //         <Typography
 //           sx={{
 //             color: "#949494",
@@ -254,31 +282,21 @@ export default AddEvent;
 //             textAlign: "center",
 //           }}
 //         >
-//           Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet
-//           consectetur lorem ipsum dolor sit amet.
+//           Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
 //         </Typography>
-//         <Box>
-//           <MyTextField
-//             label="Event Name"
-//             placeholder="Please Write Convention Name"
-//             value={eventName}
-//             onChange={handleEventNameChange}
-//             error={!!error}
-//             helperText={error}
-//             InputProps={{
-//               endAdornment: (
-//                 <InputAdornment position="end">
-//                   <IconButton edge="end" onClick={() => setIsEditing(true)} disabled={isEditing}>
-//                     <EditIcon />
-//                   </IconButton>
-//                 </InputAdornment>
-//               ),
-//             }}
-//           />
-//         </Box>
+
+//         <MyTextField
+//           label="Event Name"
+//           placeholder="Please Write Convention Name"
+//           value={eventName}
+//           onChange={handleEventNameChange}
+//           error={!!error}
+//           helperText={error}
+//         />
+
 //         <MyButton
 //           onClick={handleSubmit}
-//           text={loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : isEditing ? "Save" : "Next"}
+//           text={loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : isEditing ? "Save" : "Next"}
 //           disabled={loading}
 //         />
 //       </Box>
@@ -294,6 +312,4 @@ export default AddEvent;
 // };
 
 // export default AddEvent;
-
-
 

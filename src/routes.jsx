@@ -38,6 +38,7 @@ import AllContest from "./AuthSide/AdminSide1/AllEvents/AllContest";
 import TestingApi from "./AuthSide/JudgePanel/TestingApi";
 import AdminPublicAllRecords from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminPublicAllRecords";
 import HomePage from "./AuthSide/HomePage";
+import AllHistory from "./AuthSide/AllHistory";
 export default function Router() {
 
 
@@ -186,6 +187,10 @@ export default function Router() {
         {
             path: 'all-contest/:id',
             element: <AllContest />,
+        },
+        {
+            path: 'all-history-participant',
+            element: <AllHistory />,
         },
        
         // {

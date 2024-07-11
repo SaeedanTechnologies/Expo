@@ -16,6 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/actions/authActions";
 
+
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -117,7 +118,14 @@ const Navbar = () => {
 
 ):null}
 
-        <Button variant="contained" sx={{ marginLeft:'1rem', textTransform: "none" }}>
+   
+     <Button variant="contained" sx={{ textTransform: "none" , marginRight:'12px', color:'white'}}>
+      <Link to="/all-history-participant" variant="contained"  style={{color:'white', textDecoration:'none',textTransform: "none"}}>
+     Show  All History
+    </Link>
+    </Button>
+
+        <Button variant="contained" sx={{ textTransform: "none" }}>
           Upgrade your pricing plan
         </Button>
         {/* <FormControl sx={{ padding: 0 }}>

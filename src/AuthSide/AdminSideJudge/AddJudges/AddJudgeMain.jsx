@@ -77,7 +77,7 @@ const AddJudgeMain = () => {
 
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const isTabletOrLess = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <Box
       sx={{
@@ -86,6 +86,7 @@ const AddJudgeMain = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        marginTop: isTabletOrLess ? "5rem" : "0"
       }}
     >
       <Box>
