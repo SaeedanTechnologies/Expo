@@ -133,7 +133,6 @@
 
 // export default AddEvent;
 
-
 import React, { useState } from "react";
 import MyTextField from "../../page/components/MyTextField";
 import { Box, Typography, Snackbar, CircularProgress } from "@mui/material";
@@ -156,6 +155,8 @@ const AddEvent = () => {
   };
 
   const handleSubmit = async () => {
+    if (eventName) {
+    }
     if (!eventName.trim()) {
       setError("Event Name is required");
       return;
@@ -245,7 +246,13 @@ const AddEvent = () => {
         </Box>
         <MyButton
           onClick={handleSubmit}
-          text={loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Next"}
+          text={
+            loading ? (
+              <CircularProgress size={24} sx={{ color: "white" }} />
+            ) : (
+              "Next"
+            )
+          }
           disabled={loading}
         />
       </Box>
@@ -261,5 +268,3 @@ const AddEvent = () => {
 };
 
 export default AddEvent;
-
-
