@@ -440,7 +440,7 @@ const TestingApi = () => {
               }}
             >
               {participantName ? participantName : "Participant Name"}
-              <FaEye onClick={handleDialogOpen} style={{ cursor: 'pointer', marginLeft: '10px' }} />
+              <FaEye onClick={handleDialogOpen} style={{ cursor: 'pointer', marginLeft: '10px', fontSize:'1.5rem' }} />
             </Typography>
 
             <Typography
@@ -480,7 +480,7 @@ const TestingApi = () => {
                       fontWeight: 800,
                       lineHeight: '26px',
                       marginBottom: '0.5rem',
-                
+
                     }}
                   >
                     {key}:
