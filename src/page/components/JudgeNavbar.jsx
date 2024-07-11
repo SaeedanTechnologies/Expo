@@ -16,7 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/actions/authActions";
 
-const Navbar = () => {
+const JudgeNavbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const Navbar = () => {
   };
 
   const handleLogin = () => {
-    navigate("/admin-login");
+    navigate("/judge-login");
     setDrawerOpen(false);
   };
 
@@ -49,35 +49,12 @@ const Navbar = () => {
 
   // }
 
-  const participantPageRegex = /^\/public-screen\/[^\/]+$/;
-  const participantRegisterPage = /^\/admin\/contest\/[^\/]+$/;
-  const publicResultPage = /^\/public-screen-result\/[^\/]+$/;
-  const judgepageHide = /^\/judge-score-card\/[^\/]+$/;
 
-
-  const currentPath = location.pathname;
-
-  const isHidden =
-    participantPageRegex.test(currentPath) ||
-    participantRegisterPage.test(currentPath) ||
-    publicResultPage.test(currentPath) ||
-    judgepageHide.test(currentPath) ||
-    currentPath === "/public-screen-result" ||
-    currentPath === "/admin_side_screen1" ||
-    currentPath === "/admin_side_screen2" ||
-    currentPath === "/judge-login" ||
-    currentPath === "/participant-registered";
-
-  if (isHidden) {
-    return null;
-  }
 
   const auth = useSelector((state) => state?.admin?.isAuthenticated);
   const username = useSelector((state) => state?.admin?.user?.name);
 
-  const handleAddEvent = ()=>{
-    navigate('/admin/welcome')
-  }
+
 
   return (
     <Box
@@ -94,7 +71,7 @@ const Navbar = () => {
       }}
     >
       <Box>
-        <Link to="/">
+        <Link to="/judge-login">
           <img
             src="/mainLogo.png"
             alt="Logo"
@@ -110,34 +87,11 @@ const Navbar = () => {
         }}
       >
 
-{auth ? (
-  <Button variant="contained" sx={{ textTransform: "none" }} onClick={handleAddEvent}>
-          Add New Event
-        </Button>
-
-):null}
 
         <Button variant="contained" sx={{ marginLeft:'1rem', textTransform: "none" }}>
           Upgrade your pricing plan
         </Button>
-        {/* <FormControl sx={{ padding: 0 }}>
-          <Select
-            sx={{ outline: "none", "&:focus": { outline: "none" }, "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
-            displayEmpty
-            inputProps={{ "aria-label": "Select user" }}
-            style={{ minWidth: "120px", padding: 0 }}
-            renderValue={() => (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar />
-                <Typography sx={{ fontSize: "1rem" }}> user</Typography>
-              </Box>
-            )}
-          >
-            <MenuItem sx={{ fontSize: "0.8rem" }}>Manage Profile</MenuItem>
-            <MenuItem sx={{ fontSize: "0.8rem" }}>Manage Judges</MenuItem>
-            <MenuItem sx={{ fontSize: "0.8rem" }}>Logout</MenuItem>
-          </Select>
-        </FormControl> */}
+
 
         <Box
           sx={{
@@ -221,14 +175,6 @@ const Navbar = () => {
           sx={{ zIndex: 10000000 }}
         >
 
-{auth ? (
-<Box sx={{width: 250, padding: "20px" }}>
-<Button variant="contained" sx={{ textTransform: "none" }} onClick={handleAddEvent}>
-          Add New Event
-        </Button>
-</Box>
-
-):null}
           <Box sx={{ width: 250, padding: "20px" }}>
             <Button variant="contained" sx={{ textTransform: "none" }}>
               Upgrade your pricing plan
@@ -262,7 +208,7 @@ const Navbar = () => {
                         }}
                       />
                       <Typography sx={{ fontSize: "1rem" }}>
-                        User Name
+                      {username}
                       </Typography>
                     </Box>
                     <Box
@@ -277,32 +223,7 @@ const Navbar = () => {
                         Logout
                       </Button>
                     </Box>
-                    {/* <Select
-                      sx={{
-                        outline: "none",
-                        "&:focus": {
-                          outline: "none",
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          border: "none", // Remove the outline border
-                        },
-                      }}
-                      // value={selectedValue}
-                      // onChange={handleChange}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Select user" }}
-                      style={{ minWidth: "120px", padding: 0 }}
-                      renderValue={(selected) => (
-                      )}
-                    >
-                      <MenuItem
-                        sx={{ fontSize: "0.8rem" }}
-                        value="Logout"
-                        onClick={() => handleMenuItemClick("Logout")}
-                      >
-                        Logout
-                      </MenuItem>
-                    </Select> */}
+
                   </FormControl>
                 </Box>
               ) : (
@@ -328,4 +249,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default JudgeNavbar;

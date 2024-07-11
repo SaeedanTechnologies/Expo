@@ -18,6 +18,8 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { adminLogin } from "../../store/actions/authActions";
 import { useNavigate } from "react-router";
+import Navbar from "../../page/components/Navbar";
+import JudgeNavbar from "../../page/components/JudgeNavbar";
 const LoginAdminPanel = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -67,7 +69,15 @@ const LoginAdminPanel = () => {
   };
 
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+
+
+
+<>
+
+
+
+<JudgeNavbar/>
+<Grid container sx={{ minHeight: "100vh" }}>
       <Grid
         item
         xs={12}
@@ -194,7 +204,7 @@ const LoginAdminPanel = () => {
                 label="Remember me"
                 sx={{ mt: 1 }}
               />
-            
+
             </Box>
             <Button
               fullWidth
@@ -299,6 +309,7 @@ const LoginAdminPanel = () => {
         </Box>
       </Grid>
     </Grid>
+</>
   );
 };
 

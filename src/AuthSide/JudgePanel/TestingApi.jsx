@@ -194,7 +194,7 @@
 //                   textAlign: 'center'
 //                 }}
 //               >
-//                 Give Score 
+//                 Give Score
 //               </Typography>
 //               <form onSubmit={handleSubmit}>
 //                 {formFields?.map(field => (
@@ -262,6 +262,7 @@ import { fetchFormJudegFormTesting, submitJudegFormData } from '../../store/acti
 import { useParams } from 'react-router';
 import { useSnackbar } from 'notistack';
 import { FaEye } from 'react-icons/fa';
+import JudgeNavbar from '../../page/components/JudgeNavbar';
 
 const TestingApi = () => {
   const { id } = useParams();
@@ -385,6 +386,11 @@ const TestingApi = () => {
   };
 
   return (
+
+
+
+   <>
+    <JudgeNavbar/>
     <Box
       sx={{
         display: 'flex',
@@ -433,7 +439,7 @@ const TestingApi = () => {
                 marginBottom: '1rem',
               }}
             >
-              {participantName ? participantName : "Participant Name"} 
+              {participantName ? participantName : "Participant Name"}
               <FaEye onClick={handleDialogOpen} style={{ cursor: 'pointer', marginLeft: '10px' }} />
             </Typography>
 
@@ -502,7 +508,7 @@ const TestingApi = () => {
                   textAlign: 'center'
                 }}
               >
-                Give Score 
+                Give Score
               </Typography>
               <form onSubmit={handleSubmit}>
                 {formFields?.map(field => (
@@ -557,6 +563,9 @@ const TestingApi = () => {
         </Container>
       )}
     </Box>
+
+
+   </>
   );
 };
 
