@@ -130,17 +130,16 @@ const AdminPublicAllRecords = () => {
               {records.map((record, index) => (
                 <TableRow
                   key={record.participant_id}
-                  sx={{
-                    border:
-                      index < 6 &&
-                      selectedParticipants.includes(record.participant_id)
-                        ? "2px solid red"
-                        : "none",
-                  }}
-                  onClick={() =>
-                    index < 6 &&
-                    handleSelectParticipant(record.participant_id)
-                  }
+                  // sx={{
+                  //   border:
+                  //     index < 6 &&
+                  //     selectedParticipants.includes(record.participant_id)
+                       
+                  // }}
+                  // onClick={() =>
+                  //   index < 6 &&
+                  //   handleSelectParticipant(record.participant_id)
+                  // }
                 >
                   <TableCell>
                     <Positions number={record.position} color={record.color} />
