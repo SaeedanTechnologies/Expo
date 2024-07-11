@@ -504,7 +504,7 @@
 
 // export default AddParticipant;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -516,6 +516,7 @@ import {
 import { SlCloudDownload } from "react-icons/sl";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddParticipant = () => {
   const [loading, setLoading] = useState(false);
@@ -523,9 +524,26 @@ const AddParticipant = () => {
   const [uploadFields, setUploadFields] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
-  const contest_id = localStorage.getItem("add_register_response");
+  const reg_data = useSelector((state) => state?.stepper?.reg_form);
+  const contest_id = useSelector((state) => state.stepper.cont_id);
+  let fileData;
+  let textData;
+  if (reg_data) {
+    fileData = reg_data?.filter((item) => item.type === "file");
+    textData = reg_data?.filter((item) => item.type === "text");
+  }
+  // const contest_id = localStorage.getItem("add_register_response");
   const token = localStorage.getItem("token");
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (textData) {
+      const labelsArray = textData.slice(1).map((item) => item.label);
+      setInputValues(labelsArray);
+    }
+    if (fileData) {
+      setUploadFields(fileData);
+    }
+  }, []);
   const handleInputChange = (index, event) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = event.target.value;
@@ -591,21 +609,16 @@ const AddParticipant = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-
     try {
       const formData = [];
-
-      // Add the first TextField value explicitly as "name"
       formData.push({
         contest_id: contest_id,
-        name: "name", // Fixed value for the first TextField
+        name: "name",
         type: "text",
-        label: "name", // You can change this label as needed
+        label: "name",
         required: true,
-        is_important: false, // Adjust as per your logic
+        is_important: false,
       });
-
-      // Add dynamic fields from inputValues
       inputValues.forEach((value, index) => {
         const field = {
           contest_id: contest_id,
@@ -613,13 +626,11 @@ const AddParticipant = () => {
           type: "text",
           label: value,
           required: true,
-          is_important: value.includes("*"),
+          is_important: value?.includes("*"),
         };
 
         formData.push(field);
       });
-
-      // Add upload fields from uploadFields (if needed)
       uploadFields.forEach((value, index) => {
         const field = {
           contest_id: contest_id,
@@ -627,21 +638,28 @@ const AddParticipant = () => {
           type: "file",
           label: `Upload ${index + 1}`,
           required: true,
-          is_important: "imp", // Adjust as per your logic
+          is_important: "imp",
         };
 
         formData.push(field);
       });
-
+      dispatch({
+        type: "REG_FORM",
+        payload: formData,
+      });
+      const updatedData = {
+        id: "",
+        formData: formData,
+      };
       const response = await fetch(
-        "https://expoproject.saeedantechpvt.com/api/admin/form_fields",
+        "https://deeplink.saeedantechpvt.com/api/admin/form_fields",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ formData }),
+          body: JSON.stringify({ updatedData }),
         }
       );
 

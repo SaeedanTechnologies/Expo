@@ -15,6 +15,7 @@ import { TouchBackend } from "react-dnd-touch-backend";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
 
 const ItemTypes = {
   BUTTON: "button",
@@ -66,6 +67,7 @@ const CreateScoreCard = () => {
   const { judges } = location.state || { judges: [] };
   const names = judges.map((judge) => judge.judge_name);
   const profile = judges.map((judge) => judge.profile_picture);
+  const dispatch = useDispatch();
   // console.log(names, "JKLJKKL");
 
   const [textFields, setTextFields] = useState([
@@ -139,6 +141,10 @@ const CreateScoreCard = () => {
       formData.append(`fields[${index}][type]`, field.type);
       formData.append(`fields[${index}][required]`, field.required);
     });
+    dispatch({
+      type: "RESET_STATE",
+    });
+    localStorage.removeItem("judges");
     // const fields = textFields.map((field) => ({
     //   name: field.value,
     //   label: field.label,
@@ -158,7 +164,7 @@ const CreateScoreCard = () => {
       )
       .then((response) => {
         enqueueSnackbar("Judges Added Successfully", { variant: "success" });
-        localStorage.removeItem("judges");
+        // localStorage.removeItem("judges");
         navigate("/links", { state: { contest_id: contest_id } });
       })
       .catch((error) => {

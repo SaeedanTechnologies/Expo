@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { Box, Typography, Grid, FormControl, FormHelperText, CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Typography,
+  Grid,
+  FormControl,
+  FormHelperText,
+  CircularProgress,
+} from "@mui/material";
 import MyTextField from "../../page/components/MyTextField";
 import MyButton from "../../page/components/MyButton";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -7,25 +14,51 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddRegistration = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { contestName } = location.state || {};
   const name = contestName;
-
+  const dispatch = useDispatch();
   const expo_id = localStorage.getItem("expo_id");
   const token = localStorage.getItem("token");
-
   const [startDate, setStartDate] = useState(dayjs().startOf("day"));
-  const [startTime, setStartTime] = useState(dayjs().startOf("hour").add(1, "hour"));
+  const [startTime, setStartTime] = useState(
+    dayjs().startOf("hour").add(1, "hour")
+  );
   const [endDate, setEndDate] = useState(dayjs().startOf("day").add(1, "day"));
-  const [endTime, setEndTime] = useState(dayjs().startOf("hour").add(2, "hour"));
+  const [endTime, setEndTime] = useState(
+    dayjs().startOf("hour").add(2, "hour")
+  );
   const [maxContestant, setMaxContestant] = useState("");
   const [timeError, setTimeError] = useState(false);
   const [dateTimeError, setDateTimeError] = useState(false);
   const [loading, isLoading] = useState(false);
-
+  const start_date = useSelector((state) => state.stepper.start_date);
+  const end_date = useSelector((state) => state.stepper.end_date);
+  const start_time = useSelector((state) => state.stepper.start_time);
+  const end_time = useSelector((state) => state.stepper.end_time);
+  const max_cont = useSelector((state) => state.stepper.max_contestants);
+  const cont_id = useSelector((state) => state.stepper.cont_id);
+  useEffect(() => {
+    if (start_date) {
+      setStartDate(dayjs(start_date));
+    }
+    if (end_date) {
+      setEndDate(dayjs(end_date));
+    }
+    if (start_time) {
+      setStartTime(dayjs(start_time));
+    }
+    if (end_time) {
+      setEndTime(dayjs(end_time));
+    }
+    if (max_cont) {
+      setMaxContestant(max_cont);
+    }
+  }, []);
   const handleStartDateChange = (date) => {
     setStartDate(date);
 
@@ -54,8 +87,6 @@ const AddRegistration = () => {
     }
   };
 
-
-
   const handleStartTimeChange = (time) => {
     setStartTime(time);
 
@@ -70,21 +101,17 @@ const AddRegistration = () => {
     }
   };
 
-
-
-
-
   const handleEndTimeChange = (time) => {
     setEndTime(time);
 
     // Ensure end time is at least 5 minutes after start time
-    const minEndTime = dayjs(startTime).add(5, 'minute');
+    const minEndTime = dayjs(startTime).add(5, "minute");
     if (time.isBefore(minEndTime)) {
       setEndTime(minEndTime);
     }
 
     // Validate against start time if end date is the same as start date
-    if (endDate.isSame(startDate, 'day')) {
+    if (endDate.isSame(startDate, "day")) {
       if (time.isBefore(startTime)) {
         setTimeError(true);
       } else {
@@ -92,7 +119,6 @@ const AddRegistration = () => {
       }
     }
   };
-
 
   const handleMaxContestantChange = (event) => {
     setMaxContestant(event.target.value);
@@ -103,15 +129,29 @@ const AddRegistration = () => {
       isLoading(true);
       const payload = {
         expo_id: expo_id,
+        id: cont_id ? cont_id : "",
         name: name,
-        start_date_time: dayjs(startDate).add(startTime.hour(), "hour").add(startTime.minute(), "minute").format("YYYY-MM-DD HH:mm:ss"),
-        end_date_time: dayjs(endDate).add(endTime.hour(), "hour").add(endTime.minute(), "minute").format("YYYY-MM-DD HH:mm:ss"),
+        start_date_time: dayjs(startDate)
+          .add(startTime.hour(), "hour")
+          .add(startTime.minute(), "minute")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        end_date_time: dayjs(endDate)
+          .add(endTime.hour(), "hour")
+          .add(endTime.minute(), "minute")
+          .format("YYYY-MM-DD HH:mm:ss"),
         max_contestent: maxContestant,
         description: "description",
       };
-
-      const apiUrl = "https://expoproject.saeedantechpvt.com/api/admin/contests";
-
+      const redux_data = {
+        ...payload,
+        start_time: startTime,
+        end_time: endTime,
+      };
+      dispatch({
+        type: "REG_TIME",
+        payload: redux_data,
+      });
+      const apiUrl = "https://deeplink.saeedantechpvt.com/api/admin/contests";
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -120,9 +160,14 @@ const AddRegistration = () => {
         },
         body: JSON.stringify(payload),
       });
-
+      const res = await response.json();
+      console.log(res.payload.id);
+      dispatch({
+        type: "CONT_ID",
+        payload: res.payload.id,
+      });
       if (response.ok) {
-        navigate('/admin/add-participant');
+        navigate("/admin/add-participant");
       } else {
         isLoading(false);
         throw new Error("Network response was not ok");
@@ -194,7 +239,11 @@ const AddRegistration = () => {
               value={startTime}
               onChange={handleStartTimeChange}
               renderInput={(params) => <MyTextField {...params} />}
-              minTime={dayjs().isSame(startDate, "day") ? dayjs() : dayjs().startOf("day")}
+              minTime={
+                dayjs().isSame(startDate, "day")
+                  ? dayjs()
+                  : dayjs().startOf("day")
+              }
               sx={{ marginBottom: "16px" }}
             />
           </Grid>
@@ -214,20 +263,26 @@ const AddRegistration = () => {
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-          <TimePicker
-          label="End Contest Time"
-          value={endTime}
-          onChange={handleEndTimeChange}
-          renderInput={(params) => <MyTextField {...params} />}
-          minTime={dayjs().isSame(endDate, 'day') ? dayjs().add(10, 'minute') : dayjs().startOf('day')}
-          // Optionally, set maxTime if needed
-          // maxTime={dayjs().add(1, 'week')}
-          error={timeError}
-          helperText={timeError ? "End time cannot be before or the same as start time, or exceed the current time" : ""}
-          sx={{ marginBottom: "16px" }}
-        />
-
-
+            <TimePicker
+              label="End Contest Time"
+              value={endTime}
+              onChange={handleEndTimeChange}
+              renderInput={(params) => <MyTextField {...params} />}
+              minTime={
+                dayjs().isSame(endDate, "day")
+                  ? dayjs().add(10, "minute")
+                  : dayjs().startOf("day")
+              }
+              // Optionally, set maxTime if needed
+              // maxTime={dayjs().add(1, 'week')}
+              error={timeError}
+              helperText={
+                timeError
+                  ? "End time cannot be before or the same as start time, or exceed the current time"
+                  : ""
+              }
+              sx={{ marginBottom: "16px" }}
+            />
           </Grid>
           <Grid item xs={12}>
             <MyTextField
@@ -243,7 +298,13 @@ const AddRegistration = () => {
           <Grid item xs={12}>
             <MyButton
               onClick={handleNextClick}
-              text={loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Next"}
+              text={
+                loading ? (
+                  <CircularProgress size={24} sx={{ color: "white" }} />
+                ) : (
+                  "Next"
+                )
+              }
               disabled={loading}
               fullWidth
               sx={{ width: "100%" }}

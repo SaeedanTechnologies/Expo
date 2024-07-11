@@ -14,24 +14,39 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
 const AddJudgeMain = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [judges, setJudges] = useState([
     { judge_name: "", email: "", phone: "", profile_picture: null },
   ]);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     const savedJudges = JSON.parse(localStorage.getItem("judges"));
     if (savedJudges) {
-      setJudges(savedJudges);
+      const updatedJudges = savedJudges.map((judge) => {
+        if (judge.profile_picture) {
+          return {
+            ...judge,
+            profile_picture: judge.profile_picture,
+          };
+        }
+        return judge;
+      });
+      setJudges(updatedJudges);
     }
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("judges", JSON.stringify(judges));
-  }, [judges]);
 
   const handleNext = () => {
     localStorage.setItem("judges", JSON.stringify(judges));
@@ -57,9 +72,10 @@ const AddJudgeMain = () => {
     setJudges(newJudges);
   };
 
-  const handlePhotoChange = (index, event) => {
+  const handlePhotoChange = async (index, event) => {
     const file = event.target.files[0];
-    handleChange(index, "profile_picture", file);
+    const base64 = await toBase64(file);
+    handleChange(index, "profile_picture", base64);
   };
 
   const handleRemoveJudge = (index) => {
@@ -106,15 +122,17 @@ const AddJudgeMain = () => {
               <Step key={index} onClick={() => setActiveStep(index)}>
                 <StepLabel>
                   {`Judge ${index + 1}`}
-                  <IconButton
-                    size="small"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRemoveJudge(index);
-                    }}
-                  >
-                    <Close fontSize="small" />
-                  </IconButton>
+                  {judges.length > 1 && (
+                    <IconButton
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveJudge(index);
+                      }}
+                    >
+                      <Close fontSize="small" />
+                    </IconButton>
+                  )}
                 </StepLabel>
               </Step>
             ))}
@@ -124,11 +142,7 @@ const AddJudgeMain = () => {
           <Box sx={{ mb: 3, p: 2 }}>
             <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
               <Avatar
-                src={
-                  judges[activeStep]?.profile_picture
-                    ? URL.createObjectURL(judges[activeStep]?.profile_picture)
-                    : ""
-                }
+                src={judges[activeStep]?.profile_picture || ""}
                 sx={{ width: 76, height: 76, mr: 2 }}
               />
               <Box>

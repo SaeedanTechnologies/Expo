@@ -133,12 +133,12 @@
 
 // export default AddEvent;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MyTextField from "../../page/components/MyTextField";
 import { Box, Typography, Snackbar, CircularProgress } from "@mui/material";
 import MyButton from "../../page/components/MyButton";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addEvent } from "../../store/actions/adminActions";
 
 const AddEvent = () => {
@@ -149,19 +149,27 @@ const AddEvent = () => {
   const [error, setError] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-
+  const event_name = useSelector((state) => state.stepper.event_name);
+  const expoID = useSelector((state) => state.stepper.expo_id);
+  console.log(expoID, "EXPO");
+  useEffect(() => {
+    if (event_name) {
+      setEventName(event_name);
+    }
+  }, []);
   const handleEventNameChange = (event) => {
     setEventName(event.target.value);
   };
 
   const handleSubmit = async () => {
-    if (eventName) {
-    }
-    if (!eventName.trim()) {
+    if (!eventName || !eventName.trim()) {
       setError("Event Name is required");
       return;
     }
-
+    dispatch({
+      type: "EVENT_NAME",
+      payload: { eventName },
+    });
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -173,9 +181,18 @@ const AddEvent = () => {
 
     try {
       setLoading(true);
-      const response = await dispatch(addEvent({ name: eventName }));
+      // const response = await dispatch(addEvent({ name: eventName }));
+      const response = await dispatch(
+        addEvent({
+          name: eventName,
+          ...(expoID ? { id: expoID } : {}),
+        })
+      );
       localStorage.setItem("expo_id", response.data.payload.id);
-      console.log("expo_id", response.data.payload.id);
+      dispatch({
+        type: "EXPO_ID",
+        payload: response.data.payload.id,
+      });
       setSnackbarMessage("Event added successfully!");
       setSnackbarOpen(true);
       navigate("/admin/add-content");

@@ -1,48 +1,53 @@
-import React, { useState } from 'react';
-import MyTextField from '../../page/components/MyTextField';
-import { Box, Typography, Snackbar, CircularProgress } from '@mui/material';
-import MyButton from '../../page/components/MyButton';
-import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from "react";
+import MyTextField from "../../page/components/MyTextField";
+import { Box, Typography, Snackbar, CircularProgress } from "@mui/material";
+import MyButton from "../../page/components/MyButton";
+import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddContent = () => {
   const navigate = useNavigate();
-  const [contestName, setContestName] = useState('');
-  const [error, setError] = useState('');
+  const [contestName, setContestName] = useState("");
+  const [error, setError] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [loading, setLoading] = useState(false); // Corrected state variable name
-
+  const dispatch = useDispatch();
+  const cont_name = useSelector((state) => state.stepper.contest_name);
   const handleContestNameChange = (event) => {
     setContestName(event.target.value);
-    setError('');
+    setError("");
   };
-
+  useEffect(() => {
+    if (cont_name) {
+      setContestName(cont_name);
+    }
+  }, []);
   const handleSubmit = async () => {
     setLoading(true);
-  
-    console.log(loading, "loading"); // This may still log `false` due to asynchronous state update
-  
-    if (!contestName.trim()) {
-      setError('Contest Name is required');
-      setSnackbarMessage('Please enter the contest name.');
+    if (!contestName || !contestName.trim()) {
+      setError("Contest Name is required");
+      setSnackbarMessage("Please enter the contest name.");
       setSnackbarOpen(true);
-      setLoading(false); // Move this line outside of the if block
+      setLoading(false);
       return;
     }
-  
+    dispatch({
+      type: "CONT_NAME",
+      payload: contestName,
+    });
+
     // Simulating async operation with a timeout
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Replace with your actual async operation
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Replace with your actual async operation
+
     // Example navigation
-    navigate('/admin/add-registration', { state: { contestName } });
-    
+    navigate("/admin/add-registration", { state: { contestName } });
+
     setLoading(false); // This should be outside of the if block as well
   };
-  
-  
 
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -51,41 +56,42 @@ const AddContent = () => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '80vh',
-        padding: '1rem 10%',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "80vh",
+        padding: "1rem 10%",
       }}
     >
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
-          justifyContent: 'center',
-          width: '400px',
-          margin: '0 auto',
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          justifyContent: "center",
+          width: "400px",
+          margin: "0 auto",
         }}
       >
         <Typography
           sx={{
-            fontSize: '36px',
+            fontSize: "36px",
             fontWeight: 700,
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
           Add Contest
         </Typography>
         <Typography
           sx={{
-            color: '#949494',
-            fontSize: '16px',
+            color: "#949494",
+            fontSize: "16px",
             fontWeight: 300,
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
-          Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet.
+          Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet
+          consectetur lorem ipsum dolor sit amet.
         </Typography>
         <Box>
           <MyTextField
@@ -99,7 +105,13 @@ const AddContent = () => {
         </Box>
         <MyButton
           onClick={handleSubmit}
-          text={loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : "Next"}
+          text={
+            loading ? (
+              <CircularProgress size={24} sx={{ color: "white" }} />
+            ) : (
+              "Next"
+            )
+          }
           disabled={loading} // Disable button when loading
         />
       </Box>
