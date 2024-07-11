@@ -26,7 +26,6 @@ export const editEvent = (id, formValues) => async (dispatch) => {
   }
 };
 
-
 export const getEvent = (id) => async (dispatch) => {
   try {
     const res = await api.get(`admin/expo/${id}`);
