@@ -347,7 +347,7 @@ const Allevents = () => {
       />
         </Box>
         </LocalizationProvider>
-        <TableContainer component={Paper} sx={{ minWidth: "700px" }}>
+        <TableContainer component={Paper} sx={{ minWidth:  isSmall ? "100%" : "700px"}}>
           <Table aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow>

@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
-
+import { useTheme, useMediaQuery } from "@mui/material";
 const AddRegistration = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,7 +25,9 @@ const AddRegistration = () => {
   const [timeError, setTimeError] = useState(false);
   const [dateTimeError, setDateTimeError] = useState(false);
   const [loading, isLoading] = useState(false);
-
+  const theme = useTheme();
+  const isTabletOrLess = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const handleStartDateChange = (date) => {
     setStartDate(date);
 
@@ -146,6 +148,8 @@ const AddRegistration = () => {
         justifyContent: "center",
         height: "100vh",
         padding: "1rem 5%",
+        marginTop: isTabletOrLess ? "3.8rem" : "0",
+       
       }}
     >
       <Typography
@@ -156,7 +160,7 @@ const AddRegistration = () => {
           marginBottom: "20px",
         }}
       >
-        Add Registration
+        Add Registration  
       </Typography>
       <Typography
         sx={{
