@@ -50,6 +50,18 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     }
   };
 
+  export const setPublicApproved = (participant_id, contest_id) => async (dispatch) => {
+    try {
+      const payload = { participant_id, contest_id, }; // Create the payload object
+
+      const res = await api.post(`admin/approved-behind-screen-results`, payload );
+      console.log(res, 'API Response')
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+
 
 
 
@@ -83,7 +95,7 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
         throw err;
       }
     };
-   
+
     export const rematchApi = (contest_id, participant_id) => async (dispatch) => {
       try {
         const token = localStorage.getItem("token");
@@ -101,13 +113,13 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
       try {
         const formData = new FormData();
         formData.append("file", file);
-    
+
         const res = await api.post('admin/send-pdf', formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-    
+
         return res.data; // Assuming you want to return data from the response
       } catch (err) {
         throw err; // Re-throwing the error to handle it in components or other parts of your application
@@ -128,7 +140,7 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
   export const iframeApi = (contestId) => async (dispatch) => {
 
     try {
-     
+
       const res = await api.get(`admin/generateIframeLink/${contestId}`);
       return res;
     } catch (err) {
