@@ -152,11 +152,11 @@ const AdminPublicAllRecords = () => {
                         alignItems: "center",
                       }}
                     >
-                      <Avatar
+                      {/* <Avatar
                         src={record.avatar}
                         alt={record.participant.name}
                         sx={{ marginRight: 2 }}
-                      />
+                      /> */}
                       {parseFormFields(record.participant.fields_values)}
                     </Box>
                   </TableCell>

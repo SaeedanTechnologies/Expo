@@ -461,14 +461,16 @@ const TestingApi = () => {
             <Dialog
             open={dialogOpen}
             onClose={handleDialogClose}
-            maxWidth='md'
-            fullWidth
+            // maxWidth='md'
+            // fullWidth
           >
             <DialogTitle>Participant Data</DialogTitle>
             <DialogContent dividers>
-              <Box sx={{ width: '100%', maxWidth: '500px', textAlign: 'center', marginBottom: '1rem' }}>
+              <Box sx={{ width: '100%', maxWidth: '500px', textAlign: 'start', marginBottom: '1rem' }}>
                 {Object.keys(participantData).map(key => (
-                  <Typography
+               <>
+                <Box sx={{display:'flex', }}>
+                <Typography
                     key={key}
                     variant='h4'
                     sx={{
@@ -478,10 +480,27 @@ const TestingApi = () => {
                       fontWeight: 800,
                       lineHeight: '26px',
                       marginBottom: '0.5rem',
+                
                     }}
                   >
-                    {key}: {participantData[key]}
+                    {key}:
                   </Typography>
+                  <Typography
+                    key={key}
+                    variant='h4'
+                    sx={{
+                      color: 'black',
+                      fontFamily: 'Roboto',
+                      fontSize: { xs: '14px', md: '24px' },
+
+                      lineHeight: '26px',
+                      marginBottom: '0.9rem',
+                    }}
+                  >
+             {participantData[key]}
+                  </Typography>
+                </Box>
+               </>
                 ))}
               </Box>
             </DialogContent>

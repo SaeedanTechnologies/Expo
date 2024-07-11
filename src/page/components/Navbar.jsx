@@ -16,7 +16,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/actions/authActions";
 
-
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -55,7 +54,6 @@ const Navbar = () => {
   const publicResultPage = /^\/public-screen-result\/[^\/]+$/;
   const judgepageHide = /^\/judge-score-card\/[^\/]+$/;
 
-
   const currentPath = location.pathname;
 
   const isHidden =
@@ -76,9 +74,9 @@ const Navbar = () => {
   const auth = useSelector((state) => state?.admin?.isAuthenticated);
   const username = useSelector((state) => state?.admin?.user?.name);
 
-  const handleAddEvent = ()=>{
-    navigate('/admin/welcome')
-  }
+  const handleAddEvent = () => {
+    navigate("/admin/welcome");
+  };
 
   return (
     <Box
@@ -110,20 +108,34 @@ const Navbar = () => {
           alignItems: "center",
         }}
       >
+        {auth ? (
+          <Button
+            variant="contained"
+            sx={{ textTransform: "none", marginRight:'1rem' }}
+            onClick={handleAddEvent}
+          >
+            Add New Event
+          </Button>
+        ) : null}
 
-{auth ? (
-  <Button variant="contained" sx={{ textTransform: "none" }} onClick={handleAddEvent}>
-          Add New Event
-        </Button>
-
-):null}
-
-   
-     <Button variant="contained" sx={{ textTransform: "none" , marginRight:'12px', color:'white'}}>
-      <Link to="/all-history-participant" variant="contained"  style={{color:'white', textDecoration:'none',textTransform: "none"}}>
-     Show  All History
-    </Link>
-    </Button>
+        {auth ? (
+          <Button
+            variant="contained"
+            sx={{ textTransform: "none", marginRight: "12px", color: "white" }}
+          >
+            <Link
+              to="/all-history-participant"
+              variant="contained"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                textTransform: "none",
+              }}
+            >
+              Show All History
+            </Link>
+          </Button>
+        ) : null}
 
         <Button variant="contained" sx={{ textTransform: "none" }}>
           Upgrade your pricing plan
@@ -207,7 +219,7 @@ const Navbar = () => {
               size="small"
               sx={{
                 backgroundColor: theme.palette.primary.main,
-                padding: "0.5rem 2rem",
+                padding: "0.4rem 2rem",
                 textTransform: "none",
                 fontSize: "0.9rem",
                 marginLeft: "1rem",
@@ -228,15 +240,42 @@ const Navbar = () => {
           onClose={handleDrawerClose}
           sx={{ zIndex: 10000000 }}
         >
+          {auth ? (
+            <Box sx={{ width: 250, padding: "20px" }}>
+              <Button
+                variant="contained"
+                sx={{ textTransform: "none" }}
+                onClick={handleAddEvent}
+              >
+                Add New Event
+              </Button>
+            </Box>
+          ) : null}
 
-{auth ? (
-<Box sx={{width: 250, padding: "20px" }}>
-<Button variant="contained" sx={{ textTransform: "none" }} onClick={handleAddEvent}>
-          Add New Event
-        </Button>
-</Box>
-
-):null}
+          {auth ? (
+            <Box sx={{ width: 250, padding: "20px" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  textTransform: "none",
+                  marginRight: "12px",
+                  color: "white",
+                }}
+              >
+                <Link
+                  to="/all-history-participant"
+                  variant="contained"
+                  style={{
+                    color: "white",
+                    textDecoration: "none",
+                    textTransform: "none",
+                  }}
+                >
+                  Show All History
+                </Link>
+              </Button>
+            </Box>
+          ) : null}
           <Box sx={{ width: 250, padding: "20px" }}>
             <Button variant="contained" sx={{ textTransform: "none" }}>
               Upgrade your pricing plan
