@@ -20,7 +20,6 @@ import {
   DialogContent,
   DialogActions,
   Avatar,
- 
 } from "@mui/material";
 import axios from "axios";
 import { ImCross } from "react-icons/im";
@@ -34,26 +33,22 @@ import { useDispatch } from "react-redux";
 import { getBehindScreen } from "../store/actions/contestStartActions";
 
 const SubHistoryComponent = () => {
+  const judgeData = [
+    {
+      name: "usama",
+      email: "usama@yopmail.com",
+    },
+    // Add more judge data as needed
+  ];
 
-    const judgeData = [
-        {
-          name: "usama",
-          email: "usama@yopmail.com",
-        },
-        // Add more judge data as needed
-      ];
-
-      const resultData = [
-        {
-          position: "1",
-          name: "usama",
-          score: "12.50",
-        },
-        // Add more result data as needed
-      ];
-
-
-
+  const resultData = [
+    {
+      position: "1",
+      name: "usama",
+      score: "12.50",
+    },
+    // Add more result data as needed
+  ];
 
   const location = useLocation();
   const { id } = useParams();
@@ -154,8 +149,6 @@ const SubHistoryComponent = () => {
     //   setLoading(false);
     // }
 
-
-
     const url = `https://frontend.saeedantechpvt.com/admin/contest/${record.id}`;
     setQrCodeUrl(url);
 
@@ -176,7 +169,6 @@ const SubHistoryComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "80vh",
-          
         }}
       >
         <CircularProgress />
@@ -186,94 +178,94 @@ const SubHistoryComponent = () => {
 
   return (
     <>
-    <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      minHeight: "80vh",
-      padding: isSmall ? "1rem" : "2rem",
-    }}
-  >
-    <Box sx={{ width: isSmall ? "100%" : "auto" }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Contest by User
-      </Typography>
-
-      <TableContainer
-        component={Paper}
-        sx={{ minWidth: isSmall ? "100%" : "700px" }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+          padding: isSmall ? "1rem" : "2rem",
+        }}
       >
-        <Table aria-label="simple table">
-          <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Judges</TableCell>
-              <TableCell>Participants</TableCell>
-              <TableCell>Results</TableCell>
-              <TableCell>QR code</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {records.map((record) => (
-              <TableRow key={record.id}>
-                <TableCell>{record.name}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    sx={{ textTransform: "none", fontSize: "0.8rem" }}
-                    onClick={() => handleDialogOpen(record, "judges")}
-                  >
-                    View Judges
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    sx={{ textTransform: "none", fontSize: "0.8rem" }}
-                    onClick={() => handleDialogOpen(record, "participants")}
-                  >
-                    View Participants
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    sx={{ textTransform: "none", fontSize: "0.8rem" }}
-                    onClick={() => handleDialogOpen(record, "results")}
-                  >
-                    View Results
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    sx={{ textTransform: "none", fontSize: "0.8rem" }}
-                    onClick={() => handleDialogOpen(record, "qrcode")}
-                  >
-                    QR code
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        component="div"
-        count={records.length} // Adjust this based on your API's total count
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Box>
-    <Snackbar
-      open={snackbarOpen}
-      autoHideDuration={6000}
-      onClose={handleCloseSnackbar}
-      message={snackbarMessage}
-    />
+        <Box sx={{ width: isSmall ? "100%" : "auto" }}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Contest by User
+          </Typography>
+
+          <TableContainer
+            component={Paper}
+            sx={{ minWidth: isSmall ? "100%" : "700px" }}
+          >
+            <Table aria-label="simple table">
+              <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Judges</TableCell>
+                  <TableCell>Participants</TableCell>
+                  <TableCell>Results</TableCell>
+                  <TableCell>QR code</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {records.map((record) => (
+                  <TableRow key={record.id}>
+                    <TableCell>{record.name}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        sx={{ textTransform: "none", fontSize: "0.8rem" }}
+                        onClick={() => handleDialogOpen(record, "judges")}
+                      >
+                        View Judges
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        sx={{ textTransform: "none", fontSize: "0.8rem" }}
+                        onClick={() => handleDialogOpen(record, "participants")}
+                      >
+                        View Participants
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        sx={{ textTransform: "none", fontSize: "0.8rem" }}
+                        onClick={() => handleDialogOpen(record, "results")}
+                      >
+                        View Results
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        sx={{ textTransform: "none", fontSize: "0.8rem" }}
+                        onClick={() => handleDialogOpen(record, "qrcode")}
+                      >
+                        QR code
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            component="div"
+            count={records.length} // Adjust this based on your API's total count
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+          message={snackbarMessage}
+        />
         <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth>
           <Box
             sx={{
@@ -374,13 +366,18 @@ const SubHistoryComponent = () => {
             )}
             {dialogType === "qrcode" && (
               <>
-               <Box sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-               {qrCodeUrl && <QRCode value={qrCodeUrl} />}
-                {!qrCodeUrl && (
-                  <Typography>No QR code URL available.</Typography>
-                )}
-
-               </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {qrCodeUrl && <QRCode value={qrCodeUrl} />}
+                  {!qrCodeUrl && (
+                    <Typography>No QR code URL available.</Typography>
+                  )}
+                </Box>
               </>
             )}
           </DialogContent>

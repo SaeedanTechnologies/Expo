@@ -815,9 +815,6 @@ const PublicScreen = () => {
   const [isOk, setIsOk] = useState(false);
 
 
-
-  console.log(isPublished, "status code");
-
   useEffect(() => {
     const storedValue = localStorage.getItem("public-screen");
     console.log(storedValue, "storedValue");
@@ -948,7 +945,8 @@ const PublicScreen = () => {
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                minHeight: "100vh",
+                minHeight: '-webkit-fill-available',
+                
                 width: "100%",
                 position: "absolute",
                 top: 0,
