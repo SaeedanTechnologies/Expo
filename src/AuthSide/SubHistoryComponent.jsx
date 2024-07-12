@@ -30,7 +30,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import QRCode from "react-qr-code";
 import { useDispatch } from "react-redux";
-import { getBehindScreen } from "../store/actions/contestStartActions";
+import { getBehindScreen, getBehindScreenResults } from "../store/actions/contestStartActions";
 
 const SubHistoryComponent = () => {
 
@@ -76,7 +76,6 @@ const SubHistoryComponent = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [dialogType, setDialogType] = useState(null);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
-
   useEffect(() => {
     fetchData();
   }, [page, rowsPerPage, monthFilter, yearFilter, dateFilter]);
@@ -153,6 +152,13 @@ const SubHistoryComponent = () => {
     //   setLoading(false);
     // }
 
+    try {
+        const result = await dispatch(getBehindScreenResults(record.id));
+        // setContestResults(result.data.data);
+        console.log(result.data.data, 'result data')
+      } catch (err) {
+        console.log(err);
+      }
 
 
     const url = `https://frontend.saeedantechpvt.com/admin/contest/${record.id}`;

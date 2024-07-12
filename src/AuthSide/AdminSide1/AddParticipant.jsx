@@ -16,6 +16,7 @@ const AddParticipant = () => {
   const [inputValues, setInputValues] = useState([]);
   const [uploadFields, setUploadFields] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [descriptions, setDescriptions] = useState(Array(uploadFields.length).fill(''));
   const navigate = useNavigate();
   const contest_id = localStorage.getItem("add_register_response");
   const token = localStorage.getItem("token");
@@ -120,15 +121,29 @@ const AddParticipant = () => {
         formData.push(field);
       });
 
-      // Add upload fields from uploadFields (if needed)
-      uploadFields.forEach((value, index) => {
+      // Prev code for pload image without accruate label
+      // uploadFields.forEach((value, index) => {
+      //   const field = {
+      //     contest_id: contest_id,
+      //     name: `Field ${index + 1}`,
+      //     type: "file",
+      //     label: `Upload ${index + 1}`,
+      //     required: true,
+      //     is_important: false, // Adjust as per your logic
+      //   };
+
+      //   formData.push(field);
+      // });
+
+
+      uploadFields.forEach((file, index) => {
         const field = {
           contest_id: contest_id,
           name: `Field ${index + 1}`,
           type: "file",
-          label: `Upload ${index + 1}`,
+          label: descriptions[index],
           required: true,
-          is_important: false, // Adjust as per your logic
+          is_important: false,
         };
 
         formData.push(field);
@@ -163,7 +178,7 @@ const AddParticipant = () => {
   const handleTouchStart = (event, itemType) => {
     event.preventDefault();
     if (itemType === "textField" || itemType === "picture") {
-      // Additional touch start logic if needed
+
     }
   };
 
@@ -428,6 +443,17 @@ const AddParticipant = () => {
             ))}
             {uploadFields.map((file, index) => (
               <>
+              <TextField
+  sx={{ width: '100%' }}
+ 
+  value={descriptions[index]}
+  placeholder="Please Enter the label of image"
+  onChange={(event) => {
+    const newDescriptions = [...descriptions];
+    newDescriptions[index] = event.target.value;
+    setDescriptions(newDescriptions);
+  }}
+/>
                 <Box
                   key={index}
                   sx={{
@@ -458,7 +484,7 @@ const AddParticipant = () => {
                   <input
                     type="file"
                     id={`fileInput-${index}`}
-                    label='fileeeeeeeeeeeee'
+
                     onChange={(event) => handleFileInputChange(index, event)}
                     style={{ display: "none" }}
                   />
@@ -483,11 +509,8 @@ const AddParticipant = () => {
                     X
                   </Button>
                 </Box>
-                <TextField
-                sx={{width:'100%'}}
-                  label="Description"
-                  placeholder="Please Enter the description of image"
-                />
+
+
               </>
             ))}
             <Button
