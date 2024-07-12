@@ -118,7 +118,7 @@ const Navbar = () => {
           </Button>
         ) : null}
 
-        {/* {auth ? (
+        {auth ? (
           <Button
             variant="contained"
             sx={{ textTransform: "none", marginRight: "12px", color: "white" }}
@@ -135,7 +135,7 @@ const Navbar = () => {
               Show All History
             </Link>
           </Button>
-        ) : null} */}
+        ) : null}
 
         <Button variant="contained" sx={{ textTransform: "none" }}>
           Upgrade your pricing plan
@@ -252,7 +252,7 @@ const Navbar = () => {
             </Box>
           ) : null}
 
-          {/* {auth ? (
+          {auth ? (
             <Box sx={{ width: 250, padding: "20px" }}>
               <Button
                 variant="contained"
@@ -275,7 +275,7 @@ const Navbar = () => {
                 </Link>
               </Button>
             </Box>
-          ) : null} */}
+          ) : null}
           <Box sx={{ width: 250, padding: "20px" }}>
             <Button variant="contained" sx={{ textTransform: "none" }}>
               Upgrade your pricing plan
