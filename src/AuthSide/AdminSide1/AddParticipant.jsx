@@ -101,7 +101,7 @@ const AddParticipant = () => {
       },{
       contest_id: contest_id,
       name: "email", // Fixed value for the email TextField
-      type: "text",
+      type: "email",
       label: "Email", // You can change this label as needed
       required: true,
       is_important: false, // Adjust as per your logic
@@ -445,7 +445,7 @@ const AddParticipant = () => {
               <>
               <TextField
   sx={{ width: '100%' }}
- 
+
   value={descriptions[index]}
   placeholder="Please Enter the label of image"
   onChange={(event) => {

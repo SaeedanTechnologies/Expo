@@ -25,6 +25,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getBehindScreen } from "../store/actions/contestStartActions";
+import { useSelector } from "react-redux";
 
 
 
@@ -50,35 +51,21 @@ const AllHistory = () => {
     fetchData();
   }, [page, rowsPerPage, monthFilter, yearFilter]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const token = useSelector((state)=>state?.admin?.token)
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://expoproject.saeedantechpvt.com/api/all/events`,
+        `https://expoproject.saeedantechpvt.com/api/admin/expo`,
         {
-          params: {
-            page: page + 1,
-            per_page: rowsPerPage,
-            month: monthFilter,
-            year: yearFilter,
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
+
         }
       );
-      setRecords(response.data);
+      setRecords(response?.data?.payload);
+
     } catch (error) {
       console.error("Error fetching records:", error);
       setSnackbarMessage("Failed to fetch data");
@@ -122,6 +109,21 @@ const AllHistory = () => {
 
 
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
 
 
 
@@ -140,68 +142,11 @@ const AllHistory = () => {
         <Typography variant="h4" align="center" gutterBottom>
           All History
         </Typography>
-      {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-          <IconButton onClick={handleFilterClick}>
-            <FilterListIcon />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleFilterClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <Box sx={{ padding: 2, width: "300px" }}>
-              <Typography variant="subtitle1" gutterBottom>
-                Filter Events
-              </Typography>
-              <TextField
-                select
-                label="Month"
-                value={monthFilter}
-                onChange={(e) => setMonthFilter(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{ mb: 2 }}
-              >
-                {[...Array(12).keys()].map((m) => (
-                  <MenuItem key={m + 1} value={m + 1}>
-                    {new Date(0, m).toLocaleString("default", { month: "long" })}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                label="Year"
-                type="number"
-                value={yearFilter}
-                onChange={(e) => setYearFilter(e.target.value)}
-                fullWidth
-                margin="normal"
-                sx={{ mb: 2 }}
-              />
-              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button onClick={handleFilterClose} sx={{ mr: 2 }}>
-                  Cancel
-                </Button>
-                <Button onClick={handleApplyFilter} variant="contained">
-                  Apply
-                </Button>
-              </Box>
-            </Box>
-          </Menu>
-        </Box>  */}
-
         <TableContainer component={Paper} sx={{ minWidth:  isSmall ? "100%" : "700px"}}>
           <Table aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow>
-                <TableCell>Name</TableCell>
+                <TableCell>Event Name</TableCell>
                 <TableCell>Date</TableCell>
               </TableRow>
             </TableHead>
@@ -217,7 +162,7 @@ const AllHistory = () => {
         </TableContainer>
         <TablePagination
           component="div"
-          count={records.length} // Adjust this based on your API's total count
+          count={records.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
@@ -231,13 +176,6 @@ const AllHistory = () => {
         message={snackbarMessage}
       />
     </Box>
-
-
-
-
-
-
-
     </>
   )
 }

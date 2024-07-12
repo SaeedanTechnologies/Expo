@@ -575,7 +575,7 @@ const SignUpForm = () => {
                                 field.type === "email"
                                   ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/
                                   : undefined,
-                              message: `Invalid ${field.label}`,
+                              message: `Please Enter valid ${field.label}`,
                             },
                           }}
                           render={({ field: { onChange, value } }) => (
