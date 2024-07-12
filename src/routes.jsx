@@ -39,6 +39,7 @@ import TestingApi from "./AuthSide/JudgePanel/TestingApi";
 import AdminPublicAllRecords from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminPublicAllRecords";
 import HomePage from "./AuthSide/HomePage";
 import AllHistory from "./AuthSide/AllHistory";
+import SubHistoryComponent from "./AuthSide/SubHistoryComponent";
 export default function Router() {
 
 
@@ -192,7 +193,12 @@ export default function Router() {
             path: 'all-history-participant',
             element: <AllHistory />,
         },
-       
+
+        {
+            path: 'user-contest/:id',
+            element: <SubHistoryComponent/>,
+        },
+
         // {
         //     path: 'judge-score-card-testingApi/:id',
         //     element: <TestingApi />
