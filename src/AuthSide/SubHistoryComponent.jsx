@@ -223,7 +223,7 @@ const SubHistoryComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-     
+
           padding: isSmall ? "1rem" : "2rem",
         }}
       >
