@@ -4,6 +4,7 @@ import { Box, Typography, Snackbar, CircularProgress } from "@mui/material";
 import MyButton from "../../page/components/MyButton";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import PushBack from "../../components/PushBack/PushBack";
 
 const AddContent = () => {
   const navigate = useNavigate();
@@ -73,15 +74,18 @@ const AddContent = () => {
           margin: "0 auto",
         }}
       >
-        <Typography
-          sx={{
-            fontSize: "36px",
-            fontWeight: 700,
-            textAlign: "center",
-          }}
-        >
-          Add Contest
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <PushBack />
+          <Typography
+            sx={{
+              fontSize: "36px",
+              fontWeight: 700,
+              textAlign: "center",
+            }}
+          >
+            Add Contest
+          </Typography>
+        </Box>
         <Typography
           sx={{
             color: "#949494",

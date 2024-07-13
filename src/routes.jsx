@@ -8,7 +8,6 @@ import CreateScoreCard from "./AuthSide/AdminSideJudge/CreateScoreCard";
 import Links from "./AuthSide/AdminSideJudge/Links";
 import UploadVideo from "./AuthSide/AdminSideJudge/UploadVideo";
 import AdminOperator from "./AuthSide/AdminSideJudge/AdminOperator";
-
 import AddContent from "./AuthSide/AdminSide1/AddContest";
 import AddRegistration from "./AuthSide/AdminSide1/RegistrationTime";
 import AddParticipant from "./AuthSide/AdminSide1/AddParticipant";
@@ -21,7 +20,6 @@ import AdminOperator3 from "./AuthSide/AdminSideJudge/AdminOperator3";
 import IframeLink from "./AuthSide/AdminSideJudge/IframeLink";
 import ParticipantPage from "./AuthSide/AdminSideJudge/ParticipantPage";
 import AllRecords from "./AuthSide/AdminSideJudge/AllRecords";
-
 import AllRecord from "./AuthSide/AdminSideJudge/AdminSideScreen/AllRecord";
 import JugedRole from "./AuthSide/AdminSideJudge/AdminSideScreen/JugedRole";
 import JudgePanelReg from "./AuthSide/JudgePanel/JudgePanelReg";
@@ -38,164 +36,171 @@ import AllContest from "./AuthSide/AdminSide1/AllEvents/AllContest";
 import TestingApi from "./AuthSide/JudgePanel/TestingApi";
 import AdminPublicAllRecords from "./AuthSide/AdminSideJudge/AdminSideScreen/AdminPublicAllRecords";
 import HomePage from "./AuthSide/HomePage";
+import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
+
+import { useSelector } from "react-redux";
 export default function Router() {
-
-
-    let element = useRoutes([
-        // {
-        //     path: '/',
-        //     element: <Navigate to="/admin-login" replace />,
-        // },
+  const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
+  let element = useRoutes([
+    // {
+    //     path: '/',
+    //     element: <Navigate to="/admin-login" replace />,
+    // },
+    {
+      path: "/",
+      element: <HomePage />,
+    },
+    {
+      element: <ProtectedRoutes isLogged={isAuthenticated} />,
+      children: [
         {
-            path: '/',
-            element: <HomePage />,
-        },
-        {
-            path: '/admin',
-            element: <AdminHome />,
-            children: [
-                {
-                    path: 'welcome',
-                    element: <Welcome />,
-                },
-                {
-                    path: 'add-event',
-                    element: <AddEvent />,
-                },
-                {
-                    path: 'add-content',
-                    element: <AddContent />,
-                },
-                {
-                    path: 'add-registration',
-                    element: <AddRegistration />,
-                },
-                {
-                    path: 'add-participant',
-                    element: <AddParticipant />,
-                },
-                {
-                    path: 'add-QR',
-                    element: <QrCode />,
-                },
-
-                {
-                    path: 'contest/:id',
-                    element: <SignUpForm />,
-                },
-
-            ]
-        },
-        {
-            path: 'participant-registered',
-            element: <ParticipantRegistered/>,
-        },
-        {
-            path: 'add-judges',
-            element: <AddJudgeMain />,
-        },
-
-        {
-            path: 'create-score-card',
-            element: <CreateScoreCard />
-        },
-        {
-            path: 'links',
-            element: <Links />
-        },
-        {
-            path: 'upload-file/:id',
-            element: <UploadVideo />
-        },
-        {
-            path: 'admin-contest-start/:id',
-            element: <AdminOperator />
-        },
-        {
-            path: 'admin_side_screen1',
-            element: <AdminSideScreen />,
-        },
-        {
-            path: 'public-screen-result/:id',
-            element: <AdminSideScreen2 />,
-        },
+          path: "/admin",
+          element: <AdminHome />,
+          children: [
             {
-            path: 'admin-operator2',
-            element: <AdminOperator2 />
+              path: "welcome",
+              element: <Welcome />,
+            },
+            {
+              path: "add-event",
+              element: <AddEvent />,
+            },
+            {
+              path: "add-content",
+              element: <AddContent />,
+            },
+            {
+              path: "add-registration",
+              element: <AddRegistration />,
+            },
+            {
+              path: "add-participant",
+              element: <AddParticipant />,
+            },
+            {
+              path: "add-QR",
+              element: <QrCode />,
+            },
+
+            {
+              path: "contest/:id",
+              element: <SignUpForm />,
+            },
+          ],
         },
-        {
-            path: 'admin-operator3',
-            element: <AdminOperator3 />
-        },
-        {
-            path: 'iframe/:id',
-            element: <IframeLink />
-        },
-        {
-            path: 'participant-page/:id',
-            element: <ParticipantPage />
-        },
-        {
-            path: 'public-screen/:id',
-            element: <PublicScreen />
-        },
-        {
-            path: 'all-records',
-            element: <AllRecords />
-        },
-        {
-            path: 'all_record',
-            element: <AllRecord />,
-        },
-        {
-            path: 'judge_role',
-            element: <JugedRole />,
-        },
-        {
-            path: 'judge-score-card/:id',
-            element: <TestingApi />,
-        },
-        {
-            path: 'judge_panel_screen2',
-            element: <JudgePanelReg2 />,
-        },
-        {
-            path: 'judge_all_particeipent',
-            element: <JudgeAllParticepent />,
-        },
-        {
-            path: 'judge_admin_panel_participant',
-            element: <JudgeAdminPanelParticipant />,
-        },
-        {
-            path: 'judge-login',
-            element: <LoginAdminPanel />,
-        },
-        {
-            path: 'admin-sign-up',
-            element: <AdminRegisterForm />,
-        },
-        {
-            path: 'admin-login',
-            element: <AdminLoginForm />,
-        },
-        {
-            path: 'all-events',
-            element: <Allevents />,
-        },
-        {
-            path: 'all-contest/:id',
-            element: <AllContest />,
-        },
-       
-        // {
-        //     path: 'judge-score-card-testingApi/:id',
-        //     element: <TestingApi />
-        // },
-        {
-            path: 'public_all-records/:id',
-            element: <AdminPublicAllRecords />,
-        },
-    ]);
-    return element;
+      ],
+    },
+
+    {
+      path: "participant-registered",
+      element: <ParticipantRegistered />,
+    },
+    {
+      path: "add-judges",
+      element: <AddJudgeMain />,
+    },
+
+    {
+      path: "create-score-card",
+      element: <CreateScoreCard />,
+    },
+    {
+      path: "links",
+      element: <Links />,
+    },
+    {
+      path: "upload-file/:id",
+      element: <UploadVideo />,
+    },
+    {
+      path: "admin-contest-start/:id",
+      element: <AdminOperator />,
+    },
+    {
+      path: "admin_side_screen1",
+      element: <AdminSideScreen />,
+    },
+    {
+      path: "public-screen-result/:id",
+      element: <AdminSideScreen2 />,
+    },
+    {
+      path: "admin-operator2",
+      element: <AdminOperator2 />,
+    },
+    {
+      path: "admin-operator3",
+      element: <AdminOperator3 />,
+    },
+    {
+      path: "iframe/:id",
+      element: <IframeLink />,
+    },
+    {
+      path: "participant-page/:id",
+      element: <ParticipantPage />,
+    },
+    {
+      path: "public-screen/:id",
+      element: <PublicScreen />,
+    },
+    {
+      path: "all-records",
+      element: <AllRecords />,
+    },
+    {
+      path: "all_record",
+      element: <AllRecord />,
+    },
+    {
+      path: "judge_role",
+      element: <JugedRole />,
+    },
+    {
+      path: "judge-score-card/:id",
+      element: <TestingApi />,
+    },
+    {
+      path: "judge_panel_screen2",
+      element: <JudgePanelReg2 />,
+    },
+    {
+      path: "judge_all_particeipent",
+      element: <JudgeAllParticepent />,
+    },
+    {
+      path: "judge_admin_panel_participant",
+      element: <JudgeAdminPanelParticipant />,
+    },
+    {
+      path: "judge-login",
+      element: <LoginAdminPanel />,
+    },
+    {
+      path: "admin-sign-up",
+      element: <AdminRegisterForm />,
+    },
+    {
+      path: "admin-login",
+      element: <AdminLoginForm />,
+    },
+    {
+      path: "all-events",
+      element: <Allevents />,
+    },
+    {
+      path: "all-contest/:id",
+      element: <AllContest />,
+    },
+
+    // {
+    //     path: 'judge-score-card-testingApi/:id',
+    //     element: <TestingApi />
+    // },
+    {
+      path: "public_all-records/:id",
+      element: <AdminPublicAllRecords />,
+    },
+  ]);
+  return element;
 }

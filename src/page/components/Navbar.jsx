@@ -39,6 +39,9 @@ const Navbar = () => {
   const handleMenuItemClick = (value) => {
     if (value === "Logout") {
       dispatch(logout());
+      dispatch({
+        type: "RESET_STATE",
+      });
     }
   };
 

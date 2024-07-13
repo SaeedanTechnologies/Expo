@@ -15,8 +15,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { useDispatch, useSelector } from "react-redux";
+import PushBack from "../../components/PushBack/PushBack";
 
 const AddRegistration = () => {
+  // debugger;
   const navigate = useNavigate();
   const location = useLocation();
   const { contestName } = location.state || {};
@@ -62,10 +64,8 @@ const AddRegistration = () => {
   const handleStartDateChange = (date) => {
     setStartDate(date);
 
-    // Set end date to start from the selected start date
     setEndDate(dayjs(date).add(1, "day"));
 
-    // Adjust end time if end date is the same as start date
     if (dayjs(endDate).isSame(date, "day")) {
       setEndTime((prevEndTime) => {
         return prevEndTime.isBefore(startTime) ? startTime : prevEndTime;
@@ -125,6 +125,16 @@ const AddRegistration = () => {
   };
 
   const handleNextClick = async () => {
+    const redux_data = {
+      start_date: startDate,
+      end_date: endDate,
+      start_time: startTime,
+      end_time: endTime,
+    };
+    dispatch({
+      type: "REG_TIME",
+      payload: redux_data,
+    });
     try {
       isLoading(true);
       const payload = {
@@ -143,12 +153,10 @@ const AddRegistration = () => {
         description: "description",
       };
       const redux_data = {
-        ...payload,
-        start_time: startTime,
-        end_time: endTime,
+        max_contestants: payload.max_contestent,
       };
       dispatch({
-        type: "REG_TIME",
+        type: "MAX_CONT",
         payload: redux_data,
       });
       const apiUrl = "https://deeplink.saeedantechpvt.com/api/admin/contests";
@@ -161,10 +169,10 @@ const AddRegistration = () => {
         body: JSON.stringify(payload),
       });
       const res = await response.json();
-      console.log(res.payload.id);
+      console.log(res.payload?.id, "++++++++++++++");
       dispatch({
         type: "CONT_ID",
-        payload: res.payload.id,
+        payload: res.payload?.id,
       });
       if (response.ok) {
         navigate("/admin/add-participant");
@@ -193,16 +201,19 @@ const AddRegistration = () => {
         padding: "1rem 5%",
       }}
     >
-      <Typography
-        sx={{
-          fontSize: "36px",
-          fontWeight: 700,
-          textAlign: "center",
-          marginBottom: "20px",
-        }}
-      >
-        Add Registration
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <PushBack />
+        <Typography
+          sx={{
+            fontSize: "36px",
+            fontWeight: 700,
+            textAlign: "center",
+            // marginBottom: "20px",
+          }}
+        >
+          Add Registration
+        </Typography>
+      </Box>
       <Typography
         sx={{
           color: "#949494",

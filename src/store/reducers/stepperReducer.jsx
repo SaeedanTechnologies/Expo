@@ -7,9 +7,10 @@ const initialState = {
   end_time: "",
   max_contestants: "",
   reg_form: "",
-  judges: "",
+  judge_ids: "",
   expo_id: "",
   cont_id: "",
+  form_id: "",
 };
 
 const RESET_STATE = "RESET_STATE";
@@ -19,54 +20,64 @@ const stepperReducer = (state = initialState, action) => {
     case "EVENT_NAME": {
       return {
         ...state,
-        ...action.payload,
         event_name: action.payload.eventName,
       };
     }
     case "CONT_NAME": {
       return {
         ...state,
-        ...action.payload,
         contest_name: action.payload,
       };
     }
     case "REG_TIME": {
       return {
         ...state,
-        ...action.payload,
-        start_date: action.payload.start_date_time,
+        start_date: action.payload.start_date,
         start_time: action.payload.start_time,
         end_time: action.payload.end_time,
-        end_date: action.payload.end_date_time,
-        max_contestants: action.payload.max_contestent,
+        end_date: action.payload.end_date,
+      };
+    }
+    case "MAX_CONT": {
+      return {
+        ...state,
+        max_contestants: action.payload.max_contestants,
       };
     }
     case "REG_FORM": {
       return {
         ...state,
-        ...action.payload,
         reg_form: action.payload,
       };
     }
     case "ADD_JUDGE": {
       return {
         ...state,
-        ...action.payload,
         judges: action.payload,
       };
     }
     case "EXPO_ID": {
       return {
         ...state,
-        ...action.payload,
         expo_id: action.payload,
       };
     }
     case "CONT_ID": {
       return {
         ...state,
-        ...action.payload,
         cont_id: action.payload,
+      };
+    }
+    case "FORM_ID": {
+      return {
+        ...state,
+        form_id: action.payload,
+      };
+    }
+    case "JUD_ID": {
+      return {
+        ...state,
+        judge_ids: action.payload,
       };
     }
     case RESET_STATE: {

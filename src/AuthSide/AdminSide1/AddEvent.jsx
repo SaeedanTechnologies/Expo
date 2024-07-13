@@ -185,7 +185,7 @@ const AddEvent = () => {
       const response = await dispatch(
         addEvent({
           name: eventName,
-          ...(expoID ? { id: expoID } : {}),
+          id: expoID ? expoID : null,
         })
       );
       localStorage.setItem("expo_id", response.data.payload.id);

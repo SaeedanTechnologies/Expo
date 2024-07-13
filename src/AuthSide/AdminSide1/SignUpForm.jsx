@@ -362,7 +362,7 @@ const SignUpForm = () => {
     };
 
     axios
-      .post("https://expoproject.saeedantechpvt.com/api/participients", payload)
+      .post("https://deeplink.saeedantechpvt.com/api/participients", payload)
       .then((response) => {
         setSnackbarMessage("You are Registered ");
         navigate("/participant-registered");

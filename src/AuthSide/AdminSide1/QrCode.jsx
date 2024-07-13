@@ -107,6 +107,7 @@ import { useLocation, useNavigate } from "react-router";
 import QRCode from "qrcode.react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+import PushBack from "../../components/PushBack/PushBack";
 
 const QrCode = () => {
   const navigate = useNavigate();
@@ -163,15 +164,24 @@ const QrCode = () => {
           margin: "0 auto",
         }}
       >
-        <Typography
+        <Box
           sx={{
-            fontSize: "36px",
-            fontWeight: 700,
-            textAlign: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          QR Code
-        </Typography>
+          <PushBack />
+          <Typography
+            sx={{
+              fontSize: "36px",
+              fontWeight: 700,
+              textAlign: "center",
+            }}
+          >
+            QR Code
+          </Typography>
+        </Box>
         <Typography
           sx={{
             color: "#949494",
@@ -201,11 +211,11 @@ const QrCode = () => {
         <Box
           sx={{ display: "flex", justifyContent: "space-between", gap: "20px" }}
         >
-       {/*<MyButton
+          {/*<MyButton
             onClick={downloadQRCode}
             text="Save as PNG"
             sx={{ width: "100%" }}
-          />  */}   
+          />  */}
           <MyButton
             onClick={downloadPdf}
             text="Save as PDF"
@@ -223,4 +233,3 @@ const QrCode = () => {
 };
 
 export default QrCode;
-

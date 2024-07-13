@@ -15,6 +15,7 @@ import {
 import { Close } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import PushBack from "../../../components/PushBack/PushBack";
 
 const toBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -105,9 +106,18 @@ const AddJudgeMain = () => {
       }}
     >
       <Box>
-        <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
-          Add Judges
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <PushBack />
+          <Typography variant="h4" sx={{ textAlign: "center" }}>
+            Add Judges
+          </Typography>
+        </Box>
         <Typography variant="body1" gutterBottom sx={{ textAlign: "center" }}>
           Lorem ipsum dolor sit amet consectetur lorem ipsum dolor sit amet
           consectetur lorem ipsum dolor sit amet.

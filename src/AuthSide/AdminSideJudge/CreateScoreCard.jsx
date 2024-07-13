@@ -15,7 +15,8 @@ import { TouchBackend } from "react-dnd-touch-backend";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import PushBack from "../../components/PushBack/PushBack";
 
 const ItemTypes = {
   BUTTON: "button",
@@ -65,17 +66,18 @@ const CreateScoreCard = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const { judges } = location.state || { judges: [] };
+  const judge_ids_R = useSelector((state) => state.stepper.judge_ids);
   const names = judges.map((judge) => judge.judge_name);
   const profile = judges.map((judge) => judge.profile_picture);
   const dispatch = useDispatch();
-  // console.log(names, "JKLJKKL");
 
   const [textFields, setTextFields] = useState([
     { name: "", label: "", type: "text", value: "", required: true },
   ]);
   // console.log(textFields, "textFileds");
   const token = localStorage.getItem("token");
-  const contest_id = localStorage.getItem("add_register_response");
+  // const contest_id = localStorage.getItem("add_register_response");
+  const contest_id = useSelector((state) => state.stepper.cont_id);
   const { enqueueSnackbar } = useSnackbar();
   const handleDrop = () => {
     setTextFields([
@@ -134,6 +136,7 @@ const CreateScoreCard = () => {
       formData.append(`profile_picture[${index}]`, field.profile_picture);
       formData.append(`email[${index}]`, field.email);
       formData.append(`judge_name[${index}]`, field.judge_name);
+      formData.append(`id[${index}]`, judge_ids_R[index] || "");
     });
     textFields.forEach((field, index) => {
       formData.append(`fields[${index}][name]`, field.value);
@@ -141,10 +144,10 @@ const CreateScoreCard = () => {
       formData.append(`fields[${index}][type]`, field.type);
       formData.append(`fields[${index}][required]`, field.required);
     });
-    dispatch({
-      type: "RESET_STATE",
-    });
-    localStorage.removeItem("judges");
+    // dispatch({
+    //   type: "RESET_STATE",
+    // });
+    // localStorage.removeItem("judges");
     // const fields = textFields.map((field) => ({
     //   name: field.value,
     //   label: field.label,
@@ -153,17 +156,19 @@ const CreateScoreCard = () => {
     // }));
     // formData.append("fields", JSON.stringify(fields));
     axios
-      .post(
-        "https://expoproject.saeedantechpvt.com/api/admin/judges",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post("https://deeplink.saeedantechpvt.com/api/admin/judges", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         enqueueSnackbar("Judges Added Successfully", { variant: "success" });
+        const judge_ids = response?.data?.data?.judges?.map((item) => item.id);
+        dispatch({
+          type: "JUD_ID",
+          payload: judge_ids,
+        });
+        // console.log(judge_ids, "YE RESPONSEHA");
         // localStorage.removeItem("judges");
         navigate("/links", { state: { contest_id: contest_id } });
       })
@@ -220,11 +225,14 @@ const CreateScoreCard = () => {
           minHeight: "80vh",
         }}
       >
-        <Typography
-          sx={{ fontSize: "2rem", fontWeight: 600, textAlign: "center" }}
-        >
-          Create Score Card
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <PushBack />
+          <Typography
+            sx={{ fontSize: "2rem", fontWeight: 600, textAlign: "center" }}
+          >
+            Create Score Card
+          </Typography>
+        </Box>
         <Typography sx={{ textAlign: "center" }}>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae
           sapiente inventore libero accusantium quisquam adipisci numquam quos
