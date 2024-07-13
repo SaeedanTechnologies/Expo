@@ -355,12 +355,13 @@ const SignUpForm = () => {
   }, [endDateTime]);
 
   const onSubmit = (formData) => {
+   
     setSubmitting(true);
     const payload = {
       contest_id: id,
       fields_values: JSON.stringify(formData),
     };
-
+    console.log(payload,"emailTesting")
     axios
       .post("https://expoproject.saeedantechpvt.com/api/participients", payload)
       .then((response) => {

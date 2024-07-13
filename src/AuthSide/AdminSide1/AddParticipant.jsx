@@ -102,7 +102,7 @@ const AddParticipant = () => {
       contest_id: contest_id,
       name: "email", // Fixed value for the email TextField
       type: "email",
-      label: "Email", // You can change this label as needed
+      label: "email", // You can change this label as needed
       required: true,
       is_important: false, // Adjust as per your logic
     });
