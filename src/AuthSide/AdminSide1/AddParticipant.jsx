@@ -16,7 +16,9 @@ const AddParticipant = () => {
   const [inputValues, setInputValues] = useState([]);
   const [uploadFields, setUploadFields] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [descriptions, setDescriptions] = useState(Array(uploadFields.length).fill(''));
+  const [descriptions, setDescriptions] = useState(
+    Array(uploadFields.length).fill("")
+  );
   const navigate = useNavigate();
   const contest_id = localStorage.getItem("add_register_response");
   const token = localStorage.getItem("token");
@@ -98,14 +100,16 @@ const AddParticipant = () => {
         label: "name", // You can change this label as needed
         required: true,
         is_important: false, // Adjust as per your logic
-      },{
-      contest_id: contest_id,
-      name: "email", // Fixed value for the email TextField
-      type: "email",
-      label: "Email", // You can change this label as needed
-      required: true,
-      is_important: false, // Adjust as per your logic
-    });
+      });
+
+      formData.push({
+        contest_id: contest_id,
+        name: "email", // Fixed value for the first TextField
+        type: "email",
+        label: "email", // You can change this label as needed
+        required: true,
+        is_important: false, // Adjust as per your logic
+      });
 
       // Add dynamic fields from inputValues
       inputValues.forEach((value, index) => {
@@ -134,7 +138,6 @@ const AddParticipant = () => {
 
       //   formData.push(field);
       // });
-
 
       uploadFields.forEach((file, index) => {
         const field = {
@@ -178,7 +181,6 @@ const AddParticipant = () => {
   const handleTouchStart = (event, itemType) => {
     event.preventDefault();
     if (itemType === "textField" || itemType === "picture") {
-
     }
   };
 
@@ -443,17 +445,16 @@ const AddParticipant = () => {
             ))}
             {uploadFields.map((file, index) => (
               <>
-              <TextField
-  sx={{ width: '100%' }}
-
-  value={descriptions[index]}
-  placeholder="Please Enter the label of image"
-  onChange={(event) => {
-    const newDescriptions = [...descriptions];
-    newDescriptions[index] = event.target.value;
-    setDescriptions(newDescriptions);
-  }}
-/>
+                <TextField
+                  sx={{ width: "100%" }}
+                  value={descriptions[index]}
+                  placeholder="Please Enter the label of image"
+                  onChange={(event) => {
+                    const newDescriptions = [...descriptions];
+                    newDescriptions[index] = event.target.value;
+                    setDescriptions(newDescriptions);
+                  }}
+                />
                 <Box
                   key={index}
                   sx={{
@@ -484,7 +485,6 @@ const AddParticipant = () => {
                   <input
                     type="file"
                     id={`fileInput-${index}`}
-
                     onChange={(event) => handleFileInputChange(index, event)}
                     style={{ display: "none" }}
                   />
@@ -509,8 +509,6 @@ const AddParticipant = () => {
                     X
                   </Button>
                 </Box>
-
-
               </>
             ))}
             <Button
