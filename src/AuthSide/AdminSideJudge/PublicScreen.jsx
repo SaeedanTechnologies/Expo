@@ -945,7 +945,7 @@ const PublicScreen = () => {
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                minHeight: '-webkit-fill-available',
+                minHeight: '100vh',
                 width: "100%",
                 position: "absolute",
                 top: 0,

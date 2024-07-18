@@ -181,7 +181,7 @@ const SubHistoryComponent = () => {
 
       case "qrcode":
         setLoadingQRCode(true);
-        const url = `https://frontend.saeedantechpvt.com/admin/contest/${record.id}`;
+        const url = `${window.location.origin}/admin/contest/${record.id}`;
         setQrCodeUrl(url);
         setLoadingQRCode(false);
         break;

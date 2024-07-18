@@ -52,9 +52,7 @@ export default function Router() {
       path: "/",
       element: <HomePage />,
     },
-    {
-      element: <ProtectedRoutes isLogged={isAuthenticated} />,
-      children: [
+
         {
           path: "/admin",
           element: <AdminHome />,
@@ -90,8 +88,7 @@ export default function Router() {
             },
           ],
         },
-      ],
-    },
+      
 
     {
       path: "participant-registered",

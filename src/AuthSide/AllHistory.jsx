@@ -64,7 +64,11 @@ const token = useSelector((state)=>state?.admin?.token)
 
         }
       );
-      setRecords(response?.data?.payload);
+      // setRecords(response?.data?.payload);
+      const sortedRecords = response.data.payload.sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      setRecords(sortedRecords);
 
     } catch (error) {
       console.error("Error fetching records:", error);

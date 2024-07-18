@@ -115,9 +115,10 @@ const QrCode = () => {
   const { state } = location;
 
   const id = state && state?.contest_id;
+  // console.log(window.location.origin)
 
   const qrRef = useRef();
-  const qrCodeUrl = `https://frontend.saeedantechpvt.com/admin/contest/${id}`;
+  const qrCodeUrl = `${window.location.origin}/admin/contest/${id}`;
 
   const downloadQRCode = () => {
     const canvas = qrRef.current.querySelector("canvas");
