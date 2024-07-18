@@ -19,10 +19,11 @@ const Links = () => {
   const location = useLocation();
   const { contest_id } = location.state || {};
   const { enqueueSnackbar } = useSnackbar();
+
   const navigate = useNavigate();
-  const adminlink = `https://frontend.saeedantechpvt.com/admin-contest-start/${contest_id}`;
-  const judgelink = `https://frontend.saeedantechpvt.com/judge-login`;
-  const behindscreenlink = `https://frontend.saeedantechpvt.com/public-screen/${contest_id}`;
+  const adminlink = `${window.location.origin}/admin-contest-start/${contest_id}`;
+  const judgelink = `${window.location.origin}/judge-login`;
+  const behindscreenlink = `${window.location.origin}/public-screen/${contest_id}`;
   const dispatch = useDispatch();
   const theme = useTheme();
   const handleCopyAdminLink = () => {

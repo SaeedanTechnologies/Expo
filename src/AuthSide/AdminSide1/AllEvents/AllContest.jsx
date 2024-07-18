@@ -367,7 +367,7 @@ const Allevents = () => {
         </TableContainer>
         <TablePagination
           component="div"
-          count={records.length} // Adjust this based on your API's total count
+          count={records.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
