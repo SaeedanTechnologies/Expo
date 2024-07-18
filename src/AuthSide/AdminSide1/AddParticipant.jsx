@@ -26,14 +26,14 @@ const AddParticipant = () => {
   const reg_data = useSelector((state) => state?.stepper?.reg_form);
   const contest_id = useSelector((state) => state.stepper.cont_id);
   const form_id = useSelector((state) => state.stepper.form_id);
-  console.log(form_id, "YE FORM ID");
+  // console.log(form_id, "YE FORM ID");
   let fileIds, textIds;
 
   if (form_id) {
     fileIds = form_id.slice(2).filter((item) => item.type === "file");
     textIds = form_id.slice(2).filter((item) => item.type === "text");
-    console.log(fileIds, "FILE IDS");
-    console.log(textIds, "Text IDS");
+    // console.log(fileIds, "FILE IDS");
+    // console.log(textIds, "Text IDS");
   }
 
   let fileData;
@@ -131,7 +131,7 @@ const AddParticipant = () => {
         label: "name",
         required: 1,
         is_important: 0,
-        id: form_id ? form_id[0].id : "",
+        id: form_id ? form_id[0]?.id : "",
       });
       formData.push({
         contest_id: contest_id,
@@ -140,12 +140,12 @@ const AddParticipant = () => {
         label: "email",
         required: 1,
         is_important: 0,
-        id: form_id ? form_id[1].id : "",
+        id: form_id ? form_id[1]?.id : "",
       });
       inputValues.forEach((value, index) => {
         const field = {
           contest_id: contest_id,
-          id: form_id ? textIds[index].id : "",
+          id: form_id ? textIds[index]?.id : "",
           name: `Field ${index + 1}`,
           type: "text",
           label: value,
@@ -158,7 +158,7 @@ const AddParticipant = () => {
       uploadFields.forEach((value, index) => {
         const field = {
           contest_id: contest_id,
-          id: form_id ? fileIds[index].id : "",
+          id: form_id ? fileIds[index]?.id : "",
           name: `Field ${index + 1}`,
           type: "file",
           label: descriptions[index],
@@ -193,7 +193,7 @@ const AddParticipant = () => {
         id: item.id,
         type: item.type,
       }));
-      console.log("Form data submitted successfully:", extracted_array);
+      // console.log("Form data submitted successfully:", extracted_array);
       dispatch({
         type: "FORM_ID",
         payload: extracted_array,

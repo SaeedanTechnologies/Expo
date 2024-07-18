@@ -388,7 +388,7 @@ const AdminOperator = () => {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [publicButtonClicked, setPublicButtonClicked] = useState(false);
 
-  console.log(fieldScores, 'fieldsssssssss')
+  console.log(fieldScores, "fieldsssssssss");
 
   useEffect(() => {
     const fetchContestData = async () => {
@@ -893,9 +893,11 @@ const AdminOperator = () => {
 
                       // Get the scores for the current participant
                       const participantFieldScores = fieldScores.filter(
-                        (val) => val.participant_id === score.participant_id && val.judge_id === score.judge.id
+                        (val) =>
+                          val.participant_id === score.participant_id &&
+                          val.judge_id === score.judge.id
                       );
-                      console.log(participantFieldScores, 'okk')
+                      console.log(participantFieldScores, "okk");
 
                       return (
                         <React.Fragment key={index}>

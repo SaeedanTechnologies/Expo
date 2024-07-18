@@ -9,7 +9,6 @@ export const getStartContest = (contestId) => async (dispatch) => {
   }
 };
 
-
 export const getBehindScreen = (contestId) => async (dispatch) => {
   try {
     const res = await api.get(`behind-screen-results/${contestId}`);
@@ -21,26 +20,27 @@ export const getBehindScreen = (contestId) => async (dispatch) => {
 
 export const getBehindScreenResults = (contestId) => async (dispatch) => {
   try {
-    const res = await api.get(`contest-result/${contestId}`);
+    const res = await api.get(`public-contest-result/${contestId}`);
     return res;
   } catch (err) {
     throw err;
   }
 };
 
-
-export const setNextParticipant = (contestId, participant_id) => async (dispatch) => {
+export const setNextParticipant =
+  (contestId, participant_id) => async (dispatch) => {
     try {
-      const res = await api.post(`admin/judge-participant/${contestId}`, {participant_id});
+      const res = await api.post(`admin/judge-participant/${contestId}`, {
+        participant_id,
+      });
       return res;
     } catch (err) {
       throw err;
     }
   };
 
-
-
-  export const setApprovidParticipant = (contest_id, participant_id) => async (dispatch) => {
+export const setApprovidParticipant =
+  (contest_id, participant_id) => async (dispatch) => {
     try {
       const payload = { participant_id, contest_id }; // Create the payload object
       const res = await api.post(`admin/approve-judge-score`, payload);
@@ -50,100 +50,93 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     }
   };
 
-  export const setPublicApproved = (participant_id, contest_id) => async (dispatch) => {
+export const setPublicApproved =
+  (participant_id, contest_id) => async (dispatch) => {
     try {
-      const payload = { participant_id, contest_id, }; // Create the payload object
+      const payload = { participant_id, contest_id }; // Create the payload object
 
-      const res = await api.post(`admin/approved-behind-screen-results`, payload );
-      console.log(res, 'API Response')
+      const res = await api.post(`approved-behind-screen-results`, payload);
+      console.log(res, "API Response");
       return res;
     } catch (err) {
       throw err;
     }
   };
 
+export const getAllRecords = (contestId) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`admin/contest-result/${contestId}`);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
 
+export const getAllRecordsPublic = (contestId) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await api.get(`public-contest-result/${contestId}`);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
 
+export const saveToPublicScreen = (contestId) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await api.post(`admin/publish-record/${contestId}`);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
 
-  export const getAllRecords = (contestId) => async (dispatch) => {
-    try {
-      const token=localStorage.getItem("token")
-      const res = await api.get(`contest-result/${contestId}`);
-      return res;
-    } catch (err) {
-      throw err;
-    }
-  };
+export const rematchApi = (contest_id, participant_id) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await api.post("admin/manual-rematch-contest", {
+      contest_id,
+      participant_id,
+    });
+    return res.data; // Assuming you want to return data from the response
+  } catch (err) {
+    throw err;
+  }
+};
 
-  export const getAllRecordsPublic = (contestId) => async (dispatch) => {
-    try {
-      const token=localStorage.getItem("token")
-      const res = await api.get(`public-contest-result/${contestId}`);
-      return res;
-    } catch (err) {
-      throw err;
-    }
-  };
+export const pdfApi = (file) => async (dispatch) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
 
-  export const saveToPublicScreen = (contestId) => async (dispatch) => {
+    const res = await api.post("admin/send-pdf", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-      try {
-        const token = localStorage.getItem("token");
-        const res = await api.post(`admin/publish-record/${contestId}`);
-        return res;
-      } catch (err) {
-        throw err;
-      }
-    };
+    return res.data; // Assuming you want to return data from the response
+  } catch (err) {
+    throw err; // Re-throwing the error to handle it in components or other parts of your application
+  }
+};
 
-    export const rematchApi = (contest_id, participant_id) => async (dispatch) => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await api.post('admin/manual-rematch-contest', {
-          contest_id,
-          participant_id
-        },);
-        return res.data; // Assuming you want to return data from the response
-      } catch (err) {
-        throw err;
-      }
-    };
+export const singleContest = (contestId) => async (dispatch) => {
+  try {
+    const res = await api.get(`behind-screen-contestinfo/${contestId}`);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
 
-    export const pdfApi = (file) => async (dispatch) => {
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const res = await api.post('admin/send-pdf', formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
-        return res.data; // Assuming you want to return data from the response
-      } catch (err) {
-        throw err; // Re-throwing the error to handle it in components or other parts of your application
-      }
-    };
-
-  export const singleContest = (contestId) => async (dispatch) => {
-
-    try {
-
-      const res = await api.get(`behind-screen-contestinfo/${contestId}`);
-      return res;
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  export const iframeApi = (contestId) => async (dispatch) => {
-
-    try {
-
-      const res = await api.get(`admin/generateIframeLink/${contestId}`);
-      return res;
-    } catch (err) {
-      throw err;
-    }
-  };
+export const iframeApi = (contestId) => async (dispatch) => {
+  try {
+    const res = await api.get(`admin/generateIframeLink/${contestId}`);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
