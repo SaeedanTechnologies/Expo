@@ -21,7 +21,7 @@ export const getBehindScreen = (contestId) => async (dispatch) => {
 
 export const getBehindScreenResults = (contestId) => async (dispatch) => {
   try {
-    const res = await api.get(`contest-result/${contestId}`);
+    const res = await api.get(`public-contest-result/${contestId}`);
     return res;
   } catch (err) {
     throw err;
@@ -54,7 +54,7 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     try {
       const payload = { participant_id, contest_id, }; // Create the payload object
 
-      const res = await api.post(`admin/approved-behind-screen-results`, payload );
+      const res = await api.post(`approved-behind-screen-results`, payload );
       console.log(res, 'API Response')
       return res;
     } catch (err) {
@@ -68,7 +68,7 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
   export const getAllRecords = (contestId) => async (dispatch) => {
     try {
       const token=localStorage.getItem("token")
-      const res = await api.get(`contest-result/${contestId}`);
+      const res = await api.get(`admin/contest-result/${contestId}`);
       return res;
     } catch (err) {
       throw err;
@@ -142,6 +142,27 @@ export const setNextParticipant = (contestId, participant_id) => async (dispatch
     try {
 
       const res = await api.get(`admin/generateIframeLink/${contestId}`);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+
+  export const getAllJudges = (contest_id) => async (dispatch) => {
+    try {
+      const res = await api.get(`admin/judges/all/${contest_id}`);
+
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  export const getAllParticipants = (contest_id) => async (dispatch) => {
+    try {
+      const res = await api.get(`participients?contest_id=${contest_id}`);
+
       return res;
     } catch (err) {
       throw err;
