@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef} from "react";
 import {
   Button,
   CircularProgress,
@@ -38,8 +38,9 @@ import {
   getBehindScreenResults,
 } from "../store/actions/contestStartActions";
 import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
-import jsPDF from "jspdf";
 
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 const SubHistoryComponent = () => {
   const location = useLocation();
@@ -74,6 +75,7 @@ const SubHistoryComponent = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [dialogType, setDialogType] = useState(null);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const qrRef = useRef();
 
   useEffect(() => {
     fetchData();
@@ -197,8 +199,45 @@ const SubHistoryComponent = () => {
     setQrCodeUrl("");
   };
 
-  const generatePdf = () => {
 
+  const downloadQRCode = () => {
+    const svg = qrRef.current.querySelector("svg");
+    if (!svg) {
+      console.error("No SVG element found");
+      return;
+    }
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const pngFile = canvas.toDataURL("image/png");
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = pngFile;
+      downloadLink.download = "qrcode.png";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    };
+
+    img.src = "data:image/svg+xml;base64," + btoa(svgData);
+  };
+  const generatePdf = async () => {
+    const element = qrRef.current;
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF();
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("qrcode.pdf");
   };
 
   if (loading) {
@@ -524,21 +563,23 @@ const SubHistoryComponent = () => {
                     flexDirection:'column'
                   }}
                 >
-                  {qrCodeUrl && <QRCode value={qrCodeUrl} />}
-                  {!qrCodeUrl && (
-                    <Typography>No QR code URL available.</Typography>
-                  )}
-
-                  <Box sx={{ textAlign: "center", marginTop: "1rem" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={generatePdf}
-                disabled={loadingQRCode}
-              >
-                Download QR Code as PDF
-              </Button>
-            </Box>
+             {qrCodeUrl && (
+                <div ref={qrRef}>
+                  <QRCode value={qrCodeUrl} />
+                </div>
+              )}
+              {!qrCodeUrl && (
+                <Typography>No QR code URL available.</Typography>
+              )}
+              <Box sx={{ textAlign: "center", marginTop: "1rem" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={generatePdf}
+                >
+                  Download QR Code as PDF
+                </Button>
+              </Box>
                 </Box>
               </>
             )}

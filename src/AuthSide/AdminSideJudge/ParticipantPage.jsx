@@ -453,7 +453,7 @@ const ParticipantPage = () => {
           backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
+          minHeight: '-webkit-fill-available',
           width: "100%",
         }}
       >
