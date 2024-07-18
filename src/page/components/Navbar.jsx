@@ -74,6 +74,10 @@ const Navbar = () => {
   const auth = useSelector((state) => state?.admin?.isAuthenticated);
   const username = useSelector((state) => state?.admin?.user?.name);
 
+  const handleAddEvent = () => {
+    navigate("/admin/welcome");
+  };
+
   return (
     <Box
       sx={{
@@ -104,6 +108,34 @@ const Navbar = () => {
           alignItems: "center",
         }}
       >
+       {auth ? (
+          <Button
+            variant="contained"
+            sx={{ textTransform: "none", marginRight:'1rem' }}
+            onClick={handleAddEvent}
+          >
+            Add New Event
+          </Button>
+        ) : null}
+
+        {auth ? (
+          <Button
+            variant="contained"
+            sx={{ textTransform: "none", marginRight: "12px", color: "white" }}
+          >
+            <Link
+              to="all-history"
+              variant="contained"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                textTransform: "none",
+              }}
+            >
+              Show All History
+            </Link>
+          </Button>
+        ) : null}
         <Button variant="contained" sx={{ textTransform: "none" }}>
           Upgrade your pricing plan
         </Button>
@@ -207,7 +239,40 @@ const Navbar = () => {
           onClose={handleDrawerClose}
           sx={{ zIndex: 10000000 }}
         >
+
+
+
+
           <Box sx={{ width: 250, padding: "20px" }}>
+          {auth ? (
+          <Button
+            variant="contained"
+            sx={{ textTransform: "none", marginRight:'1rem' }}
+            onClick={handleAddEvent}
+          >
+            Add New Event
+          </Button>
+        ) : null}
+
+        {auth ? (
+          <Button
+            variant="contained"
+            sx={{ textTransform: "none", marginRight: "12px", color: "white" }}
+          >
+            <Link
+              to="all-history"
+              variant="contained"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                textTransform: "none",
+                marginTop:'1rem'
+              }}
+            >
+              Show All History
+            </Link>
+          </Button>
+        ) : null}
             <Button variant="contained" sx={{ textTransform: "none" }}>
               Upgrade your pricing plan
             </Button>

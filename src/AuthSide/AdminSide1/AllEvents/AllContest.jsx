@@ -34,7 +34,7 @@
 //   const location = useLocation();
 //   //const id = location.state?.id;
 //   const { id } = useParams();
-  
+
 //   const theme = useTheme();
 //   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -64,7 +64,7 @@
 //             per_page: rowsPerPage,
 //             month: monthFilter,
 //             year: yearFilter,
-         
+
 //           },
 //         }
 //       );
@@ -91,7 +91,7 @@
 //     setAnchorEl(event.currentTarget);
 //   };
 
-  
+
 
 
 //   const handleFilterClose = () => {
@@ -107,7 +107,7 @@
 //   const handleCloseSnackbar = () => {
 //     setSnackbarOpen(false);
 //   };
-  
+
 
 //   if (loading) {
 //     return (
@@ -125,8 +125,8 @@
 //   }
 
 //   return (
-    
-    
+
+
 //       <Box
 //         sx={{
 //           display: "flex",
@@ -141,10 +141,10 @@
 //           </Typography>
 //           <DatePicker
 //           label="Start Contest Date"
-         
-        
+
+
 //           renderInput={(params) => <MyTextField {...params} />}
-         
+
 //           sx={{ marginBottom: "16px" }}
 //         />
 //           <TableContainer component={Paper} sx={{ minWidth: "700px" }}>
@@ -181,8 +181,8 @@
 //           message={snackbarMessage}
 //         />
 //       </Box>
-   
-      
+
+
 //   );
 // };
 
@@ -250,7 +250,7 @@ const Allevents = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://expoproject.saeedantechpvt.com/api/all/contests/${id}`,
+        `https://deeplink.saeedantechpvt.com/api/all/contests/${id}`,
         {
           params: {
             page: page + 1,
@@ -337,7 +337,7 @@ const Allevents = () => {
           All Contests
         </Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box sx={{textAlign:'end'}}>
+      {/*   <Box sx={{textAlign:'end'}}>
         <DatePicker
         label="Date"
         value={dateFilter}
@@ -345,9 +345,9 @@ const Allevents = () => {
         renderInput={(params) => <MyTextField {...params} />}
         sx={{ marginBottom: "16px" }}
       />
-        </Box>
+        </Box> */}
         </LocalizationProvider>
-        <TableContainer component={Paper} sx={{ minWidth: "700px" }}>
+        <TableContainer component={Paper} sx={{ minWidth:  isSmall ? "100%" : "700px"}}>
           <Table aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow>
@@ -367,7 +367,7 @@ const Allevents = () => {
         </TableContainer>
         <TablePagination
           component="div"
-          count={records.length} // Adjust this based on your API's total count
+          count={records.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

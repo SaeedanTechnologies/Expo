@@ -140,3 +140,23 @@ export const iframeApi = (contestId) => async (dispatch) => {
     throw err;
   }
 };
+
+export const getAllJudges = (contest_id) => async (dispatch) => {
+  try {
+    const res = await api.get(`admin/judges/all/${contest_id}`);
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getAllParticipants = (contest_id) => async (dispatch) => {
+  try {
+    const res = await api.get(`participients?contest_id=${contest_id}`);
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};

@@ -354,6 +354,8 @@ import { Avatar, Box, Container, Typography, Grid } from '@mui/material';
 import { getBehindScreenResults, getBehindScreen } from '../../../store/actions/contestStartActions';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
+import ShieldIcon from '@mui/icons-material/Shield';
+
 
 const AdminSideScreen2 = () => {
   const { id } = useParams();
@@ -396,6 +398,7 @@ const AdminSideScreen2 = () => {
 
     return () => clearInterval(intervalId);
   }, [dispatch, id]);
+
 
   const parseFieldsValues = (fieldsValues) => {
     try {
@@ -498,7 +501,26 @@ const AdminSideScreen2 = () => {
             {contestResults.length > 0 && (
               <Box sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
                 <Avatar src={contestResults[0].participant.fields_values.Upload} alt={parseFieldsValues(contestResults[0].participant.fields_values)} style={{ width: '100px', height: '100px', marginBottom: '10px' }} />
-                <Typography variant="body1" sx={{ color: 'white', textAlign: 'center' }}>{parseFieldsValues(contestResults[0].participant.fields_values)}</Typography>
+
+
+                <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <ShieldIcon sx={{ color: 'green', fontSize: 30 }} />
+      <Typography
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          color: "#fff",
+          fontWeight: "bold",
+        }}
+      >
+      1
+      </Typography>
+      </Box>
+
+                <Typography variant="body1" sx={{ fontSize:'2rem', color: 'white', textAlign: 'center' }}>{parseFieldsValues(contestResults[0].participant.fields_values)}</Typography>
+
               </Box>
             )}
           </Box>
@@ -511,23 +533,54 @@ const AdminSideScreen2 = () => {
               flexWrap: 'wrap',
               gap: '166px',
               marginBottom: '3px',
+              marginTop: '60px',
+
 
             }}
           >
             {/* 2nd and 3rd Position Images */}
-            {contestResults.slice(1, 3).map((result) => (
-              <Box key={result.participant_id} sx={{ mt: 6, textAlign: 'center' }}>
-                <Avatar src={result.participant.fields_values.Upload} alt={parseFieldsValues(result.participant.fields_values)} style={{ width: '70px', height: '70px', marginBottom: '10px' }} />
-                <Typography variant="body1" sx={{ color: 'white', textAlign: 'center' }}>{parseFieldsValues(result.participant.fields_values)}</Typography>
-              </Box>
-            ))}
+
+
+
+            {contestResults.slice(1, 3).map((result, index) => (
+  <Box key={result.participant_id} sx={{ mt: 6, textAlign: 'center', display:'flex', flexDirection:'column', alignItems:'center' }}>
+
+    <Avatar src={result.participant.fields_values.Upload} alt={parseFieldsValues(result.participant.fields_values)} style={{ width: '70px', height: '70px', marginBottom: '10px' }} />
+
+
+
+
+    <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <ShieldIcon sx={{ color: index === 0 ? 'red' : 'grey', fontSize: 30 }} />
+      <Typography
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          color: "#fff",
+          fontWeight: "bold",
+        }}
+      >
+{index === 0 ? '2' : '3'}
+      </Typography>
+      </Box>
+
+
+
+
+
+
+    <Typography variant="body1" sx={{ color: 'white', textAlign: 'center' }}>{parseFieldsValues(result.participant.fields_values)}</Typography>
+  </Box>
+))}
           </Box>
 
           {/* Render positions 4-6 in a horizontal layout */}
           <Grid container spacing={2} sx={{ backgroundColor: '#333', width: '80%', marginTop: '20px', padding: '10px', borderRadius: '8px' }}>
             {contestResults?.slice(3, 6)?.map((result) => (
               <Grid item key={result.participant_id} xs={12} md={4} sx={{ textAlign: 'center' }}>
-               
+
                 <Typography variant="body1" sx={{ color: 'white',paddingBottom:'12px' }} >{parseFieldsValues(result.participant.fields_values)}</Typography>
               </Grid>
             ))}

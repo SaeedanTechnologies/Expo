@@ -15,45 +15,61 @@ import {
   useTheme,
   Snackbar,
   TablePagination,
+  TextField,
+  MenuItem,
+  IconButton,
+  Menu,
 } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { getBehindScreen } from "../store/actions/contestStartActions";
+import { useSelector } from "react-redux";
 
-const Allevents = () => {
+
+
+
+
+const AllHistory = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const contestId = location.state?.id;
-
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
-
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1); 
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [totalPages, setTotalPages] = useState(1);
+  const [monthFilter, setMonthFilter] = useState("");
+  const [yearFilter, setYearFilter] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     fetchData();
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, monthFilter, yearFilter]);
 
+const token = useSelector((state)=>state?.admin?.token)
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://deeplink.saeedantechpvt.com/api/all/events`,
+        `https://deeplink.saeedantechpvt.com/api/admin/expo`,
         {
-          params: {
-            page,
-            per_page: rowsPerPage,
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
+
         }
       );
-      setRecords(response.data.data);
-      setTotalPages(response.data.last_page);
+      // setRecords(response?.data?.payload);
+      const sortedRecords = response.data.payload.sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      setRecords(sortedRecords);
+
     } catch (error) {
       console.error("Error fetching records:", error);
       setSnackbarMessage("Failed to fetch data");
@@ -64,25 +80,38 @@ const Allevents = () => {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage + 1); // newPage is zero-based index, API uses 1-based index
-
+    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    const newRowsPerPage = parseInt(event.target.value, 10);
-    setRowsPerPage(newRowsPerPage);
-    setPage(1); // Reset to first page when rows per page changes
-
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
-  const handleRowClick = (id) => {
-    // Navigate to AllContents screen with the specific ID
-    navigate(`/all-contest/${id}`);
+  const handleFilterClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleFilterClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleApplyFilter = () => {
+    setPage(0);
+    fetchData();
+    handleFilterClose();
   };
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
+
+  const handleRowClick = (id) => {
+    // Navigate to AllContents screen with the specific ID
+    navigate(`/user-contest/${id}`);
+  };
+
+
 
   if (loading) {
     return (
@@ -99,8 +128,13 @@ const Allevents = () => {
     );
   }
 
+
+
+
   return (
-    <Box
+    <>
+
+<Box
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -108,16 +142,15 @@ const Allevents = () => {
         minHeight: "80vh",
       }}
     >
-      <Box sx={{ padding: isSmall ? "2rem 10%" : "2rem 0%" }}>
+      <Box sx={{ padding: isSmall ? "2rem 5%" : "2rem 0%" }}>
         <Typography variant="h4" align="center" gutterBottom>
-          All Events
+          All History
         </Typography>
-
-        <TableContainer component={Paper} sx={{ minWidth: isSmall ? "100%" : "700px" }}>
+        <TableContainer component={Paper} sx={{ minWidth:  isSmall ? "100%" : "700px"}}>
           <Table aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow>
-                <TableCell>Name</TableCell>
+                <TableCell>Event Name</TableCell>
                 <TableCell>Date</TableCell>
               </TableRow>
             </TableHead>
@@ -133,8 +166,8 @@ const Allevents = () => {
         </TableContainer>
         <TablePagination
           component="div"
-          count={totalPages * rowsPerPage} // This should ideally come from the API total count
-          page={page - 1} // Convert to zero-based index for MUI pagination
+          count={records.length}
+          page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
@@ -147,7 +180,8 @@ const Allevents = () => {
         message={snackbarMessage}
       />
     </Box>
-  );
-};
+    </>
+  )
+}
 
-export default Allevents;
+export default AllHistory

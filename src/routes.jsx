@@ -39,6 +39,8 @@ import HomePage from "./AuthSide/HomePage";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 
 import { useSelector } from "react-redux";
+import AllHistory from "./AuthSide/AllHistory";
+import SubHistoryComponent from "./AuthSide/SubHistoryComponent";
 export default function Router() {
   const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
   let element = useRoutes([
@@ -50,9 +52,7 @@ export default function Router() {
       path: "/",
       element: <HomePage />,
     },
-    {
-      element: <ProtectedRoutes isLogged={isAuthenticated} />,
-      children: [
+
         {
           path: "/admin",
           element: <AdminHome />,
@@ -88,8 +88,7 @@ export default function Router() {
             },
           ],
         },
-      ],
-    },
+      
 
     {
       path: "participant-registered",
@@ -200,6 +199,16 @@ export default function Router() {
     {
       path: "public_all-records/:id",
       element: <AdminPublicAllRecords />,
+    },
+
+    {
+        path: 'all-history',
+        element: <AllHistory />,
+    },
+
+    {
+        path: 'user-contest/:id',
+        element: <SubHistoryComponent/>,
     },
   ]);
   return element;

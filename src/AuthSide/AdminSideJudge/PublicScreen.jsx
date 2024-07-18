@@ -941,10 +941,11 @@ const PublicScreen = () => {
             <Box
               sx={{
                 backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.1) 30.2%, rgba(0,0,0,0.1) 90.9%), url(${backgroundMedia})`,
+
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                minHeight: "100vh",
+                minHeight: '100vh',
                 width: "100%",
                 position: "absolute",
                 top: 0,

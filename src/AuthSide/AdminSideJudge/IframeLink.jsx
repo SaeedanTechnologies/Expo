@@ -15,24 +15,29 @@ const IframeLink = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(iframeApi(id));
-        const { iframe_link } = response.data;
-        setIframeLink(iframe_link);
-        setLink(iframe_link); // Set the link to the iframe link text
-      } catch (error) {
-        console.error("Error fetching iframe link:", error);
-      }
-    };
+    // Dynamically create iframe link using template literals
+    const link = `<iframe src="${window.location.origin}/public_all-records/${id}" width="100%" height="500px"></iframe>`;
+    setIframeLink(link);
+  }, [id]);
 
-    fetchData();
-  }, [dispatch, id]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await dispatch(iframeApi(id));
+  //       const { iframe_link } = response.data;
+  //       setIframeLink(iframe_link);
+  //       setLink(iframe_link); // Set the link to the iframe link text
+  //     } catch (error) {
+  //       console.error("Error fetching iframe link:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [dispatch, id]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(link);
+    navigator.clipboard.writeText(iframeLink);
           enqueueSnackbar("Link Copied", { variant: "success" });
 
   };
@@ -53,7 +58,7 @@ const IframeLink = () => {
       <div style={{ position: 'relative' }}>
         <TextField
           sx={{ backgroundColor: '#eeeeee', borderRadius: '5px' }}
-          value={link}
+          value={iframeLink}
           multiline
           fullWidth
           size='small'
