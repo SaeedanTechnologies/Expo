@@ -891,7 +891,7 @@ const PublicScreen = () => {
     image?.length > 0 && image[0]?.file_url ? image[0]?.file_url : defaultImage;
   const isVideo = backgroundMedia && backgroundMedia.endsWith(".mp4");
 
-  
+
   const allTotal = data?.total_scores_by_participant;
   const participantId = participants[0]?.id;
   const totalScoress = allTotal[participantId];
@@ -946,7 +946,7 @@ const PublicScreen = () => {
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                minHeight: '100vh',
+                minHeight: '100%',
                 width: "100%",
                 position: "absolute",
                 top: 0,

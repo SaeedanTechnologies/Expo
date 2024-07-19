@@ -449,7 +449,7 @@ const AdminSideScreen2 = () => {
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            minHeight: "100vh",
+            minHeight: "100%",
             width: "100%",
             position: "absolute",
             top: 0,
