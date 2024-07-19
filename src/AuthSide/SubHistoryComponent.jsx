@@ -228,6 +228,7 @@ const SubHistoryComponent = () => {
 
     img.src = "data:image/svg+xml;base64," + btoa(svgData);
   };
+  
   const generatePdf = async () => {
     const element = qrRef.current;
     const canvas = await html2canvas(element);
