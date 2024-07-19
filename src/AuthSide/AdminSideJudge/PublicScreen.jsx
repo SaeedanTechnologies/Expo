@@ -829,7 +829,7 @@ const PublicScreen = () => {
       try {
         const result = await dispatch(getBehindScreen(id));
 
-        console.log(result.data.data.status, "dddsdhdgd");
+        console.log(result.data.data.files, "dddsdhdgd");
 
         setIsPublished(result?.data?.data?.status || false);
         setJudges(result?.data?.data?.judges || []);
@@ -891,6 +891,7 @@ const PublicScreen = () => {
     image?.length > 0 && image[0]?.file_url ? image[0]?.file_url : defaultImage;
   const isVideo = backgroundMedia && backgroundMedia.endsWith(".mp4");
 
+  
   const allTotal = data?.total_scores_by_participant;
   const participantId = participants[0]?.id;
   const totalScoress = allTotal[participantId];
@@ -1120,10 +1121,10 @@ const PublicScreen = () => {
                                         .reduce(
                                           (total, score) =>
                                             total +
-                                            parseFloat(score?.total_score || 0), // Ensure score is parsed as float
+                                            parseFloat(score?.total_score || 0),
                                           0
                                         )
-                                        .toFixed(2)}{" "}
+                                        .toFixed(2)}
                                       {/* Apply .toFixed(2) to format to 2 decimal places */}
                                     </Typography>
                                   </Box>
@@ -1150,7 +1151,7 @@ const PublicScreen = () => {
             </Box>
           ) : (
             <>
-              <Box
+            <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",

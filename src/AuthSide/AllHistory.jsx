@@ -69,11 +69,14 @@ const token = useSelector((state)=>state?.admin?.token)
         return new Date(b.created_at) - new Date(a.created_at);
       });
       setRecords(sortedRecords);
+      setLoading(false);
 
     } catch (error) {
       console.error("Error fetching records:", error);
       setSnackbarMessage("Failed to fetch data");
       setSnackbarOpen(true);
+      setLoading(false);
+
     } finally {
       setLoading(false);
     }

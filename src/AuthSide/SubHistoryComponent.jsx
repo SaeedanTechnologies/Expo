@@ -355,7 +355,7 @@ const SubHistoryComponent = () => {
 
           <TablePagination
             component="div"
-            count={records.length} // Adjust this based on your API's total count
+            count={records.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
@@ -413,7 +413,7 @@ const SubHistoryComponent = () => {
           alignItems: "center",
           marginTop: "1rem",
           padding: "0.5rem 3rem",
-          backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white", // Alternate row color
+          backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -465,11 +465,12 @@ const SubHistoryComponent = () => {
 
     return (
       <Box key={index} sx={{}}>
-        <Typography sx={{ marginLeft: "1rem" }}>
+        <Typography>
           Participant ID : {participant.id}
         </Typography>
         <Box>
-          {Object.keys(fieldsValues).map((key, innerIndex) => (
+
+          {/* {Object.keys(fieldsValues).map((key, innerIndex) => (
             <Box
               key={innerIndex}
               sx={{
@@ -487,7 +488,48 @@ const SubHistoryComponent = () => {
                 {fieldsValues[key]}
               </Typography>
             </Box>
-          ))}
+          ))} */}
+
+          {Object.keys(fieldsValues).map((key) => {
+                    const value = fieldsValues[key];
+                    return (
+                      <div key={key}>
+                        {key}:
+                        {typeof value === "string" &&
+                        value.startsWith("data:image") ? (
+                          <Box
+                            sx={{ display: "flex", justifyContent: "space-between", alignItems:'center' }}
+                          >
+                            <img
+                              src={value}
+                              alt={key}
+                              style={{
+                                width: "25%",
+                                height: "25%",
+                                display: "block",
+                                marginBottom: "0.5rem",
+                              }}
+                            />
+                          </Box>
+                        ) : (
+                          <Typography
+                            variant="h4"
+                            sx={{
+                              color: "black",
+                              fontFamily: "Roboto",
+                              fontSize: { xs: "14px", md: "16px" },
+                              fontWeight: 500,
+                              lineHeight: "16px",
+                              marginBottom: "0.5rem",
+                            }}
+                          >
+                            {value}
+                          </Typography>
+                        )}
+                      </div>
+                    );
+                  })}
+
           <Divider />
           <br />
         </Box>

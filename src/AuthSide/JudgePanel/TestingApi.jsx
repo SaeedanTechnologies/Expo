@@ -18,7 +18,7 @@ import {
   fetchFormJudegFormTesting,
   submitJudegFormData,
 } from "../../store/actions/addJudegsActions";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useSnackbar } from "notistack";
 import { FaEye } from "react-icons/fa";
 
@@ -197,7 +197,7 @@ const TestingApi = () => {
               {participantName ? participantName : "Participant Name"}
               <FaEye
                 onClick={handleDialogOpen}
-                style={{ cursor: "pointer", marginLeft: "10px" }}
+                style={{ cursor: "pointer", marginLeft: "10px", fontSize:'1.5rem' }}
               />
             </Typography>
 

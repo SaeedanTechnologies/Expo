@@ -3,10 +3,13 @@ import React from "react";
 import { MdOutlineWavingHand } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router";
 import MyButton from "../../page/components/MyButton";
+import { useSelector } from "react-redux";
 
 const Welcome = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+
+  const user = useSelector((state)=>state?.admin?.user?.name)
   // console.log(state.user.name, 'yuse')
   return (
     <Box
@@ -31,14 +34,17 @@ const Welcome = () => {
       >
         <Typography
           sx={{
-            fontSize: "36px",
+            fontSize: "2rem",
             fontWeight: 700,
             display: "flex",
             alignItems: "center",
             gap: "10px",
+         textAlign:'center'
           }}
         >
-          Welcome {state?.user?.name}
+          Welcome
+          <br/>
+           {user}
           <MdOutlineWavingHand style={{ color: "#D90B0F" }} />
         </Typography>
         <Typography

@@ -19,6 +19,7 @@ import { logout } from "../../store/actions/authActions";
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const judge_check = location.pathname.includes("judge-score-card") || location.pathname.includes("judge-login");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
@@ -26,8 +27,17 @@ const Navbar = () => {
     setDrawerOpen(true);
   };
 
+  // const handleLogin = () => {
+  //   navigate("/admin-login");
+  //   setDrawerOpen(false);
+  // };
+
   const handleLogin = () => {
-    navigate("/admin-login");
+    if (judge_check) {
+      navigate("/judge-login");
+    } else {
+      navigate("/admin-login");
+    }
     setDrawerOpen(false);
   };
 
@@ -108,55 +118,42 @@ const Navbar = () => {
           alignItems: "center",
         }}
       >
-       {auth ? (
-          <Button
-            variant="contained"
-            sx={{ textTransform: "none", marginRight:'1rem' }}
-            onClick={handleAddEvent}
-          >
-            Add New Event
-          </Button>
-        ) : null}
 
-        {auth ? (
-          <Button
-            variant="contained"
-            sx={{ textTransform: "none", marginRight: "12px", color: "white" }}
+{!judge_check ? (
+  <>
+    {auth && (
+      <>
+        <Button
+          variant="contained"
+          sx={{ textTransform: "none", marginRight: '1rem' }}
+          onClick={handleAddEvent}
+        >
+          Add New Event
+        </Button>
+
+        <Button
+          variant="contained"
+          sx={{ textTransform: "none", color: "white" }}
+          
+        >
+          <Link
+            to="all-history"
+            style={{
+              color: "white",
+              textDecoration: "none",
+              textTransform: "none",
+            }}
           >
-            <Link
-              to="all-history"
-              variant="contained"
-              style={{
-                color: "white",
-                textDecoration: "none",
-                textTransform: "none",
-              }}
-            >
-              Show All History
-            </Link>
-          </Button>
-        ) : null}
-        <Button variant="contained" sx={{ textTransform: "none" }}>
+            Show All History
+          </Link>
+        </Button>
+        <Button variant="contained" sx={{ marginLeft:'1rem', textTransform: "none" }}>
           Upgrade your pricing plan
         </Button>
-        {/* <FormControl sx={{ padding: 0 }}>
-          <Select
-            sx={{ outline: "none", "&:focus": { outline: "none" }, "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
-            displayEmpty
-            inputProps={{ "aria-label": "Select user" }}
-            style={{ minWidth: "120px", padding: 0 }}
-            renderValue={() => (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar />
-                <Typography sx={{ fontSize: "1rem" }}> user</Typography>
-              </Box>
-            )}
-          >
-            <MenuItem sx={{ fontSize: "0.8rem" }}>Manage Profile</MenuItem>
-            <MenuItem sx={{ fontSize: "0.8rem" }}>Manage Judges</MenuItem>
-            <MenuItem sx={{ fontSize: "0.8rem" }}>Logout</MenuItem>
-          </Select>
-        </FormControl> */}
+      </>
+    )}
+  </>
+) : null}
 
         <Box
           sx={{
@@ -244,38 +241,40 @@ const Navbar = () => {
 
 
           <Box sx={{ width: 250, padding: "20px" }}>
-          {auth ? (
-          <Button
-            variant="contained"
-            sx={{ textTransform: "none", marginRight:'1rem' }}
-            onClick={handleAddEvent}
-          >
-            Add New Event
-          </Button>
-        ) : null}
+          {!judge_check ? (
+  <>
+    {auth && (
+      <>
+        <Button
+          variant="contained"
+          sx={{ textTransform: "none", marginBottom: '1rem' }}
+          onClick={handleAddEvent}
+        >
+          Add New Event
+        </Button>
 
-        {auth ? (
-          <Button
-            variant="contained"
-            sx={{ textTransform: "none", marginRight: "12px", color: "white" }}
+        <Button
+          variant="contained"
+          sx={{ textTransform: "none", color: "white", marginBottom: '1rem' }}
+        >
+          <Link
+            to="all-history"
+            style={{
+              color: "white",
+              textDecoration: "none",
+              textTransform: "none",
+            }}
           >
-            <Link
-              to="all-history"
-              variant="contained"
-              style={{
-                color: "white",
-                textDecoration: "none",
-                textTransform: "none",
-                marginTop:'1rem'
-              }}
-            >
-              Show All History
-            </Link>
-          </Button>
-        ) : null}
-            <Button variant="contained" sx={{ textTransform: "none" }}>
-              Upgrade your pricing plan
-            </Button>
+            Show All History
+          </Link>
+        </Button>
+        <Button variant="contained" sx={{ textTransform: "none" }}>
+          Upgrade your pricing plan
+        </Button>
+      </>
+    )}
+  </>
+) : null}
 
             <Box
               sx={{
@@ -305,7 +304,7 @@ const Navbar = () => {
                         }}
                       />
                       <Typography sx={{ fontSize: "1rem" }}>
-                        User Name
+                      {username}
                       </Typography>
                     </Box>
                     <Box
@@ -320,32 +319,7 @@ const Navbar = () => {
                         Logout
                       </Button>
                     </Box>
-                    {/* <Select
-                      sx={{
-                        outline: "none",
-                        "&:focus": {
-                          outline: "none",
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          border: "none", // Remove the outline border
-                        },
-                      }}
-                      // value={selectedValue}
-                      // onChange={handleChange}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Select user" }}
-                      style={{ minWidth: "120px", padding: 0 }}
-                      renderValue={(selected) => (
-                      )}
-                    >
-                      <MenuItem
-                        sx={{ fontSize: "0.8rem" }}
-                        value="Logout"
-                        onClick={() => handleMenuItemClick("Logout")}
-                      >
-                        Logout
-                      </MenuItem>
-                    </Select> */}
+
                   </FormControl>
                 </Box>
               ) : (
