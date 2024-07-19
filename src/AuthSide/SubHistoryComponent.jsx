@@ -200,34 +200,34 @@ const SubHistoryComponent = () => {
   };
 
 
-  const downloadQRCode = () => {
-    const svg = qrRef.current.querySelector("svg");
-    if (!svg) {
-      console.error("No SVG element found");
-      return;
-    }
+  // const downloadQRCode = () => {
+  //   const svg = qrRef.current.querySelector("svg");
+  //   if (!svg) {
+  //     console.error("No SVG element found");
+  //     return;
+  //   }
 
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
+  //   const svgData = new XMLSerializer().serializeToString(svg);
+  //   const canvas = document.createElement("canvas");
+  //   const ctx = canvas.getContext("2d");
+  //   const img = new Image();
 
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      const pngFile = canvas.toDataURL("image/png");
+  //   img.onload = () => {
+  //     canvas.width = img.width;
+  //     canvas.height = img.height;
+  //     ctx.drawImage(img, 0, 0);
+  //     const pngFile = canvas.toDataURL("image/png");
 
-      const downloadLink = document.createElement("a");
-      downloadLink.href = pngFile;
-      downloadLink.download = "qrcode.png";
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-    };
+  //     const downloadLink = document.createElement("a");
+  //     downloadLink.href = pngFile;
+  //     downloadLink.download = "qrcode.png";
+  //     document.body.appendChild(downloadLink);
+  //     downloadLink.click();
+  //     document.body.removeChild(downloadLink);
+  //   };
 
-    img.src = "data:image/svg+xml;base64," + btoa(svgData);
-  };
+  //   img.src = "data:image/svg+xml;base64," + btoa(svgData);
+  // };
   const generatePdf = async () => {
     const element = qrRef.current;
     const canvas = await html2canvas(element);
