@@ -12,6 +12,7 @@ const initialState = {
   cont_id: "",
   form_id: "",
   text_fields: "",
+  judges: "",
 };
 
 const RESET_STATE = "RESET_STATE";
@@ -85,6 +86,12 @@ const stepperReducer = (state = initialState, action) => {
       return {
         ...state,
         text_fields: action.payload,
+      };
+    }
+    case "JUDGES": {
+      return {
+        ...state,
+        judges: action.payload,
       };
     }
     case RESET_STATE: {
