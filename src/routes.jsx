@@ -53,42 +53,41 @@ export default function Router() {
       element: <HomePage />,
     },
 
+    {
+      path: "/admin",
+      element: <AdminHome />,
+      children: [
         {
-          path: "/admin",
-          element: <AdminHome />,
-          children: [
-            {
-              path: "welcome",
-              element: <Welcome />,
-            },
-            {
-              path: "add-event",
-              element: <AddEvent />,
-            },
-            {
-              path: "add-content",
-              element: <AddContent />,
-            },
-            {
-              path: "add-registration",
-              element: <AddRegistration />,
-            },
-            {
-              path: "add-participant",
-              element: <AddParticipant />,
-            },
-            {
-              path: "add-QR",
-              element: <QrCode />,
-            },
-
-            {
-              path: "contest/:id",
-              element: <SignUpForm />,
-            },
-          ],
+          path: "welcome",
+          element: <Welcome />,
         },
-      
+        {
+          path: "add-event",
+          element: <AddEvent />,
+        },
+        {
+          path: "add-content",
+          element: <AddContent />,
+        },
+        {
+          path: "add-registration",
+          element: <AddRegistration />,
+        },
+        {
+          path: "add-participant",
+          element: <AddParticipant />,
+        },
+        {
+          path: "add-QR",
+          element: <QrCode />,
+        },
+
+        {
+          path: "contest/:id",
+          element: <SignUpForm />,
+        },
+      ],
+    },
 
     {
       path: "participant-registered",
@@ -202,13 +201,13 @@ export default function Router() {
     },
 
     {
-        path: 'all-history',
-        element: <AllHistory />,
+      path: "all-history",
+      element: <AllHistory />,
     },
 
     {
-        path: 'user-contest/:id',
-        element: <SubHistoryComponent/>,
+      path: "user-contest/:id",
+      element: <SubHistoryComponent />,
     },
   ]);
   return element;

@@ -239,6 +239,9 @@ const CreateScoreCard = () => {
           >
             Create Score Card
           </Typography>
+          {/* {judges.map((s) => {
+            return <img src={s.profile_picture} style={{ height: "50px" }} />;
+          })} */}
         </Box>
         <Typography sx={{ textAlign: "center" }}>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae
