@@ -30,7 +30,7 @@ const Allevents = () => {
 
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1); 
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -110,7 +110,7 @@ const Allevents = () => {
     >
       <Box sx={{ padding: isSmall ? "2rem 10%" : "2rem 0%" }}>
         <Typography variant="h4" align="center" gutterBottom>
-          All Events
+          All Conventions
         </Typography>
 
         <TableContainer component={Paper} sx={{ minWidth: isSmall ? "100%" : "700px" }}>

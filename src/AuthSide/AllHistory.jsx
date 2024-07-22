@@ -153,7 +153,7 @@ const token = useSelector((state)=>state?.admin?.token)
           <Table aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow>
-                <TableCell>Event Name</TableCell>
+                <TableCell>Convention Name</TableCell>
                 <TableCell>Date</TableCell>
               </TableRow>
             </TableHead>

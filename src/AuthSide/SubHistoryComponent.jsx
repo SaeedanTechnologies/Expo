@@ -97,7 +97,10 @@ const SubHistoryComponent = () => {
           },
         }
       );
-      setRecords(response.data);
+      setRecords(response?.data);
+
+const gg = response?.data?.map((ss)=> ss?.id)
+      continueFunction(gg)
     } catch (error) {
       console.error("Error fetching records:", error);
       setSnackbarMessage("Failed to fetch data");
@@ -138,23 +141,33 @@ const SubHistoryComponent = () => {
     setDateFilter(newDate);
   };
 
-  // const gg = async()=>{
+  const [continuebtn, setContinue] = useState([]);
+  const [continueLoading, setContinueLoading] = useState(false);
 
-  //   try {
-  //     const result = await dispatch(getAllJudges(377));
-  //     // setContestJudges(result.data.payload);
-  //     console.log(result?.data?.payload, 'gfgfggg')
-  //   } catch (err) {
-  //     console.log(err);
-  //   } finally {
-  //     setLoadingJudges(false);
-  //   }
-  // }
 
-  // useEffect(()=>{
-  //   gg()
-  // },[])
+  const recordid = records.map(record => record.id);
 
+  const continueFunction = async (gg) => {
+    // const recordid = records.map(record => record?.id);
+    setContinueLoading(true)
+    try {
+      const result = await dispatch(getBehindScreenResults(gg));
+      setContinue(result?.data?.data);
+      setContinueLoading(false)
+    } catch (err) {
+      console.log(err);
+      setContinueLoading(false)
+    } finally {
+      setContinueLoading(false)
+    }
+  }
+
+// useEffect(() => {
+//   // const intervalId = setInterval(continueFunction, 3000);
+//   // // Cleanup function to clear the interval when the component is unmounted
+//   // return () => clearInterval(intervalId);
+//   continueFunction()
+// }, []);
 
   const handleDialogOpen = async (record, type) => {
     setSelectedRecord(record);
@@ -274,70 +287,100 @@ const SubHistoryComponent = () => {
                   <TableCell>Participants</TableCell>
                   <TableCell>Results</TableCell>
                   <TableCell>QR code</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {records.map((record) => (
-                  <TableRow key={record.id}>
-                    <TableCell>{record.name}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        sx={{ textTransform: "none", fontSize: isSmall ? "0.5rem" : "0.8rem" }}
-                        onClick={() => handleDialogOpen(record, "judges")}
-                        disabled={loadingJudges}
-                      >
-                        {loadingJudges && dialogType === "judges" ? (
-                          <CircularProgress size={20} />
-                        ) : (
-                          "View Judges"
-                        )}
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        sx={{ textTransform: "none", fontSize: isSmall ? "0.5rem" : "0.8rem" }}
-                        onClick={() => handleDialogOpen(record, "participants")}
-                        disabled={loadingParticipants}
-                      >
-                        {loadingParticipants && dialogType === "participants" ? (
-                          <CircularProgress size={20} />
-                        ) : (
-                          "View Participants"
-                        )}
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        sx={{ textTransform: "none", fontSize: isSmall ? "0.5rem" : "0.8rem" }}
-                        onClick={() => handleDialogOpen(record, "results")}
-                        disabled={loadingResults}
-                      >
-                        {loadingResults && dialogType === "results" ? (
-                          <CircularProgress size={20} />
-                        ) : (
-                          "View Results"
-                        )}
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        sx={{ textTransform: "none", fontSize: isSmall ? "0.5rem" : "0.8rem" }}
-                        onClick={() => handleDialogOpen(record, "qrcode")}
-                        disabled={loadingQRCode}
-                      >
-                        {loadingQRCode && dialogType === "qrcode" ? (
-                          <CircularProgress size={20} />
-                        ) : (
-                          "QR code"
-                        )}
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              {records.map((record) => (
+  <TableRow key={record.id}>
+    <TableCell>{record.name}</TableCell>
+    <TableCell>
+              <Button
+                variant="contained"
+                sx={{ textTransform: 'none', fontSize: isSmall ? '0.5rem' : '0.8rem' }}
+                onClick={() => handleDialogOpen(record, 'judges')}
+                disabled={loadingJudges}
+              >
+                {loadingJudges && dialogType === 'judges' ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  'View Judges'
+                )}
+              </Button>
+            </TableCell>
+            <TableCell>
+              <Button
+                variant="contained"
+                sx={{ textTransform: 'none', fontSize: isSmall ? '0.5rem' : '0.8rem' }}
+                onClick={() => handleDialogOpen(record, 'participants')}
+                disabled={loadingParticipants}
+              >
+                {loadingParticipants && dialogType === 'participants' ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  'View Participants'
+                )}
+              </Button>
+            </TableCell>
+            <TableCell>
+              <Button
+                variant="contained"
+                sx={{ textTransform: 'none', fontSize: isSmall ? '0.5rem' : '0.8rem' }}
+                onClick={() => handleDialogOpen(record, 'results')}
+                disabled={loadingResults}
+              >
+                {loadingResults && dialogType === 'results' ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  'View Results'
+                )}
+              </Button>
+            </TableCell>
+            <TableCell>
+              <Button
+                variant="contained"
+                sx={{ textTransform: 'none', fontSize: isSmall ? '0.5rem' : '0.8rem' }}
+                onClick={() => handleDialogOpen(record, 'qrcode')}
+                disabled={loadingQRCode}
+              >
+                {loadingQRCode && dialogType === 'qrcode' ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  'QR code'
+                )}
+              </Button>
+            </TableCell>
+    {continueLoading ? (
+      <TableCell colSpan={4}>
+        <CircularProgress />
+      </TableCell>
+    ) : (
+      <>
+        {continuebtn.length === 0 ? (
+          <TableCell colSpan={4}>
+            <Button
+              variant="contained"
+              sx={{ textTransform: 'none' }}
+              onClick={() => {
+                navigate(`/admin-contest-start/${record.id}`);
+              }}
+            >
+              Start the Contest
+            </Button>
+          </TableCell>
+        ) : (
+          <>
+
+          </>
+        )}
+
+
+      </>
+    )}
+  </TableRow>
+))}
+
+
               </TableBody>
             </Table>
           </TableContainer>
@@ -461,25 +504,6 @@ const SubHistoryComponent = () => {
         </Typography>
         <Box>
 
-          {/* {Object.keys(fieldsValues).map((key, innerIndex) => (
-            <Box
-              key={innerIndex}
-              sx={{
-                display: "flex",
-                alignItems: "start",
-                marginBottom: "0.5rem",
-              }}
-            >
-              <Typography
-                sx={{ marginLeft: "1rem", fontWeight: 600 }}
-              >
-                {key}
-              </Typography>
-              <Typography sx={{ marginLeft: "1rem" }}>
-                {fieldsValues[key]}
-              </Typography>
-            </Box>
-          ))} */}
 
           {Object.keys(fieldsValues).map((key) => {
                     const value = fieldsValues[key];

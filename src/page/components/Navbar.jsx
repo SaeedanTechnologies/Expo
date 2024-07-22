@@ -83,8 +83,10 @@ const Navbar = () => {
 
   const auth = useSelector((state) => state?.admin?.isAuthenticated);
   const username = useSelector((state) => state?.admin?.user?.name);
-
   const handleAddEvent = () => {
+     dispatch({
+      type: "RESET_STATE",
+    });
     navigate("/admin/welcome");
   };
 
@@ -128,13 +130,13 @@ const Navbar = () => {
           sx={{ textTransform: "none", marginRight: '1rem' }}
           onClick={handleAddEvent}
         >
-          Add New Event
+          Add New Convention
         </Button>
 
         <Button
           variant="contained"
           sx={{ textTransform: "none", color: "white" }}
-          
+
         >
           <Link
             to="all-history"
@@ -250,7 +252,7 @@ const Navbar = () => {
           sx={{ textTransform: "none", marginBottom: '1rem' }}
           onClick={handleAddEvent}
         >
-          Add New Event
+          Add New Convention
         </Button>
 
         <Button

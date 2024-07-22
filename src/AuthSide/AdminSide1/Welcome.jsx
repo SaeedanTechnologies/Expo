@@ -73,7 +73,7 @@ const Welcome = () => {
           <img src="/expoLogo.png" alt="" style={{ height: "10vh" }} />
           <Box>
             <Typography sx={{ fontSize: "18px", fontWeight: 700 }}>
-              Add Event
+              Add Convention
             </Typography>
             <Typography
               sx={{ fontSize: "13px", color: "#949494" }}

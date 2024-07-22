@@ -8,6 +8,7 @@ import {
   useMediaQuery,
   useTheme,
   CircularProgress,
+  InputAdornment,
 } from "@mui/material";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -100,39 +101,6 @@ const CreateScoreCard = () => {
   // console.log(textFields);
   const navigate = useNavigate();
 
-  // const handleSubmit = () => {
-  //   const payload = {
-  //     contest_id: contest_id,
-  //     judge_name: names,
-  //     link: `https://frontend.saeedantechpvt.com/admin-login`,
-  //     email: judges.map((judge) => judge.email),
-  //     profile_picture: profile,
-  //     fields: textFields.map((field, index) => ({
-  //       name: field.value,
-  //       label: field.value,
-  //       type: field.type,
-  //       required: field.required,
-  //     })),
-  //   };
-
-  //   axios
-  //     .post(
-  //       "https://expoproject.saeedantechpvt.com/api/admin/judges",
-  //       payload,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       navigate("/links", { state: { contest_id: contest_id } });
-  //     })
-  //     .catch((error) => {
-  //       console.error("There was an error!", error);
-  //     });
-  // };
   const handleSubmit = () => {
     setLoading(true);
     const formData = new FormData();
@@ -219,7 +187,13 @@ const CreateScoreCard = () => {
 
   const isTouchDevice =
     "ontouchstart" in window || navigator.maxTouchPoints > 0;
-
+    const handleRemoveField = (index) => {
+      if (textFields.length > 1) {
+        const updatedFields = [...textFields];
+        updatedFields.splice(index, 1);
+        setTextFields(updatedFields);
+      }
+    };
   return (
     <DndProvider backend={isTouchDevice ? TouchBackend : HTML5Backend}>
       <Box
@@ -279,7 +253,33 @@ const CreateScoreCard = () => {
                   onChange={(e) =>
                     handleTextFieldChange(index, "value", e.target.value)
                   }
-                />
+                  InputProps={
+                      index > 0
+                        ? {
+                            // Render InputAdornment only if index > 0
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Button
+                                  variant="outlined"
+                                  color="error"
+                                  size="small"
+                                  onClick={() => handleRemoveField(index)}
+                                  style={{
+                                    padding: "3px 10px",
+                                    backgroundColor: "transparent",
+                                    border: "1px solid #c61013",
+                                    borderRadius: "3px",
+                                    color: "#c61013",
+                                  }}
+                                >
+                                  X
+                                </Button>
+                              </InputAdornment>
+                            ),
+                          }
+                        : {}
+                    }
+                  />
               ))}
             </DropArea>
             <Button

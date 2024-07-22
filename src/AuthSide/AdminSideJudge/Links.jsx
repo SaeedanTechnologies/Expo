@@ -42,9 +42,9 @@ const Links = () => {
 
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const handleNext = () => {
-    dispatch({
-      type: "RESET_STATE",
-    });
+    // dispatch({
+    //   type: "RESET_STATE",
+    // });
     localStorage.removeItem("judges");
     navigate(`/admin-contest-start/${contest_id}`);
   };
