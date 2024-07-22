@@ -138,6 +138,24 @@ const SubHistoryComponent = () => {
     setDateFilter(newDate);
   };
 
+  // const gg = async()=>{
+
+  //   try {
+  //     const result = await dispatch(getAllJudges(377));
+  //     // setContestJudges(result.data.payload);
+  //     console.log(result?.data?.payload, 'gfgfggg')
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setLoadingJudges(false);
+  //   }
+  // }
+
+  // useEffect(()=>{
+  //   gg()
+  // },[])
+
+
   const handleDialogOpen = async (record, type) => {
     setSelectedRecord(record);
     setDialogType(type);

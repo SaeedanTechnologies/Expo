@@ -21,6 +21,7 @@ import {
 import { useLocation, useParams } from "react-router";
 import { useSnackbar } from "notistack";
 import { FaEye } from "react-icons/fa";
+import { getBehindScreen } from "../../store/actions/contestStartActions";
 
 const TestingApi = () => {
   const { id } = useParams();
@@ -41,6 +42,9 @@ const TestingApi = () => {
   const [participantDataVisible, setParticipantDataVisible] = useState(false);
   const [participantData, setParticipantData] = useState({});
   const [dialogOpen, setDialogOpen] = useState(false);
+
+
+
   useEffect(() => {
     const fetchFormFields = async () => {
       try {
@@ -79,6 +83,8 @@ const TestingApi = () => {
     const intervalId = setInterval(fetchFormFields, 2000);
     return () => clearInterval(intervalId);
   }, [dispatch, id]);
+
+
 
   useEffect(() => {
     if (participantId === null) {
@@ -144,6 +150,32 @@ const TestingApi = () => {
   const toggleParticipantData = () => {
     setParticipantDataVisible((prev) => !prev);
   };
+
+
+const judge_id_redux = useSelector((state)=>state?.admin?.user?.id)
+const [judgeIdAPI,setJudgeIdAPI] = useState('')
+useEffect(() => {
+  const fetchContestData = async () => {
+    try {
+      const result = await dispatch(getBehindScreen(id));
+      setJudgeIdAPI(result?.data?.data?.scores_by_judge);
+    } catch (err) {
+      console.log("Error fetching contest data:", err);
+    }
+  };
+  fetchContestData();
+  const intervalId = setInterval(fetchContestData, 5000);
+  return () => clearInterval(intervalId);
+}, [dispatch, id]);
+
+useEffect(() => {
+  if (judgeIdAPI[judge_id_redux]?.[participantId]) {
+    setSubmitDisabled(true);
+  } else {
+    setSubmitDisabled(false);
+  }
+  console.log(submitDisabled, 'ssssssssssssssss');
+}, [judgeIdAPI, judge_id_redux, participantId]);
 
   return (
     <Box
