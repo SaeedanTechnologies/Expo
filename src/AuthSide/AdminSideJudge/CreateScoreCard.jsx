@@ -163,11 +163,15 @@ const CreateScoreCard = () => {
     // }));
     // formData.append("fields", JSON.stringify(fields));
     axios
-      .post("https://deeplink.saeedantechpvt.com/api/admin/judges", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .post(
+        "https://expopusher.saeedantechpvt.com/api/admin/judges",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         enqueueSnackbar("Judges Added Successfully", { variant: "success" });
         const judge_ids = response?.data?.data?.judges?.map((item) => item.id);

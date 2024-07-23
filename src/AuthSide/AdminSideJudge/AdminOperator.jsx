@@ -29,6 +29,8 @@ import { useDispatch } from "react-redux";
 import UploadVideoDialogBox from "./UploadVideo";
 import { Dialog } from "@mui/material";
 import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
+import usePusher from "../../hooks/usePusher";
+import useFetchContestData from "../../hooks/useFetchContestData";
 const AdminOperator = () => {
   const { id } = useParams();
   const contest_id = id;
@@ -47,40 +49,17 @@ const AdminOperator = () => {
   const [fieldScores, setFieldScores] = useState([]);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [publicButtonClicked, setPublicButtonClicked] = useState(false);
-
-  useEffect(() => {
-    const fetchContestData = async () => {
-      try {
-        const result = await dispatch(getBehindScreen(id));
-
-        setFieldScores(result?.data?.data?.total_scores);
-
-        const filteredParticipants = result?.data?.data?.participants?.filter(
-          (participant) => participant.is_judged === 0
-        );
-        setParticipants(
-          filteredParticipants?.map((participant) => {
-            const fieldsValuesString = participant?.fields_values?.slice(1, -1);
-            const fieldsValues = JSON.parse(
-              fieldsValuesString.replace(/\\/g, "")
-            );
-            return { ...participant, ...fieldsValues };
-          })
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchContestData();
-
-    const intervalId = setInterval(() => {
-      fetchContestData();
-    }, 3000);
-
-    return () => clearInterval(intervalId);
-  }, [dispatch, id]);
-
+  usePusher(contest_id, participants, setParticipants, setScore);
+  useFetchContestData(
+    id,
+    setJudges,
+    setScore,
+    setParticipants,
+    setAllJudges,
+    setLoading,
+    setAllScoresGiven,
+    setFieldScores
+  );
   const handleFile = () => {
     navigate(`/upload-file/${contest_id}`);
   };
@@ -93,8 +72,7 @@ const AdminOperator = () => {
     setUploadDialogOpen(false);
   };
   const [selectedJudgeScores, setSelectedJudgeScores] = useState([]);
-  console.log(selectedJudgeScores, "scoreee");
-  // const [allScoresGiven, setAllScoresGiven] = useState(false);
+
   const handleOpenModal = (judge) => {
     setSelectedJudge(judge);
     const judgeScores = score.filter((score) => score.judge_id === judge.id);
@@ -105,7 +83,14 @@ const AdminOperator = () => {
   const handleNext = () => {
     navigate(`/admin-contest-start/${contest_id}`);
   };
-
+  const judges_current = score.filter(
+    (score) => score?.participant_id === participants[0]?.id
+  );
+  useEffect(() => {
+    if (judges_current.length === judges.length) {
+      setAllScoresGiven(true);
+    }
+  }, [judges, judges_current]);
   const handleCloseModal = () => {
     setOpenModal(false);
     setSelectedJudge(null);
@@ -152,12 +137,25 @@ const AdminOperator = () => {
   const [loadingPublish, setLoadingPublish] = useState(false);
   const [loadingPublic, setLoadingPublic] = useState(false);
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
-
   const handleApproved = async (id, contest_id) => {
+    // yahan lagana ha
     setLoadingPublish(true);
     try {
       const res = await dispatch(setApprovidParticipant(contest_id, id));
-
+      const res2 = await dispatch(getStartContest(contest_id));
+      setAllScoresGiven(false);
+      const filteredParticipants = res2.data.data.participants.filter(
+        (participant) => participant.is_judged === 0
+      );
+      setParticipants(
+        filteredParticipants.map((participant) => {
+          const fieldsValuesString = participant.fields_values.slice(1, -1);
+          const fieldsValues = JSON.parse(
+            fieldsValuesString.replace(/\\/g, "")
+          );
+          return { ...participant, ...fieldsValues };
+        })
+      );
       setClickedParticipantId(id);
       setLoadingPublish(false);
       setNextButtonDisabled(false);
@@ -182,48 +180,6 @@ const AdminOperator = () => {
       console.error("Failed to send request:", error);
     }
   };
-
-  useEffect(() => {
-    const fetchContestData = async () => {
-      try {
-        const result = await dispatch(getStartContest(id));
-        setJudges(result.data.data.judges);
-        setScore(result.data.data.total_scores);
-        const filteredParticipants = result.data.data.participants.filter(
-          (participant) => participant.is_judged === 0
-        );
-        setParticipants(
-          filteredParticipants.map((participant) => {
-            const fieldsValuesString = participant.fields_values.slice(1, -1);
-            const fieldsValues = JSON.parse(
-              fieldsValuesString.replace(/\\/g, "")
-            );
-            return { ...participant, ...fieldsValues };
-          })
-        );
-        setAllJudges(result.data.data.participants);
-        setLoading(false);
-
-        const currentParticipantId = result.data.data.participants[0]?.id;
-        const currentScores = result.data.data.total_scores.filter(
-          (score) => score.participant_id === currentParticipantId
-        );
-        setAllScoresGiven(
-          currentScores.length === result.data.data.judges.length
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchContestData();
-
-    const intervalId = setInterval(() => {
-      fetchContestData();
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, [dispatch, id]);
 
   const handleAllRecords = () => {
     navigate("/all-records", { state: { id: id } });

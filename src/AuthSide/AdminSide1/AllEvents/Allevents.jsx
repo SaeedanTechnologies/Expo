@@ -30,7 +30,7 @@ const Allevents = () => {
 
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1); 
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -44,7 +44,7 @@ const Allevents = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://deeplink.saeedantechpvt.com/api/all/events`,
+        `https://expopusher.saeedantechpvt.com/api/all/events`,
         {
           params: {
             page,
@@ -65,14 +65,12 @@ const Allevents = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage + 1); // newPage is zero-based index, API uses 1-based index
-
   };
 
   const handleChangeRowsPerPage = (event) => {
     const newRowsPerPage = parseInt(event.target.value, 10);
     setRowsPerPage(newRowsPerPage);
     setPage(1); // Reset to first page when rows per page changes
-
   };
 
   const handleRowClick = (id) => {
@@ -113,7 +111,10 @@ const Allevents = () => {
           All Events
         </Typography>
 
-        <TableContainer component={Paper} sx={{ minWidth: isSmall ? "100%" : "700px" }}>
+        <TableContainer
+          component={Paper}
+          sx={{ minWidth: isSmall ? "100%" : "700px" }}
+        >
           <Table aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow>
@@ -123,9 +124,15 @@ const Allevents = () => {
             </TableHead>
             <TableBody>
               {records.map((record) => (
-                <TableRow key={record.id} onClick={() => handleRowClick(record.id)} style={{ cursor: "pointer" }}>
+                <TableRow
+                  key={record.id}
+                  onClick={() => handleRowClick(record.id)}
+                  style={{ cursor: "pointer" }}
+                >
                   <TableCell>{record.name}</TableCell>
-                  <TableCell>{new Date(record.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {new Date(record.created_at).toLocaleDateString()}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

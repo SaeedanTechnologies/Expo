@@ -91,9 +91,6 @@
 //     setAnchorEl(event.currentTarget);
 //   };
 
-
-
-
 //   const handleFilterClose = () => {
 //     setAnchorEl(null);
 //   };
@@ -107,7 +104,6 @@
 //   const handleCloseSnackbar = () => {
 //     setSnackbarOpen(false);
 //   };
-
 
 //   if (loading) {
 //     return (
@@ -126,7 +122,6 @@
 
 //   return (
 
-
 //       <Box
 //         sx={{
 //           display: "flex",
@@ -141,7 +136,6 @@
 //           </Typography>
 //           <DatePicker
 //           label="Start Contest Date"
-
 
 //           renderInput={(params) => <MyTextField {...params} />}
 
@@ -182,7 +176,6 @@
 //         />
 //       </Box>
 
-
 //   );
 // };
 
@@ -210,7 +203,7 @@ import {
   IconButton,
   Menu,
 } from "@mui/material";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import MyTextField from "../../../page/components/MyTextField";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -240,8 +233,8 @@ const Allevents = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [dateFilter, setDateFilter] = useState(null);
 
-  const recordId=records.map(ids=>ids.id);
-  console.log(recordId,"klkkkk");
+  const recordId = records.map((ids) => ids.id);
+  console.log(recordId, "klkkkk");
   useEffect(() => {
     fetchData();
   }, [page, rowsPerPage, monthFilter, yearFilter, dateFilter]);
@@ -250,14 +243,14 @@ const Allevents = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://deeplink.saeedantechpvt.com/api/all/contests/${id}`,
+        `https://expopusher.saeedantechpvt.com/api/all/contests/${id}`,
         {
           params: {
             page: page + 1,
             per_page: rowsPerPage,
             month: monthFilter,
             year: yearFilter,
-            date: dateFilter ? dayjs(dateFilter).format('YYYY-MM-DD') : null,
+            date: dateFilter ? dayjs(dateFilter).format("YYYY-MM-DD") : null,
           },
         }
       );
@@ -304,9 +297,7 @@ const Allevents = () => {
 
   const handleRowClick = (recordId) => {
     navigate(`/public_all-records/${recordId}`);
-};
-
-
+  };
 
   if (loading) {
     return (
@@ -337,7 +328,7 @@ const Allevents = () => {
           All Contests
         </Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-      {/*   <Box sx={{textAlign:'end'}}>
+          {/*   <Box sx={{textAlign:'end'}}>
         <DatePicker
         label="Date"
         value={dateFilter}
@@ -347,7 +338,10 @@ const Allevents = () => {
       />
         </Box> */}
         </LocalizationProvider>
-        <TableContainer component={Paper} sx={{ minWidth:  isSmall ? "100%" : "700px"}}>
+        <TableContainer
+          component={Paper}
+          sx={{ minWidth: isSmall ? "100%" : "700px" }}
+        >
           <Table aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
               <TableRow>
@@ -357,9 +351,14 @@ const Allevents = () => {
             </TableHead>
             <TableBody>
               {records.map((record) => (
-                <TableRow key={record.id} onClick={() => handleRowClick(record.id)}>
+                <TableRow
+                  key={record.id}
+                  onClick={() => handleRowClick(record.id)}
+                >
                   <TableCell>{record.name}</TableCell>
-                  <TableCell>{new Date(record.start_date_time).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {new Date(record.start_date_time).toLocaleDateString()}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -385,4 +384,3 @@ const Allevents = () => {
 };
 
 export default Allevents;
-

@@ -159,7 +159,7 @@ const AddRegistration = () => {
         type: "MAX_CONT",
         payload: redux_data,
       });
-      const apiUrl = "https://deeplink.saeedantechpvt.com/api/admin/contests";
+      const apiUrl = "https://expopusher.saeedantechpvt.com/api/admin/contests";
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {

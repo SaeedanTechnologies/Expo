@@ -27,10 +27,6 @@ import { useNavigate } from "react-router-dom";
 import { getBehindScreen } from "../store/actions/contestStartActions";
 import { useSelector } from "react-redux";
 
-
-
-
-
 const AllHistory = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,17 +47,16 @@ const AllHistory = () => {
     fetchData();
   }, [page, rowsPerPage, monthFilter, yearFilter]);
 
-const token = useSelector((state)=>state?.admin?.token)
+  const token = useSelector((state) => state?.admin?.token);
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://deeplink.saeedantechpvt.com/api/admin/expo`,
+        `https://expopusher.saeedantechpvt.com/api/admin/expo`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-
         }
       );
       // setRecords(response?.data?.payload);
@@ -69,7 +64,6 @@ const token = useSelector((state)=>state?.admin?.token)
         return new Date(b.created_at) - new Date(a.created_at);
       });
       setRecords(sortedRecords);
-
     } catch (error) {
       console.error("Error fetching records:", error);
       setSnackbarMessage("Failed to fetch data");
@@ -111,8 +105,6 @@ const token = useSelector((state)=>state?.admin?.token)
     navigate(`/user-contest/${id}`);
   };
 
-
-
   if (loading) {
     return (
       <Box
@@ -128,60 +120,65 @@ const token = useSelector((state)=>state?.admin?.token)
     );
   }
 
-
-
-
   return (
     <>
-
-<Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "80vh",
-      }}
-    >
-      <Box sx={{ padding: isSmall ? "2rem 5%" : "2rem 0%" }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          All History
-        </Typography>
-        <TableContainer component={Paper} sx={{ minWidth:  isSmall ? "100%" : "700px"}}>
-          <Table aria-label="simple table">
-            <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
-              <TableRow>
-                <TableCell>Event Name</TableCell>
-                <TableCell>Date</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {records.map((record) => (
-                <TableRow key={record.id} onClick={() => handleRowClick(record.id)} style={{ cursor: "pointer" }}>
-                  <TableCell>{record.name}</TableCell>
-                  <TableCell>{new Date(record.created_at).toLocaleDateString()}</TableCell>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
+      >
+        <Box sx={{ padding: isSmall ? "2rem 5%" : "2rem 0%" }}>
+          <Typography variant="h4" align="center" gutterBottom>
+            All History
+          </Typography>
+          <TableContainer
+            component={Paper}
+            sx={{ minWidth: isSmall ? "100%" : "700px" }}
+          >
+            <Table aria-label="simple table">
+              <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
+                <TableRow>
+                  <TableCell>Event Name</TableCell>
+                  <TableCell>Date</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          component="div"
-          count={records.length}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+              </TableHead>
+              <TableBody>
+                {records.map((record) => (
+                  <TableRow
+                    key={record.id}
+                    onClick={() => handleRowClick(record.id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <TableCell>{record.name}</TableCell>
+                    <TableCell>
+                      {new Date(record.created_at).toLocaleDateString()}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            component="div"
+            count={records.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+          message={snackbarMessage}
         />
       </Box>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        message={snackbarMessage}
-      />
-    </Box>
     </>
-  )
-}
+  );
+};
 
-export default AllHistory
+export default AllHistory;

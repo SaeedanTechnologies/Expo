@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Button,
   CircularProgress,
@@ -86,7 +86,7 @@ const SubHistoryComponent = () => {
 
     try {
       const response = await axios.get(
-        `https://deeplink.saeedantechpvt.com/api/all/contests/${id}`,
+        `https://expopusher.saeedantechpvt.com/api/all/contests/${id}`,
         {
           params: {
             page: page + 1,
@@ -199,7 +199,6 @@ const SubHistoryComponent = () => {
     setQrCodeUrl("");
   };
 
-
   const downloadQRCode = () => {
     const svg = qrRef.current.querySelector("svg");
     if (!svg) {
@@ -292,7 +291,10 @@ const SubHistoryComponent = () => {
                     <TableCell>
                       <Button
                         variant="contained"
-                        sx={{ textTransform: "none", fontSize: isSmall ? "0.5rem" : "0.8rem" }}
+                        sx={{
+                          textTransform: "none",
+                          fontSize: isSmall ? "0.5rem" : "0.8rem",
+                        }}
                         onClick={() => handleDialogOpen(record, "judges")}
                         disabled={loadingJudges}
                       >
@@ -306,11 +308,15 @@ const SubHistoryComponent = () => {
                     <TableCell>
                       <Button
                         variant="contained"
-                        sx={{ textTransform: "none", fontSize: isSmall ? "0.5rem" : "0.8rem" }}
+                        sx={{
+                          textTransform: "none",
+                          fontSize: isSmall ? "0.5rem" : "0.8rem",
+                        }}
                         onClick={() => handleDialogOpen(record, "participants")}
                         disabled={loadingParticipants}
                       >
-                        {loadingParticipants && dialogType === "participants" ? (
+                        {loadingParticipants &&
+                        dialogType === "participants" ? (
                           <CircularProgress size={20} />
                         ) : (
                           "View Participants"
@@ -320,7 +326,10 @@ const SubHistoryComponent = () => {
                     <TableCell>
                       <Button
                         variant="contained"
-                        sx={{ textTransform: "none", fontSize: isSmall ? "0.5rem" : "0.8rem" }}
+                        sx={{
+                          textTransform: "none",
+                          fontSize: isSmall ? "0.5rem" : "0.8rem",
+                        }}
                         onClick={() => handleDialogOpen(record, "results")}
                         disabled={loadingResults}
                       >
@@ -334,7 +343,10 @@ const SubHistoryComponent = () => {
                     <TableCell>
                       <Button
                         variant="contained"
-                        sx={{ textTransform: "none", fontSize: isSmall ? "0.5rem" : "0.8rem" }}
+                        sx={{
+                          textTransform: "none",
+                          fontSize: isSmall ? "0.5rem" : "0.8rem",
+                        }}
                         onClick={() => handleDialogOpen(record, "qrcode")}
                         disabled={loadingQRCode}
                       >
@@ -350,8 +362,6 @@ const SubHistoryComponent = () => {
               </TableBody>
             </Table>
           </TableContainer>
-
-
 
           <TablePagination
             component="div"
@@ -404,98 +414,103 @@ const SubHistoryComponent = () => {
                   <Typography>Email</Typography>
                 </Box>
                 {contestJudges && contestJudges.length > 0 ? (
-    contestJudges.map((judge, index) => (
-      <Box
-        key={index}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "1rem",
-          padding: "0.5rem 3rem",
-          backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white", // Alternate row color
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar src={judge.profile_picture} />
-          <Typography sx={{ marginLeft: "1rem" }}>
-            {judge.name}
-          </Typography>
-        </Box>
-        <Typography>{judge.email}</Typography>
-      </Box>
-    ))
-  ) : (
-    <Typography sx={{ textAlign: "center", marginTop: "1rem" }}>
-      Judges not found
-    </Typography>
-  )}
+                  contestJudges.map((judge, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "1rem",
+                        padding: "0.5rem 3rem",
+                        backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white", // Alternate row color
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Avatar src={judge.profile_picture} />
+                        <Typography sx={{ marginLeft: "1rem" }}>
+                          {judge.name}
+                        </Typography>
+                      </Box>
+                      <Typography>{judge.email}</Typography>
+                    </Box>
+                  ))
+                ) : (
+                  <Typography sx={{ textAlign: "center", marginTop: "1rem" }}>
+                    Judges not found
+                  </Typography>
+                )}
               </>
             )}
 
             {dialogType === "participants" && (
               <>
                 <>
-                {contestParticipants.length === 0 ? (
-  <Box
-    sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '20vh',
-    }}
-  >
-    <Typography sx={{fontWeight:'600', fontSize:'1.5rem'}}>No participants found.</Typography>
-  </Box>
-) : (
-  contestParticipants.map((participant, index) => {
-    let fieldsValues = {};
+                  {contestParticipants.length === 0 ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: "20vh",
+                      }}
+                    >
+                      <Typography
+                        sx={{ fontWeight: "600", fontSize: "1.5rem" }}
+                      >
+                        No participants found.
+                      </Typography>
+                    </Box>
+                  ) : (
+                    contestParticipants.map((participant, index) => {
+                      let fieldsValues = {};
 
-    try {
-      const jsonString = participant.fields_values
-        .replace(/^\"/, "") // remove starting double quote
-        .replace(/\"$/, "") // remove ending double quote
-        .replace(/\\"/g, '"') // replace \" with "
-        .replace(/\\\\/g, "\\"); // replace \\ with \
+                      try {
+                        const jsonString = participant.fields_values
+                          .replace(/^\"/, "") // remove starting double quote
+                          .replace(/\"$/, "") // remove ending double quote
+                          .replace(/\\"/g, '"') // replace \" with "
+                          .replace(/\\\\/g, "\\"); // replace \\ with \
 
-      fieldsValues = JSON.parse(jsonString);
-    } catch (error) {
-      console.error("Error parsing fields_values:", error);
-    }
+                        fieldsValues = JSON.parse(jsonString);
+                      } catch (error) {
+                        console.error("Error parsing fields_values:", error);
+                      }
 
-    return (
-      <Box key={index} sx={{}}>
-        <Typography sx={{ marginLeft: "1rem" }}>
-          Participant ID : {participant.id}
-        </Typography>
-        <Box>
-          {Object.keys(fieldsValues).map((key, innerIndex) => (
-            <Box
-              key={innerIndex}
-              sx={{
-                display: "flex",
-                alignItems: "start",
-                marginBottom: "0.5rem",
-              }}
-            >
-              <Typography
-                sx={{ marginLeft: "1rem", fontWeight: 600 }}
-              >
-                {key}
-              </Typography>
-              <Typography sx={{ marginLeft: "1rem" }}>
-                {fieldsValues[key]}
-              </Typography>
-            </Box>
-          ))}
-          <Divider />
-          <br />
-        </Box>
-      </Box>
-    );
-  })
-)}
-
+                      return (
+                        <Box key={index} sx={{}}>
+                          <Typography sx={{ marginLeft: "1rem" }}>
+                            Participant ID : {participant.id}
+                          </Typography>
+                          <Box>
+                            {Object.keys(fieldsValues).map(
+                              (key, innerIndex) => (
+                                <Box
+                                  key={innerIndex}
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "start",
+                                    marginBottom: "0.5rem",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{ marginLeft: "1rem", fontWeight: 600 }}
+                                  >
+                                    {key}
+                                  </Typography>
+                                  <Typography sx={{ marginLeft: "1rem" }}>
+                                    {fieldsValues[key]}
+                                  </Typography>
+                                </Box>
+                              )
+                            )}
+                            <Divider />
+                            <br />
+                          </Box>
+                        </Box>
+                      );
+                    })
+                  )}
                 </>
               </>
             )}
@@ -517,40 +532,48 @@ const SubHistoryComponent = () => {
                   <Typography>Score</Typography>
                 </Box>
                 <Box>
-  {contestResults.length === 0 ? (
-<>
-<Box sx={{display:'flex', justifyContent:'center', alignItems:'center', minHeight:'30vh'}}>
-<Typography>No Result found.</Typography>
-
-
-</Box>
-
-</>  ) : (
-    contestResults.map((result, index) => {
-      const fieldsValues = JSON.parse(result.participant.fields_values);
-      return (
-        <Box
-          key={index}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: "1rem",
-          }}
-        >
-          <Typography sx={{ marginLeft: "1rem" }}>
-            {result.position}
-          </Typography>
-          <Typography sx={{ marginLeft: "1rem" }}>
-            {JSON.parse(fieldsValues).name}
-          </Typography>
-          <Typography>{result.total_score.toFixed(2)}</Typography>
-        </Box>
-      );
-    })
-  )}
-</Box>
-
+                  {contestResults.length === 0 ? (
+                    <>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          minHeight: "30vh",
+                        }}
+                      >
+                        <Typography>No Result found.</Typography>
+                      </Box>
+                    </>
+                  ) : (
+                    contestResults.map((result, index) => {
+                      const fieldsValues = JSON.parse(
+                        result.participant.fields_values
+                      );
+                      return (
+                        <Box
+                          key={index}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginTop: "1rem",
+                          }}
+                        >
+                          <Typography sx={{ marginLeft: "1rem" }}>
+                            {result.position}
+                          </Typography>
+                          <Typography sx={{ marginLeft: "1rem" }}>
+                            {JSON.parse(fieldsValues).name}
+                          </Typography>
+                          <Typography>
+                            {result.total_score.toFixed(2)}
+                          </Typography>
+                        </Box>
+                      );
+                    })
+                  )}
+                </Box>
               </>
             )}
             {dialogType === "qrcode" && (
@@ -560,26 +583,26 @@ const SubHistoryComponent = () => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    flexDirection:'column'
+                    flexDirection: "column",
                   }}
                 >
-             {qrCodeUrl && (
-                <div ref={qrRef}>
-                  <QRCode value={qrCodeUrl} />
-                </div>
-              )}
-              {!qrCodeUrl && (
-                <Typography>No QR code URL available.</Typography>
-              )}
-              <Box sx={{ textAlign: "center", marginTop: "1rem" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={generatePdf}
-                >
-                  Download QR Code as PDF
-                </Button>
-              </Box>
+                  {qrCodeUrl && (
+                    <div ref={qrRef}>
+                      <QRCode value={qrCodeUrl} />
+                    </div>
+                  )}
+                  {!qrCodeUrl && (
+                    <Typography>No QR code URL available.</Typography>
+                  )}
+                  <Box sx={{ textAlign: "center", marginTop: "1rem" }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={generatePdf}
+                    >
+                      Download QR Code as PDF
+                    </Button>
+                  </Box>
                 </Box>
               </>
             )}

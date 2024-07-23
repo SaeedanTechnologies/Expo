@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Pusher from "pusher-js";
+
 import {
   Box,
   Container,
@@ -32,7 +34,7 @@ const TestingApi = () => {
   const [judgeId, setJudgeId] = useState(null);
   const [participantId, setParticipantId] = useState(null);
   const [contestId, setContestId] = useState(null);
-  const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const judge_idd = useSelector((state) => state?.admin?.user?.id);
@@ -41,6 +43,7 @@ const TestingApi = () => {
   const [participantDataVisible, setParticipantDataVisible] = useState(false);
   const [participantData, setParticipantData] = useState({});
   const [dialogOpen, setDialogOpen] = useState(false);
+  // console.log(contestId, "YEEEEEEEEEE");
   useEffect(() => {
     const fetchFormFields = async () => {
       try {
@@ -69,17 +72,40 @@ const TestingApi = () => {
           console.log("Unexpected response structure:", response.data.message);
         }
       } catch (error) {
-        setFetchError(error.response.data.message);
+        setFetchError(error?.response?.data?.message);
       }
     };
     const toggleParticipantData = () => {
       setParticipantDataVisible((prev) => !prev);
     };
     fetchFormFields();
-    const intervalId = setInterval(fetchFormFields, 2000);
-    return () => clearInterval(intervalId);
   }, [dispatch, id]);
+  useEffect(() => {
+    // Pusher.logToConsole = true;
+    const pusher = new Pusher("022c57db694789c9f227", {
+      cluster: "ap2",
+    });
+    const channel1 = pusher.subscribe(`scorecard-updates${id}`);
+    channel1.bind("App\\Events\\ScoreCardUpdated", function (data) {
+      setParticipantName(data?.scorecard?.current_participant_name);
+      setShowParticipantId(data?.scorecard?.current_participant_id);
+      setParticipantId(data?.scorecard?.current_participant_id);
+      const mappedFields = data?.scorecard?.fields.map((item) => ({
+        id: item.name,
+        label: item.label,
+        name: item.name,
+        type: item.type,
+        required: item.required,
+      }));
+      setFormFields(mappedFields);
+      setParticipantData(data?.scorecard?.participant_data);
+      // console.log(data?.scorecard, "PUSHER DATA+++++++++++++++++++");
+    });
 
+    return () => {
+      pusher.unsubscribe(`scorecard-updates${id}`);
+    };
+  }, []);
   useEffect(() => {
     if (participantId === null) {
       setSubmitDisabled(true);
@@ -111,6 +137,7 @@ const TestingApi = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true); // Start loading
+    setSubmitDisabled(true);
 
     const scoresArray = formFields.map((field) => ({
       field_name: field.name,
@@ -121,13 +148,13 @@ const TestingApi = () => {
       scores: scoresArray,
       judge_id: judge_idd,
       participant_id: participantId,
-      contest_id: contestId,
+      contest_id: id,
     };
 
     dispatch(submitJudegFormData(dataToSubmit))
       .then((response) => {
         setLoading(false); // Stop loading
-        setSubmitDisabled(true);
+        setSubmitDisabled(false);
         setFormData({});
         enqueueSnackbar("Score Assigned ", { variant: "success" });
       })
@@ -250,6 +277,7 @@ const TestingApi = () => {
                       </Typography>
                     );
                   })} */}
+                  {/* {console.log(participantData, "JJJJJJJJJJJ")} */}
                   {Object.keys(participantData).map((key) => {
                     const value = participantData[key];
                     return (
@@ -316,6 +344,7 @@ const TestingApi = () => {
                 Give Score
               </Typography>
               <form onSubmit={handleSubmit}>
+                {/* {console.log(formFields, "YE FORM FIELDS")} */}
                 {formFields?.map((field) => (
                   <Box key={field.id}>
                     <InputLabel
