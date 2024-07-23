@@ -42,6 +42,11 @@ import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useF
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
+
+
+
+
+
 const SubHistoryComponent = () => {
   const location = useLocation();
   const { id } = useParams();
@@ -231,6 +236,73 @@ const gg = response?.data?.map((ss)=> ss?.id)
   };
 
 
+  // Persist Data for Edit dges from History
+const scorecardExtract = contestJudges.map(judge => judge.scorecards).flat();
+const textFields = scorecardExtract.map(scorecard => {
+    const fields = JSON.parse(scorecard.fields);
+    return fields;
+});
+
+const or = textFields.map(val => val).flat();
+or.forEach((item, index) => {
+  console.log(`Item ${index}: Name - ${item.name}, Label - ${item.label}, Type - ${item.type}`);
+});
+
+const ex = or.map((item, index) => ({
+
+  name: "",
+  label: "",
+  type: item.type,
+  value:item.name,
+  required:true
+}));
+
+const contestt_id = contestJudges.map(judge => judge.contest_id)
+const cont_id = contestt_id[0]
+
+const judgeid = contestJudges.map(judge => judge.id)
+
+// const convertImageToBase64 = async (imageUrl) => {
+//   const response = await fetch(imageUrl);
+//   const blob = await response.blob();
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.onloadend = () => resolve(reader.result);
+//     reader.onerror = reject;
+//     reader.readAsDataURL(blob);
+//   });
+// };
+
+
+const judgesData = contestJudges.map((item) => ({
+  judge_name: item.name,
+  email: item.email,
+  profile_picture:item.profile_picture
+}))
+
+const EditJudges = ()=>{
+  dispatch({
+    type: "JUDGES",
+    payload:judgesData,
+  });
+
+  dispatch({
+    type: "JUD_ID",
+    payload: judgeid,
+  });
+
+  dispatch({
+    type: "CONT_ID",
+    payload: cont_id,
+  });
+
+  dispatch({
+    type: "TXT_FIELDS",
+    payload: ex,
+  });
+
+  navigate('/add-judges')
+}
 
   const generatePdf = async () => {
     const element = qrRef.current;
@@ -362,7 +434,9 @@ const gg = response?.data?.map((ss)=> ss?.id)
               variant="contained"
               sx={{ textTransform: 'none' }}
               onClick={() => {
-                navigate(`/admin-contest-start/${record.id}`);
+                // navigate(`/admin-contest-start/${record.id}`);
+                navigate(`/links`, { state: { contest_id: record.id } });
+
               }}
             >
               Start the Contest
@@ -422,6 +496,9 @@ const gg = response?.data?.map((ss)=> ss?.id)
           <DialogContent>
             {dialogType === "judges" && (
               <>
+
+              <Box><Button onClick={EditJudges}>Edit</Button></Box>
+
                 <Box
                   sx={{
                     display: "flex",
@@ -432,6 +509,7 @@ const gg = response?.data?.map((ss)=> ss?.id)
                     padding: "0.5rem 3rem",
                   }}
                 >
+
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography sx={{ marginLeft: "1rem" }}>Name</Typography>
                   </Box>
