@@ -41,6 +41,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import { useSelector } from "react-redux";
 import AllHistory from "./AuthSide/AllHistory";
 import SubHistoryComponent from "./AuthSide/SubHistoryComponent";
+import OTPVerify from "./AuthSide/AdminSide1/EmailVerify/OTPVerify";
 export default function Router() {
   const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
   let element = useRoutes([
@@ -178,6 +179,11 @@ export default function Router() {
       path: "admin-sign-up",
       element: <AdminRegisterForm />,
     },
+    {
+      path: "verify-otp",
+      element: <OTPVerify/>,
+    },
+
     {
       path: "admin-login",
       element: <AdminLoginForm />,

@@ -30,7 +30,7 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import QRCode from "react-qr-code";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getAllJudges,
   getAllParticipants,
@@ -48,24 +48,26 @@ import { jsPDF } from "jspdf";
 
 
 const SubHistoryComponent = () => {
+  const namee = useSelector((state) => state?.admin?.user?.name);
   const location = useLocation();
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [records, setRecords] = useState([]);
   const [contestResults, setContestResults] = useState([]);
+  const [loadingStates, setLoadingStates] = useState({});
+
 
   const [contestJudges, setContestJudges] = useState([]);
   const [contestParticipants, setContestParticipants] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [loadingJudges, setLoadingJudges] = useState(false);
-  const [loadingParticipants, setLoadingParticipants] = useState(false);
-  const [loadingResults, setLoadingResults] = useState(false);
+  const [loadingParticipants, setLoadingParticipants] = useState({});
+  const [loadingResults, setLoadingResults] = useState({});
   const [loadingQRCode, setLoadingQRCode] = useState(false);
 
   const [page, setPage] = useState(0);
@@ -81,6 +83,16 @@ const SubHistoryComponent = () => {
   const [dialogType, setDialogType] = useState(null);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const qrRef = useRef();
+
+  const handleAddContest = ()=>{
+  localStorage.setItem("expo_id", id);
+  dispatch({
+    type: "RESET_STATE",
+  });
+navigate('/admin/add-content')
+  }
+
+
 
   useEffect(() => {
     fetchData();
@@ -180,38 +192,63 @@ const gg = response?.data?.map((ss)=> ss?.id)
 
     switch (type) {
       case "judges":
-        setLoadingJudges(true);
+        // setLoadingJudges(true);
+        setLoadingStates((prevStates) => ({
+          ...prevStates,
+          [record.id]: true,
+      }));
         try {
           const result = await dispatch(getAllJudges(record.id));
           setContestJudges(result.data.payload);
         } catch (err) {
           console.log(err);
         } finally {
-          setLoadingJudges(false);
+          // setLoadingJudges(false);
+          setLoadingStates((prevStates) => ({
+            ...prevStates,
+            [record.id]: false,
+        }));
         }
         break;
 
       case "participants":
-        setLoadingParticipants(true);
+        // setLoadingParticipants(true);
+
+        setLoadingParticipants((prevStates) => ({
+          ...prevStates,
+          [record.id]: true,
+      }));
+
         try {
           const result = await dispatch(getAllParticipants(record.id));
           setContestParticipants(result.data.payload);
         } catch (err) {
           console.log(err);
         } finally {
-          setLoadingParticipants(false);
+          setLoadingParticipants((prevStates) => ({
+            ...prevStates,
+            [record.id]: false,
+        }));
         }
         break;
 
       case "results":
-        setLoadingResults(true);
+
+      // setLoadingResults(true);
+      setLoadingResults((prevStates) => ({
+        ...prevStates,
+        [record.id]: true,
+    }));
         try {
           const result = await dispatch(getBehindScreenResults(record.id));
           setContestResults(result.data.data);
         } catch (err) {
           console.log(err);
         } finally {
-          setLoadingResults(false);
+          setLoadingResults((prevStates) => ({
+            ...prevStates,
+            [record.id]: false,
+        }));
         }
         break;
 
@@ -248,14 +285,36 @@ or.forEach((item, index) => {
   console.log(`Item ${index}: Name - ${item.name}, Label - ${item.label}, Type - ${item.type}`);
 });
 
-const ex = or.map((item, index) => ({
+// const ex = or.map((item, index) => ({
 
-  name: "",
-  label: "",
-  type: item.type,
-  value:item.name,
-  required:true
-}));
+//   name: "",
+//   label: "",
+//   type: item.type,
+//   value:item.name,
+//   required:true
+// }));
+
+const seenNames = new Set();
+
+const ex = or
+  .filter(item => {
+    if (seenNames.has(item.name)) {
+      return false;
+    } else {
+      seenNames.add(item.name);
+      return true;
+    }
+  })
+  .map(item => ({
+    name: "",
+    label: "",
+    type: item.type,
+    value: item.name,
+    required: true,
+  }));
+
+console.log(ex, 'ggggggg');
+
 
 const contestt_id = contestJudges.map(judge => judge.contest_id)
 const cont_id = contestt_id[0]
@@ -344,8 +403,15 @@ const EditJudges = ()=>{
       >
         <Box sx={{ width: isSmall ? "100%" : "auto" }}>
           <Typography variant="h4" align="center" gutterBottom>
-            Contest by User
+            Contest by {namee}
           </Typography>
+
+<Box sx={{ display:'flex', justifyContent:'end', alignItems:'end'}}>
+<Button variant="contained" onClick={handleAddContest} sx={{textTransform:'none'}}>Add New Contest</Button>
+
+</Box>
+          <br/>
+          <br/>
 
           <TableContainer
             component={Paper}
@@ -371,9 +437,9 @@ const EditJudges = ()=>{
                 variant="contained"
                 sx={{ textTransform: 'none', fontSize: isSmall ? '0.5rem' : '0.8rem' }}
                 onClick={() => handleDialogOpen(record, 'judges')}
-                disabled={loadingJudges}
+                disabled={loadingStates[record.id]}
               >
-                {loadingJudges && dialogType === 'judges' ? (
+                {loadingStates[record.id]  && dialogType === 'judges' ? (
                   <CircularProgress size={20} />
                 ) : (
                   'View Judges'
@@ -385,9 +451,9 @@ const EditJudges = ()=>{
                 variant="contained"
                 sx={{ textTransform: 'none', fontSize: isSmall ? '0.5rem' : '0.8rem' }}
                 onClick={() => handleDialogOpen(record, 'participants')}
-                disabled={loadingParticipants}
+                disabled={loadingParticipants[record.id]}
               >
-                {loadingParticipants && dialogType === 'participants' ? (
+                {loadingParticipants[record.id] && dialogType === 'participants' ? (
                   <CircularProgress size={20} />
                 ) : (
                   'View Participants'
@@ -399,9 +465,9 @@ const EditJudges = ()=>{
                 variant="contained"
                 sx={{ textTransform: 'none', fontSize: isSmall ? '0.5rem' : '0.8rem' }}
                 onClick={() => handleDialogOpen(record, 'results')}
-                disabled={loadingResults}
+                disabled={loadingResults[record.id]}
               >
-                {loadingResults && dialogType === 'results' ? (
+                {loadingResults[record.id] && dialogType === 'results' ? (
                   <CircularProgress size={20} />
                 ) : (
                   'View Results'
@@ -497,7 +563,7 @@ const EditJudges = ()=>{
             {dialogType === "judges" && (
               <>
 
-              <Box><Button onClick={EditJudges}>Edit</Button></Box>
+              <Box sx={{display:'flex', justifyContent:'end'}}><Button variant="contained" sx={{textTransform:'none'}} onClick={EditJudges}>Edit</Button></Box>
 
                 <Box
                   sx={{

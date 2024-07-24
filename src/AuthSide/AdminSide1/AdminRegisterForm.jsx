@@ -90,9 +90,9 @@ const dispatch = useDispatch()
         const res = await dispatch(adminRegister(formData));
         setSnackbarMessage("Registered Successfully");
         setSnackbarOpen(true);
-        navigate("/admin-login");
+        navigate("/verify-otp");
       } catch (err) {
-        
+
         setSnackbarMessage("Failed to Register");
         setSnackbarOpen(true);
       } finally {
