@@ -500,11 +500,11 @@ const AdminSideScreen2 = () => {
             {/* 1st Position Image */}
             {contestResults.length > 0 && (
               <Box sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
-                <Avatar src={contestResults[0].participant.fields_values.Upload} alt={parseFieldsValues(contestResults[0].participant.fields_values)} style={{ width: '100px', height: '100px', marginBottom: '10px' }} />
+                {/* <Avatar src={contestResults[0].participant.fields_values.Upload} alt={parseFieldsValues(contestResults[0].participant.fields_values)} style={{ width: '100px', height: '100px', marginBottom: '10px' }} /> */}
 
 
                 <Box sx={{ position: "relative", display: "inline-flex" }}>
-      <ShieldIcon sx={{ color: 'green', fontSize: 30 }} />
+      <ShieldIcon sx={{ color: 'green', fontSize: 60 }} />
       <Typography
         sx={{
           position: "absolute",
@@ -544,14 +544,14 @@ const AdminSideScreen2 = () => {
 
             {contestResults.slice(1, 3).map((result, index) => (
   <Box key={result.participant_id} sx={{ mt: 6, textAlign: 'center', display:'flex', flexDirection:'column', alignItems:'center' }}>
-
-    <Avatar src={result.participant.fields_values.Upload} alt={parseFieldsValues(result.participant.fields_values)} style={{ width: '70px', height: '70px', marginBottom: '10px' }} />
+{/*
+    <Avatar src={result.participant.fields_values.Upload} alt={parseFieldsValues(result.participant.fields_values)} style={{ width: '70px', height: '70px', marginBottom: '10px' }} /> */}
 
 
 
 
     <Box sx={{ position: "relative", display: "inline-flex" }}>
-      <ShieldIcon sx={{ color: index === 0 ? 'red' : 'grey', fontSize: 30 }} />
+      <ShieldIcon sx={{ color: index === 0 ? 'red' : 'grey', fontSize: 60 }} />
       <Typography
         sx={{
           position: "absolute",

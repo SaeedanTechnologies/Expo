@@ -55,9 +55,7 @@ const AdminLoginForm = () => {
 
     dispatch(adminLogin(formData))
       .then((res) => {
-
         setFormValues(res.data.payload);
-
         enqueueSnackbar("Login Successfully", { variant: "success" });
         navigate("/admin/welcome", { state: res.data.payload });
       })

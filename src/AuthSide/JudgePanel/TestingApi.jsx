@@ -62,7 +62,8 @@ const TestingApi = () => {
 
           setScoreCard(scoreCard);
           setParticipantName(scoreCard.current_participant_name);
-          setShowParticipantId(scoreCard.current_participant_id);
+          setShowParticipantId(response.data.original.participant_sequence_id);
+
           setFormFields(mappedFields);
           setJudgeId(scoreCard.judge_id);
           setParticipantId(scoreCard.current_participant_id);
@@ -176,7 +177,7 @@ useEffect(() => {
   }
   console.log(submitDisabled, 'ssssssssssssssss');
 }, [judgeIdAPI, judge_id_redux, participantId]);
-
+console.log(participantId, 'ggggggggggggggggggggggg')
   return (
     <Box
       sx={{

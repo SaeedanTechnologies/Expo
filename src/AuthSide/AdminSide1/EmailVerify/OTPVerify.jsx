@@ -118,23 +118,7 @@ const dispatch = useDispatch()
         ))}
       </div>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '5rem' }}>
-        {/* <Button
-          variant="contained"
-          type="submit"
-          sx={{
-width:'30%',
-padding:'0.8rem 0rem',
-fontSize:'1rem',
-      backgroundColor: theme.palette.primary.main, // Change background color to red on hover
-
-            color: 'white',
-            "&:hover": {
-      backgroundColor: theme.palette.primary.main, // Change background color to red on hover
-    },
-          }}
-        >
-          Verify
-        </Button> */}
+     
 
 
         <Button
