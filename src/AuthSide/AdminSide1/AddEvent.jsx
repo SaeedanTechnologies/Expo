@@ -45,7 +45,6 @@
 //         }
 //       );
 //       localStorage.setItem("expo_id", response.data.payload.id);
-//       console.log("expo_id", response.data.payload.id);
 //       setSnackbarMessage("Event added successfully!");
 //       setSnackbarOpen(true);
 //       navigate("/admin/add-content");
@@ -151,7 +150,7 @@ const AddEvent = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const event_name = useSelector((state) => state.stepper.event_name);
   const expoID = useSelector((state) => state.stepper.expo_id);
-  console.log(expoID, "EXPO");
+
   useEffect(() => {
     if (event_name) {
       setEventName(event_name);

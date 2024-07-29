@@ -95,7 +95,7 @@ const SubHistoryComponent = () => {
 
     try {
       const response = await axios.get(
-        `https://expopusher.saeedantechpvt.com/api/all/contests/${id}`,
+        `https://expowithpusherbackend.saeedantechpvt.com/api/all/contests/${id}`,
         {
           params: {
             page: page + 1,
@@ -163,7 +163,7 @@ const SubHistoryComponent = () => {
       setContinue(result?.data?.data);
       setContinueLoading(false);
     } catch (err) {
-      console.log(err);
+
       setContinueLoading(false);
     } finally {
       setContinueLoading(false);
@@ -272,11 +272,7 @@ const SubHistoryComponent = () => {
   });
 
   const or = textFields.map((val) => val).flat();
-  or.forEach((item, index) => {
-    console.log(
-      `Item ${index}: Name - ${item.name}, Label - ${item.label}, Type - ${item.type}`
-    );
-  });
+
 
   // const ex = or.map((item, index) => ({
 
@@ -306,7 +302,7 @@ const SubHistoryComponent = () => {
       required: true,
     }));
 
-  console.log(ex, "ggggggg");
+
 
   const contestt_id = contestJudges.map((judge) => judge.contest_id);
   const cont_id = contestt_id[0];

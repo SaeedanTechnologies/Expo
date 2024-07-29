@@ -48,7 +48,6 @@
 //   const [snackbarOpen, setSnackbarOpen] = useState(false);
 //   const [snackbarMessage, setSnackbarMessage] = useState("");
 //   const [dateFilter, setDateFilter] = useState(null);
-//   console.log(id,"idData")
 //   useEffect(() => {
 //     fetchData();
 //   }, [page, rowsPerPage, monthFilter, yearFilter]);
@@ -234,7 +233,6 @@ const Allevents = () => {
   const [dateFilter, setDateFilter] = useState(null);
 
   const recordId = records.map((ids) => ids.id);
-  console.log(recordId, "klkkkk");
   useEffect(() => {
     fetchData();
   }, [page, rowsPerPage, monthFilter, yearFilter, dateFilter]);
@@ -243,7 +241,7 @@ const Allevents = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://expopusher.saeedantechpvt.com/api/all/contests/${id}`,
+        `https://expowithpusherbackend.saeedantechpvt.com/api/all/contests/${id}`,
         {
           params: {
             page: page + 1,

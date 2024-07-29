@@ -115,7 +115,6 @@ const QrCode = () => {
   const { state } = location;
 
   const id = state && state?.contest_id;
-  // console.log(window.location.origin)
 
   const qrRef = useRef();
   const qrCodeUrl = `${window.location.origin}/admin/contest/${id}`;

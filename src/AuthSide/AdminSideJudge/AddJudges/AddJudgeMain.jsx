@@ -32,17 +32,8 @@ const AddJudgeMain = () => {
   ]);
   const savedJudges = useSelector((state) => state?.stepper?.judges);
 
-console.log(savedJudges, 'hhggggggggg')
-//   const location = useLocation();
-//   const { contestData } = location.state || {};
-
-//   console.log(contestData);
-
-//   const da = contestData.map((val, ind)=>val.id)
-// console.log(da)
 
 
-  console.log(savedJudges);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

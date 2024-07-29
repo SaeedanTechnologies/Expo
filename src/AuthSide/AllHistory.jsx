@@ -52,7 +52,7 @@ const AllHistory = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://expopusher.saeedantechpvt.com/api/admin/expo`,
+        `https://expowithpusherbackend.saeedantechpvt.com/api/admin/expo`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

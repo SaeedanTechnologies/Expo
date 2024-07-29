@@ -159,7 +159,7 @@ const AddRegistration = () => {
         type: "MAX_CONT",
         payload: redux_data,
       });
-      const apiUrl = "https://expopusher.saeedantechpvt.com/api/admin/contests";
+      const apiUrl = "https://expowithpusherbackend.saeedantechpvt.com/api/admin/contests";
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -169,7 +169,6 @@ const AddRegistration = () => {
         body: JSON.stringify(payload),
       });
       const res = await response.json();
-      console.log(res.payload?.id, "++++++++++++++");
       dispatch({
         type: "CONT_ID",
         payload: res.payload?.id,
@@ -184,7 +183,6 @@ const AddRegistration = () => {
       const responseData = await response.json();
       localStorage.setItem("add_register_response", responseData.payload.id);
       localStorage.setItem("end_date_time", responseData.payload.end_date_time);
-      console.log("API response:", responseData.payload.end_date_time);
     } catch (error) {
       console.error("Error:", error);
     }

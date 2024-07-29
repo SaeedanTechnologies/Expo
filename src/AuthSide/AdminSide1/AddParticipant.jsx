@@ -26,14 +26,13 @@ const AddParticipant = () => {
   const reg_data = useSelector((state) => state?.stepper?.reg_form);
   const contest_id = useSelector((state) => state.stepper.cont_id);
   const form_id = useSelector((state) => state.stepper.form_id);
-  // console.log(form_id, "YE FORM ID");
+
   let fileIds, textIds;
 
   if (form_id) {
     fileIds = form_id.slice(2).filter((item) => item.type === "file");
     textIds = form_id.slice(2).filter((item) => item.type === "text");
-    // console.log(fileIds, "FILE IDS");
-    // console.log(textIds, "Text IDS");
+
   }
 
   let fileData;
@@ -173,7 +172,7 @@ const AddParticipant = () => {
         payload: formData,
       });
       const response = await fetch(
-        "https://expopusher.saeedantechpvt.com/api/admin/form_fields",
+        "https://expowithpusherbackend.saeedantechpvt.com/api/admin/form_fields",
         {
           method: "POST",
           headers: {
@@ -193,7 +192,6 @@ const AddParticipant = () => {
         id: item.id,
         type: item.type,
       }));
-      // console.log("Form data submitted successfully:", extracted_array);
       dispatch({
         type: "FORM_ID",
         payload: extracted_array,

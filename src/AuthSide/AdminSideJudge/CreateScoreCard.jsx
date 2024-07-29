@@ -72,11 +72,9 @@ const CreateScoreCard = () => {
   const profile = judges.map((judge) => judge.profile_picture);
   const dispatch = useDispatch();
   const txt_fields = useSelector((state) => state.stepper.text_fields);
-  // console.log(txt_fields, "YE TEXT  FIELDS");
   const [textFields, setTextFields] = useState([
     { name: "", label: "", type: "text", value: "", required: true },
   ]);
-  // console.log(textFields, "textFileds");
   useEffect(() => {
     if (txt_fields) {
       setTextFields(txt_fields);
@@ -98,7 +96,6 @@ const CreateScoreCard = () => {
     newTextFields[index][field] = value;
     setTextFields(newTextFields);
   };
-  // console.log(textFields);
   const navigate = useNavigate();
 
   const handleSubmit = () => {
@@ -132,7 +129,7 @@ const CreateScoreCard = () => {
     // formData.append("fields", JSON.stringify(fields));
     axios
       .post(
-        "https://expopusher.saeedantechpvt.com/api/admin/judges",
+        "https://expowithpusherbackend.saeedantechpvt.com/api/admin/judges",
         formData,
         {
           headers: {
@@ -147,7 +144,6 @@ const CreateScoreCard = () => {
           type: "JUD_ID",
           payload: judge_ids,
         });
-        // console.log(judge_ids, "YE RESPONSEHA");
         // localStorage.removeItem("judges");
         navigate("/links", { state: { contest_id: contest_id } });
       })
@@ -178,7 +174,6 @@ const CreateScoreCard = () => {
   //     }
   //   })
   //     .then(response => {
-  //       console.log(response.data);
   //       navigate('/links');
   //     })
   //     .catch(error => {

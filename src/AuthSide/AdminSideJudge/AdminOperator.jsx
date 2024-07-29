@@ -331,7 +331,7 @@ const AdminOperator = () => {
                     sx={{ color: "green", fontSize: "0.8rem" }}
                   >
                     Score{" "}
-                    {score?.total_score ? score?.total_score.toFixed(2) : ""}
+                    {score?.total_score ? score?.total_score : ""}
                   </Typography>
                 ))}
             </Box>
@@ -519,7 +519,6 @@ const AdminOperator = () => {
                           val.participant_id === score.participant_id &&
                           val.judge_id === score.judge.id
                       );
-                      console.log(participantFieldScores, "okk");
 
                       return (
                         <React.Fragment key={index}>

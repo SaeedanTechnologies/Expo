@@ -59,7 +59,6 @@ const dispatch = useDispatch()
 
     dispatch(otpConfirmation( {otp: enteredOTP  }))
       .then((res) => {
-        console.log('API Response:', res); // Log the response to debug
 
           navigate("/admin-login");
           enqueueSnackbar("Email Verified", { variant: 'success' });
@@ -118,7 +117,7 @@ const dispatch = useDispatch()
         ))}
       </div>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '5rem' }}>
-     
+
 
 
         <Button

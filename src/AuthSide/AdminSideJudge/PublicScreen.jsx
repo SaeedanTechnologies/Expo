@@ -35,7 +35,6 @@ const PublicScreen = () => {
   const [voted, setVoted] = useState(false);
   useEffect(() => {
     const storedValue = localStorage.getItem("public-screen");
-    // console.log(storedValue, "storedValue");
     if (storedValue) {
       setPublicScreenValue(storedValue);
     }
@@ -44,7 +43,6 @@ const PublicScreen = () => {
     try {
       const result = await dispatch(getBehindScreen(id));
 
-      // console.log(result.data.data.status, "dddsdhdgd");
 
       setIsPublished(result?.data?.data?.status || false);
       setJudges(result?.data?.data?.judges || []);
@@ -67,7 +65,6 @@ const PublicScreen = () => {
       setAllJudges(result?.data?.data?.participants || []);
       setLoading(false);
     } catch (err) {
-      console.log("jdhfsdjhf");
       setLoading(false); // End loading
     }
   };
@@ -80,7 +77,6 @@ const PublicScreen = () => {
   }, [participants]);
 
   useEffect(() => {
-    console.log("MOUNTED");
     const pusher = new Pusher("022c57db694789c9f227", {
       cluster: "ap2",
     });
@@ -88,8 +84,8 @@ const PublicScreen = () => {
       `judge-score-status${participants[0]?.id}`
     );
     channel1.bind("App\\Events\\JudgeScoreStatus", function (data) {
-      console.log(data, "STATUSSSSSSSSS haaaaaaaaaaaaaaaaaaaaaaa");
       setVoted(true);
+      getData()
     });
     return () => {
       pusher.unsubscribe(`judge-score-status${participants[0]?.id}`);
@@ -103,10 +99,7 @@ const PublicScreen = () => {
     channel1.bind("App\\Events\\JudgeParticipant", function (data) {
       getData();
       setVoted(false);
-      console.log(
-        data,
-        "YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE HAGHAGHA ++++++++++"
-      );
+
     });
     return () => {
       pusher.unsubscribe(`judge-participant`);
@@ -119,13 +112,11 @@ const PublicScreen = () => {
     const channel1 = pusher.subscribe(`behind-screen-result${id}`);
     channel1.bind("App\\Events\\BehindScreenResult", function (data) {
       getData();
-      console.log(data, "PUSHER DATA+++++++++dfgasdfsadfasdfasdfasd++++++++++");
     });
     return () => {
       pusher.unsubscribe(`behind-screen-result${id}`);
     };
   }, []);
-  // console.log(participants[0]?.id, "++++++++++");
   if (loading) {
     return (
       <Box
@@ -256,7 +247,7 @@ const PublicScreen = () => {
                         variant="h5"
                         sx={{ fontSize: "1.3rem", fontWeight: 600 }}
                       >
-                        Total Score :{totalScoress?.toFixed(2)}
+                        Total Score :{totalScoress}
                       </Typography>
 
                       <Typography
@@ -292,7 +283,13 @@ const PublicScreen = () => {
                                   ? "green"
                                   : "red"
                               }`,
-                            }}
+
+
+
+
+
+
+                                      }}
                           >
                             <Box>
                               <img
@@ -317,7 +314,6 @@ const PublicScreen = () => {
                                 {judge?.name}
                               </Typography>
 
-                              {/* {console.log(participantScore, "KKKKKKKKKKK")} */}
                               {participantScore ? (
                                 <Box>
                                   {scores
@@ -354,7 +350,7 @@ const PublicScreen = () => {
                                               fontWeight: 600,
                                             }}
                                           >
-                                            {score?.total_score.toFixed(2)}
+                                            {score?.total_score}
                                           </Typography>
                                         </Box>
                                       </Box>
@@ -400,7 +396,7 @@ const PublicScreen = () => {
                                             parseFloat(score?.total_score || 0),
                                           0
                                         )
-                                        .toFixed(2)}
+                                      }
                                       {/* Apply .toFixed(2) to format to 2 decimal places */}
                                     </Typography>
                                   </Box>
@@ -502,7 +498,18 @@ const PublicScreen = () => {
                           <Grid item xs={12} sm={6} md={3} key={index}>
                             <Card
                               sx={{
-                                border: voted ? "5px solid green" : null,
+                                border: `4px solid ${
+                                scores.some(
+                                  (s) =>
+                                    s.judge_id === judge.id &&
+                                    s.participant_id === allJudges[0]?.id
+                                )
+                                  ? "green"
+                                  : "red"
+                              }`,
+
+
+
                               }}
                             >
                               <Box>
@@ -528,14 +535,27 @@ const PublicScreen = () => {
                                   {judge?.name}
                                 </Typography>
                                 <Typography
-                                  variant="body1"
-                                  sx={{
-                                    textAlign: "center",
-                                    padding: "0.5rem",
-                                  }}
-                                >
-                                  {voted ? "Voted" : "Waiting"}
-                                </Typography>
+  variant="body1"
+  sx={{
+    textAlign: "center",
+    padding: "0.5rem",
+  }}
+>
+
+
+
+
+  {
+    scores.some(
+        (s) =>
+          s.judge_id === judge.id &&
+          s.participant_id === allJudges[0]?.id
+      )
+      ? "Voted"
+      : "Waiting"
+  }
+</Typography>
+
                               </Box>
                             </Card>
                           </Grid>

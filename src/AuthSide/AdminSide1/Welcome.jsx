@@ -10,7 +10,6 @@ const Welcome = () => {
   const { state } = useLocation();
 
   const user = useSelector((state)=>state?.admin?.user?.name)
-  // console.log(state.user.name, 'yuse')
   return (
     <Box
       sx={{

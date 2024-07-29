@@ -75,7 +75,6 @@ const AdminLoginForm = () => {
     //       "https://expoproject.saeedantechpvt.com/api/admin/login",
     //       formData
     //     );
-    //     console.log("API response:", response.data.payload.token);
     //     localStorage.setItem("token", response.data.payload.token);
 
     //     setFormData({

@@ -35,7 +35,6 @@ const AdminSideScreen2 = () => {
         setStatus(result?.data.status);
         setLoading(false);
       } catch (err) {
-        console.log("Error fetching behind screen data");
         setLoading(false);
       }
     };

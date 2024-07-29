@@ -131,10 +131,8 @@ const ParticipantPage = () => {
   const dispatch = useDispatch();
 
   const [publicScreenValue, setPublicScreenValue] = useState("");
-  console.log(publicScreenValue, "kdskfsdkfk");
   useEffect(() => {
     const storedValue = localStorage.getItem("public-screen");
-    console.log(storedValue, "storedValue");
     if (storedValue) {
       setPublicScreenValue(storedValue);
     }
@@ -179,7 +177,6 @@ const ParticipantPage = () => {
     0
   );
 
-  console.log(image[0]?.file_url, "immm");
   const defaultImage = "/bgimage.png";
   const backgroundImage =
     image?.length > 0 && image[0]?.file_url

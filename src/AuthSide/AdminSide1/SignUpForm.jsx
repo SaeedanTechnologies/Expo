@@ -127,7 +127,7 @@ const SignUpForm = () => {
     };
 
     axios
-      .post("https://expopusher.saeedantechpvt.com/api/participients", payload)
+      .post("https://expowithpusherbackend.saeedantechpvt.com/api/participients", payload)
       .then((response) => {
         setSnackbarMessage("You are Registered ");
         navigate("/participant-registered");

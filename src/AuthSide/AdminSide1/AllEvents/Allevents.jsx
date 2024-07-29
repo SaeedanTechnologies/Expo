@@ -44,7 +44,7 @@ const Allevents = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://expopusher.saeedantechpvt.com/api/all/events`,
+        `https://expowithpusherbackend.saeedantechpvt.com/api/all/events`,
         {
           params: {
             page,
