@@ -37,7 +37,7 @@ const useFetchContestData = (
             const fieldsValues = JSON.parse(
               fieldsValuesString.replace(/\\/g, "")
             );
-            return { ...participant, ...fieldsValues };
+            return { ...participant, ...fieldsValues }; 
           })
         );
 

@@ -10,7 +10,7 @@ import {
   Divider,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getBehindScreen,
   getStartContest,
@@ -21,88 +21,32 @@ import AdminSideScreen2 from "./AdminSideScreen/AdminSideScreen2";
 
 const PublicScreen = () => {
   const { id } = useParams();
-  const [loadingbtn, setLoadingbtn] = useState(false);
-  const isSmall = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const navigate = useNavigate();
   const [judges, setJudges] = useState([]);
   const [scores, setScore] = useState([]);
   const [participants, setParticipants] = useState([]);
-  const [allScoresGiven, setAllScoresGiven] = useState(false);
   const dispatch = useDispatch();
   const [allJudges, setAllJudges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedJudge, setSelectedJudge] = useState(null);
   const [image, setImages] = useState(null);
   const [data, setData] = useState([]);
   const [publicScreenValue, setPublicScreenValue] = useState("");
   const [status, setStatus] = useState([]);
   const [isPublished, setIsPublished] = useState(false);
-  const [isOk, setIsOk] = useState(false);
-  const [p_data, setPData] = useState({
-    id: null,
-    name: null,
-    score: null,
-  });
-  console.log(isPublished, "status code");
-
+  const [voted, setVoted] = useState(false);
+  console.log(voted, "YE VOTEDDDDD");
+  console.log(participants, "PARTICIPANTS");
   useEffect(() => {
     const storedValue = localStorage.getItem("public-screen");
-    console.log(storedValue, "storedValue");
+    // console.log(storedValue, "storedValue");
     if (storedValue) {
       setPublicScreenValue(storedValue);
     }
   }, []);
-
-  useEffect(() => {
-    const fetchContestData = async () => {
-      try {
-        const result = await dispatch(getBehindScreen(id));
-
-        console.log(result.data.data.status, "dddsdhdgd");
-
-        setIsPublished(result?.data?.data?.status || false);
-        setJudges(result?.data?.data?.judges || []);
-        setScore(result?.data?.data?.total_scores || []);
-        setImages(result?.data?.data?.files || []);
-        setData(result?.data?.data || {});
-        setStatus(result?.data.status);
-        const filteredParticipants = result?.data?.data?.participants?.filter(
-          (participant) => participant?.is_judged === 0
-        );
-        setParticipants(
-          filteredParticipants?.map((participant) => {
-            const fieldsValuesString = participant?.fields_values?.slice(1, -1);
-            const fieldsValues = JSON.parse(
-              fieldsValuesString.replace(/\\/g, "")
-            );
-            return { ...participant, ...fieldsValues };
-          })
-        );
-        setAllJudges(result?.data?.data?.participants || []);
-        setLoading(false);
-      } catch (err) {
-        console.log("jdhfsdjhf");
-        setLoading(false); // End loading
-      }
-    };
-
-    fetchContestData();
-  }, []);
-
-  useEffect(() => {
-    setParticipants(participants);
-    return setPData({
-      id: null,
-      name: null,
-      score: null,
-    });
-  }, [participants]);
   const getData = async () => {
     try {
       const result = await dispatch(getBehindScreen(id));
 
-      console.log(result.data.data.status, "dddsdhdgd");
+      // console.log(result.data.data.status, "dddsdhdgd");
 
       setIsPublished(result?.data?.data?.status || false);
       setJudges(result?.data?.data?.judges || []);
@@ -130,18 +74,52 @@ const PublicScreen = () => {
     }
   };
   useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    setParticipants(participants);
+  }, [participants]);
+
+  useEffect(() => {
+    console.log("MOUNTED");
+    const pusher = new Pusher("022c57db694789c9f227", {
+      cluster: "ap2",
+    });
+    const channel1 = pusher.subscribe(
+      `judge-score-status${participants[0]?.id}`
+    );
+    channel1.bind("App\\Events\\JudgeScoreStatus", function (data) {
+      console.log(data, "STATUSSSSSSSSS haaaaaaaaaaaaaaaaaaaaaaa");
+      setVoted(true);
+    });
+    return () => {
+      pusher.unsubscribe(`judge-score-status${participants[0]?.id}`);
+    };
+  }, [participants]);
+  useEffect(() => {
+    const pusher = new Pusher("022c57db694789c9f227", {
+      cluster: "ap2",
+    });
+    const channel1 = pusher.subscribe(`judge-participant`);
+    channel1.bind("App\\Events\\JudgeParticipant", function (data) {
+      getData();
+      setVoted(false);
+      console.log(
+        data,
+        "YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE HAGHAGHA ++++++++++"
+      );
+    });
+    return () => {
+      pusher.unsubscribe(`judge-participant`);
+    };
+  }, []);
+  useEffect(() => {
     const pusher = new Pusher("022c57db694789c9f227", {
       cluster: "ap2",
     });
     const channel1 = pusher.subscribe(`behind-screen-result${id}`);
     channel1.bind("App\\Events\\BehindScreenResult", function (data) {
-      // setScore(data?.total_scores);
-      // setPData({
-      //   id: data?.total_scores[data?.total_scores.length - 1]?.participant_id,
-      //   name: data?.total_scores[data?.total_scores.length - 1]
-      //     ?.cuurent_participant_name,
-      //   score: data?.total_scores[data?.total_scores.length - 1]?.total_score,
-      // });
       getData();
       console.log(data, "PUSHER DATA+++++++++dfgasdfsadfasdfasdfasd++++++++++");
     });
@@ -149,7 +127,7 @@ const PublicScreen = () => {
       pusher.unsubscribe(`behind-screen-result${id}`);
     };
   }, []);
-  // console.log(p_data, "++++++++++");
+  // console.log(participants[0]?.id, "++++++++++");
   if (loading) {
     return (
       <Box
@@ -262,18 +240,14 @@ const PublicScreen = () => {
                         variant="h4"
                         sx={{ fontSize: "1rem", mt: "1rem" }}
                       >
-                        {/* {console.log(p_data, "FFFFFFFFFFFFF")} */}
-                        {p_data.id == null ? participants[0]?.id : p_data.id}
+                        {participants[0]?.id}
                       </Typography>
 
                       <Typography
                         variant="h5"
                         sx={{ fontSize: "1.3rem", fontWeight: 600 }}
                       >
-                        Total Score :
-                        {p_data.score == null
-                          ? totalScoress?.toFixed(2)
-                          : p_data.score}
+                        Total Score :{totalScoress?.toFixed(2)}
                       </Typography>
 
                       <Typography
@@ -286,9 +260,7 @@ const PublicScreen = () => {
                           width: "100%",
                         }}
                       >
-                        {p_data.name == null
-                          ? participants[0]?.name
-                          : p_data.name}
+                        {participants[0]?.name}
                       </Typography>
                     </Box>
                   </Box>
@@ -325,7 +297,7 @@ const PublicScreen = () => {
                                 {judge?.name}
                               </Typography>
 
-                              {console.log(participantScore, "KKKKKKKKKKK")}
+                              {/* {console.log(participantScore, "KKKKKKKKKKK")} */}
                               {participantScore ? (
                                 <Box>
                                   {scores
@@ -498,7 +470,11 @@ const PublicScreen = () => {
 
                         return (
                           <Grid item xs={12} sm={6} md={3} key={index}>
-                            <Card>
+                            <Card
+                              sx={{
+                                border: voted ? "5px solid green" : null,
+                              }}
+                            >
                               <Box>
                                 <img
                                   src={judge?.profile_picture}
@@ -528,7 +504,7 @@ const PublicScreen = () => {
                                     padding: "0.5rem",
                                   }}
                                 >
-                                  Waiting
+                                  {voted ? "Voted" : "Waiting"}
                                 </Typography>
                               </Box>
                             </Card>
