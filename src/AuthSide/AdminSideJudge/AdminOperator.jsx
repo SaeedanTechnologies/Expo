@@ -31,6 +31,7 @@ import { Dialog } from "@mui/material";
 import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 import usePusher from "../../hooks/usePusher";
 import useFetchContestData from "../../hooks/useFetchContestData";
+import { LocalLaundryService } from "@mui/icons-material";
 const AdminOperator = () => {
   const { id } = useParams();
   const contest_id = id;
@@ -124,14 +125,17 @@ const AdminOperator = () => {
       setClickedParticipantId(null); // Reset if participant is not found
     }
   }, [participants]);
-
+  const [loadingJ, setLoadingJ] = useState(false);
   const handleClick = async (id, contestId) => {
+    setLoadingJ(true);
     try {
       const res = await dispatch(setNextParticipant(contestId, id));
 
       setClickedParticipantId(id);
+      setLoadingJ(false);
     } catch (error) {
       console.error("Failed to send request:", error);
+      setLoadingJ(false);
     }
   };
   const [loadingPublish, setLoadingPublish] = useState(false);
@@ -392,7 +396,11 @@ const AdminOperator = () => {
                 disabled={participants[0]?.id === clickedParticipantId}
                 sx={{ textTransform: "none" }}
               >
-                Now Judge {participants[0]?.name}
+                {loadingJ ? (
+                  <CircularProgress size={24} sx={{ color: "white" }} />
+                ) : (
+                  <>Now Judge {participants[0]?.name}</>
+                )}
               </Button>
             </Box>
 

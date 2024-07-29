@@ -238,7 +238,7 @@ const AddEvent = () => {
             textAlign: "center",
           }}
         >
-          Add Event
+          Add Convention
         </Typography>
         <Typography
           sx={{

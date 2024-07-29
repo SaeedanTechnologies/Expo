@@ -34,7 +34,7 @@ const HomePage = () => {
               navigate("/all-events");
             }}
           >
-            View Past Events
+            View Past Conventions
           </Button>
         </Box>
       </Box>

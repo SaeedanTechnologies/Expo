@@ -139,7 +139,7 @@ const AddParticipant = () => {
         type: "email",
         label: "email",
         required: 1,
-        is_important: 0,
+        is_important: 1,
         id: form_id ? form_id[1]?.id : "",
       });
       inputValues.forEach((value, index) => {

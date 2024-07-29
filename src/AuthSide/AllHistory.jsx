@@ -68,6 +68,7 @@ const AllHistory = () => {
       console.error("Error fetching records:", error);
       setSnackbarMessage("Failed to fetch data");
       setSnackbarOpen(true);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -141,7 +142,7 @@ const AllHistory = () => {
             <Table aria-label="simple table">
               <TableHead sx={{ backgroundColor: "#f3f6f9" }}>
                 <TableRow>
-                  <TableCell>Event Name</TableCell>
+                  <TableCell>Convention Name</TableCell>
                   <TableCell>Date</TableCell>
                 </TableRow>
               </TableHead>

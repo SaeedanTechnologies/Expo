@@ -18,9 +18,12 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { adminLogin } from "../../store/actions/authActions";
 import { useNavigate } from "react-router";
+import { useSnackbar } from 'notistack';
+
 const LoginAdminPanel = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -51,16 +54,13 @@ const LoginAdminPanel = () => {
       const response = await dispatch(adminLogin(formData));
       console.log("Login successful", response);
      const contestId = response.data.payload.user.contest_id;
-
-     console.log(contestId, 'id on judge login')
-
      navigate(`/judge-score-card/${contestId}`);
 
 
 
     } catch (error) {
       console.error("Login failed", error);
-
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
     } finally {
       setLoading(false);
     }
@@ -194,7 +194,7 @@ const LoginAdminPanel = () => {
                 label="Remember me"
                 sx={{ mt: 1 }}
               />
-            
+
             </Box>
             <Button
               fullWidth

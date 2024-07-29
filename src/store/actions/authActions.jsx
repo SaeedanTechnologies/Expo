@@ -60,22 +60,12 @@ export const updatePassword = (formValues) => async (dispatch) => {
   }
 };
 
-export const sendEmail = (email) => async (dispatch) => {
-  try {
-
-    const res = await api.post("/forgot-password", email);
-
-    return res;
-  } catch (err) {
-    throw err;
-  }
-};
 
 
 export const otpConfirmation = (otp) => async (dispatch) => {
   try {
 
-    const res = await api.post("/verify-otp", otp);
+    const res = await api.post("admin/verify-otp", otp);
 
     return res;
   } catch (err) {

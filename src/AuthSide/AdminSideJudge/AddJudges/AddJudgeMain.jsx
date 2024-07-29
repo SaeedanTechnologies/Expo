@@ -13,7 +13,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PushBack from "../../../components/PushBack/PushBack";
 
@@ -31,6 +31,17 @@ const AddJudgeMain = () => {
     { judge_name: "", email: "", phone: "", profile_picture: null },
   ]);
   const savedJudges = useSelector((state) => state?.stepper?.judges);
+
+console.log(savedJudges, 'hhggggggggg')
+//   const location = useLocation();
+//   const { contestData } = location.state || {};
+
+//   console.log(contestData);
+
+//   const da = contestData.map((val, ind)=>val.id)
+// console.log(da)
+
+
   console.log(savedJudges);
   const dispatch = useDispatch();
   const navigate = useNavigate();

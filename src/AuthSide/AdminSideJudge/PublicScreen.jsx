@@ -33,8 +33,6 @@ const PublicScreen = () => {
   const [status, setStatus] = useState([]);
   const [isPublished, setIsPublished] = useState(false);
   const [voted, setVoted] = useState(false);
-  console.log(voted, "YE VOTEDDDDD");
-  console.log(participants, "PARTICIPANTS");
   useEffect(() => {
     const storedValue = localStorage.getItem("public-screen");
     // console.log(storedValue, "storedValue");
@@ -202,7 +200,7 @@ const PublicScreen = () => {
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                minHeight: "100vh",
+                minHeight: "100%",
                 width: "100%",
                 position: "absolute",
                 top: 0,
@@ -240,9 +238,20 @@ const PublicScreen = () => {
                         variant="h4"
                         sx={{ fontSize: "1rem", mt: "1rem" }}
                       >
-                        {participants[0]?.id}
+                        {participants[0]?.sequential_id}
                       </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "1.2rem",
+                          textAlign: "center",
+                          color: "white",
 
+                          width: "100%",
+                        }}
+                      >
+                        Name : {participants[0]?.name}
+                      </Typography>
                       <Typography
                         variant="h5"
                         sx={{ fontSize: "1.3rem", fontWeight: 600 }}
@@ -259,9 +268,7 @@ const PublicScreen = () => {
                           backgroundColor: "#7c8385",
                           width: "100%",
                         }}
-                      >
-                        {participants[0]?.name}
-                      </Typography>
+                      ></Typography>
                     </Box>
                   </Box>
                 </Grid>
@@ -274,7 +281,19 @@ const PublicScreen = () => {
 
                       return (
                         <Grid item xs={12} sm={6} md={3} key={index}>
-                          <Card>
+                          <Card
+                            sx={{
+                              border: `4px solid ${
+                                scores.some(
+                                  (s) =>
+                                    s.judge_id === judge.id &&
+                                    s.participant_id === allJudges[0]?.id
+                                )
+                                  ? "green"
+                                  : "red"
+                              }`,
+                            }}
+                          >
                             <Box>
                               <img
                                 src={judge?.profile_picture}
@@ -283,6 +302,7 @@ const PublicScreen = () => {
                                 height={"200rem"}
                                 style={{
                                   objectFit: "cover",
+                                  objectPosition: "top",
                                 }}
                               />
                               <Typography
@@ -377,10 +397,10 @@ const PublicScreen = () => {
                                         .reduce(
                                           (total, score) =>
                                             total +
-                                            parseFloat(score?.total_score || 0), // Ensure score is parsed as float
+                                            parseFloat(score?.total_score || 0),
                                           0
                                         )
-                                        .toFixed(2)}{" "}
+                                        .toFixed(2)}
                                       {/* Apply .toFixed(2) to format to 2 decimal places */}
                                     </Typography>
                                   </Box>
@@ -434,9 +454,21 @@ const PublicScreen = () => {
                           variant="h4"
                           sx={{ fontSize: "1rem", mt: "1rem" }}
                         >
-                          {participants[0]?.id}
+                          {participants[0]?.sequential_id}
                         </Typography>
 
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            fontSize: "1.2rem",
+                            textAlign: "center",
+                            color: "white",
+
+                            width: "100%",
+                          }}
+                        >
+                          Name : {participants[0]?.name}
+                        </Typography>
                         <Typography
                           variant="h5"
                           sx={{ fontSize: "1.3rem", fontWeight: 600 }}
@@ -450,12 +482,10 @@ const PublicScreen = () => {
                             fontSize: "1rem",
                             textAlign: "center",
                             color: "white",
-                            backgroundColor: "#7c8385",
+                            // backgroundColor: "#7c8385",
                             width: "100%",
                           }}
-                        >
-                          {participants[0]?.name}
-                        </Typography>
+                        ></Typography>
                       </Box>
                     </Box>
                   </Grid>
@@ -483,6 +513,7 @@ const PublicScreen = () => {
                                   height={"200rem"}
                                   style={{
                                     objectFit: "cover",
+                                    objectPosition: "top",
                                   }}
                                 />
                                 <Typography
@@ -496,7 +527,6 @@ const PublicScreen = () => {
                                 >
                                   {judge?.name}
                                 </Typography>
-
                                 <Typography
                                   variant="body1"
                                   sx={{

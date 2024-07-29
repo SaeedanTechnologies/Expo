@@ -30,7 +30,7 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import QRCode from "react-qr-code";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getAllJudges,
   getAllParticipants,
@@ -43,24 +43,25 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
 const SubHistoryComponent = () => {
+  const namee = useSelector((state) => state?.admin?.user?.name);
   const location = useLocation();
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [records, setRecords] = useState([]);
   const [contestResults, setContestResults] = useState([]);
+  const [loadingStates, setLoadingStates] = useState({});
 
   const [contestJudges, setContestJudges] = useState([]);
   const [contestParticipants, setContestParticipants] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [loadingJudges, setLoadingJudges] = useState(false);
-  const [loadingParticipants, setLoadingParticipants] = useState(false);
-  const [loadingResults, setLoadingResults] = useState(false);
+  const [loadingParticipants, setLoadingParticipants] = useState({});
+  const [loadingResults, setLoadingResults] = useState({});
   const [loadingQRCode, setLoadingQRCode] = useState(false);
 
   const [page, setPage] = useState(0);
@@ -76,6 +77,14 @@ const SubHistoryComponent = () => {
   const [dialogType, setDialogType] = useState(null);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const qrRef = useRef();
+
+  const handleAddContest = () => {
+    localStorage.setItem("expo_id", id);
+    dispatch({
+      type: "RESET_STATE",
+    });
+    navigate("/admin/add-content");
+  };
 
   useEffect(() => {
     fetchData();
@@ -97,7 +106,10 @@ const SubHistoryComponent = () => {
           },
         }
       );
-      setRecords(response.data);
+      setRecords(response?.data);
+
+      const gg = response?.data?.map((ss) => ss?.id);
+      continueFunction(gg);
     } catch (error) {
       console.error("Error fetching records:", error);
       setSnackbarMessage("Failed to fetch data");
@@ -138,44 +150,95 @@ const SubHistoryComponent = () => {
     setDateFilter(newDate);
   };
 
+  const [continuebtn, setContinue] = useState([]);
+  const [continueLoading, setContinueLoading] = useState(false);
+
+  const recordid = records.map((record) => record.id);
+
+  const continueFunction = async (gg) => {
+    // const recordid = records.map(record => record?.id);
+    setContinueLoading(true);
+    try {
+      const result = await dispatch(getBehindScreenResults(gg));
+      setContinue(result?.data?.data);
+      setContinueLoading(false);
+    } catch (err) {
+      console.log(err);
+      setContinueLoading(false);
+    } finally {
+      setContinueLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   // const intervalId = setInterval(continueFunction, 3000);
+  //   // // Cleanup function to clear the interval when the component is unmounted
+  //   // return () => clearInterval(intervalId);
+  //   continueFunction()
+  // }, []);
+
   const handleDialogOpen = async (record, type) => {
     setSelectedRecord(record);
     setDialogType(type);
 
     switch (type) {
       case "judges":
-        setLoadingJudges(true);
+        // setLoadingJudges(true);
+        setLoadingStates((prevStates) => ({
+          ...prevStates,
+          [record.id]: true,
+        }));
         try {
           const result = await dispatch(getAllJudges(record.id));
           setContestJudges(result.data.payload);
         } catch (err) {
           console.log(err);
         } finally {
-          setLoadingJudges(false);
+          // setLoadingJudges(false);
+          setLoadingStates((prevStates) => ({
+            ...prevStates,
+            [record.id]: false,
+          }));
         }
         break;
 
       case "participants":
-        setLoadingParticipants(true);
+        // setLoadingParticipants(true);
+
+        setLoadingParticipants((prevStates) => ({
+          ...prevStates,
+          [record.id]: true,
+        }));
+
         try {
           const result = await dispatch(getAllParticipants(record.id));
           setContestParticipants(result.data.payload);
         } catch (err) {
           console.log(err);
         } finally {
-          setLoadingParticipants(false);
+          setLoadingParticipants((prevStates) => ({
+            ...prevStates,
+            [record.id]: false,
+          }));
         }
         break;
 
       case "results":
-        setLoadingResults(true);
+        // setLoadingResults(true);
+        setLoadingResults((prevStates) => ({
+          ...prevStates,
+          [record.id]: true,
+        }));
         try {
           const result = await dispatch(getBehindScreenResults(record.id));
           setContestResults(result.data.data);
         } catch (err) {
           console.log(err);
         } finally {
-          setLoadingResults(false);
+          setLoadingResults((prevStates) => ({
+            ...prevStates,
+            [record.id]: false,
+          }));
         }
         break;
 
@@ -199,34 +262,98 @@ const SubHistoryComponent = () => {
     setQrCodeUrl("");
   };
 
-  const downloadQRCode = () => {
-    const svg = qrRef.current.querySelector("svg");
-    if (!svg) {
-      console.error("No SVG element found");
-      return;
-    }
+  // Persist Data for Edit dges from History
+  const scorecardExtract = contestJudges
+    .map((judge) => judge.scorecards)
+    .flat();
+  const textFields = scorecardExtract.map((scorecard) => {
+    const fields = JSON.parse(scorecard.fields);
+    return fields;
+  });
 
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
+  const or = textFields.map((val) => val).flat();
+  or.forEach((item, index) => {
+    console.log(
+      `Item ${index}: Name - ${item.name}, Label - ${item.label}, Type - ${item.type}`
+    );
+  });
 
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      const pngFile = canvas.toDataURL("image/png");
+  // const ex = or.map((item, index) => ({
 
-      const downloadLink = document.createElement("a");
-      downloadLink.href = pngFile;
-      downloadLink.download = "qrcode.png";
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-    };
+  //   name: "",
+  //   label: "",
+  //   type: item.type,
+  //   value:item.name,
+  //   required:true
+  // }));
 
-    img.src = "data:image/svg+xml;base64," + btoa(svgData);
+  const seenNames = new Set();
+
+  const ex = or
+    .filter((item) => {
+      if (seenNames.has(item.name)) {
+        return false;
+      } else {
+        seenNames.add(item.name);
+        return true;
+      }
+    })
+    .map((item) => ({
+      name: "",
+      label: "",
+      type: item.type,
+      value: item.name,
+      required: true,
+    }));
+
+  console.log(ex, "ggggggg");
+
+  const contestt_id = contestJudges.map((judge) => judge.contest_id);
+  const cont_id = contestt_id[0];
+
+  const judgeid = contestJudges.map((judge) => judge.id);
+
+  // const convertImageToBase64 = async (imageUrl) => {
+  //   const response = await fetch(imageUrl);
+  //   const blob = await response.blob();
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => resolve(reader.result);
+  //     reader.onerror = reject;
+  //     reader.readAsDataURL(blob);
+  //   });
+  // };
+
+  const judgesData = contestJudges.map((item) => ({
+    judge_name: item.name,
+    email: item.email,
+    profile_picture: item.profile_picture,
+  }));
+
+  const EditJudges = () => {
+    dispatch({
+      type: "JUDGES",
+      payload: judgesData,
+    });
+
+    dispatch({
+      type: "JUD_ID",
+      payload: judgeid,
+    });
+
+    dispatch({
+      type: "CONT_ID",
+      payload: cont_id,
+    });
+
+    dispatch({
+      type: "TXT_FIELDS",
+      payload: ex,
+    });
+
+    navigate("/add-judges");
   };
+
   const generatePdf = async () => {
     const element = qrRef.current;
     const canvas = await html2canvas(element);
@@ -267,8 +394,22 @@ const SubHistoryComponent = () => {
       >
         <Box sx={{ width: isSmall ? "100%" : "auto" }}>
           <Typography variant="h4" align="center" gutterBottom>
-            Contest by User
+            Contest by {namee}
           </Typography>
+
+          <Box
+            sx={{ display: "flex", justifyContent: "end", alignItems: "end" }}
+          >
+            <Button
+              variant="contained"
+              onClick={handleAddContest}
+              sx={{ textTransform: "none" }}
+            >
+              Add New Contest
+            </Button>
+          </Box>
+          <br />
+          <br />
 
           <TableContainer
             component={Paper}
@@ -282,6 +423,7 @@ const SubHistoryComponent = () => {
                   <TableCell>Participants</TableCell>
                   <TableCell>Results</TableCell>
                   <TableCell>QR code</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -296,9 +438,9 @@ const SubHistoryComponent = () => {
                           fontSize: isSmall ? "0.5rem" : "0.8rem",
                         }}
                         onClick={() => handleDialogOpen(record, "judges")}
-                        disabled={loadingJudges}
+                        disabled={loadingStates[record.id]}
                       >
-                        {loadingJudges && dialogType === "judges" ? (
+                        {loadingStates[record.id] && dialogType === "judges" ? (
                           <CircularProgress size={20} />
                         ) : (
                           "View Judges"
@@ -313,9 +455,9 @@ const SubHistoryComponent = () => {
                           fontSize: isSmall ? "0.5rem" : "0.8rem",
                         }}
                         onClick={() => handleDialogOpen(record, "participants")}
-                        disabled={loadingParticipants}
+                        disabled={loadingParticipants[record.id]}
                       >
-                        {loadingParticipants &&
+                        {loadingParticipants[record.id] &&
                         dialogType === "participants" ? (
                           <CircularProgress size={20} />
                         ) : (
@@ -331,9 +473,10 @@ const SubHistoryComponent = () => {
                           fontSize: isSmall ? "0.5rem" : "0.8rem",
                         }}
                         onClick={() => handleDialogOpen(record, "results")}
-                        disabled={loadingResults}
+                        disabled={loadingResults[record.id]}
                       >
-                        {loadingResults && dialogType === "results" ? (
+                        {loadingResults[record.id] &&
+                        dialogType === "results" ? (
                           <CircularProgress size={20} />
                         ) : (
                           "View Results"
@@ -357,6 +500,32 @@ const SubHistoryComponent = () => {
                         )}
                       </Button>
                     </TableCell>
+                    {continueLoading ? (
+                      <TableCell colSpan={4}>
+                        <CircularProgress />
+                      </TableCell>
+                    ) : (
+                      <>
+                        {continuebtn.length === 0 ? (
+                          <TableCell colSpan={4}>
+                            <Button
+                              variant="contained"
+                              sx={{ textTransform: "none" }}
+                              onClick={() => {
+                                // navigate(`/admin-contest-start/${record.id}`);
+                                navigate(`/links`, {
+                                  state: { contest_id: record.id },
+                                });
+                              }}
+                            >
+                              Start the Contest
+                            </Button>
+                          </TableCell>
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -365,7 +534,7 @@ const SubHistoryComponent = () => {
 
           <TablePagination
             component="div"
-            count={records.length} // Adjust this based on your API's total count
+            count={records.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
@@ -398,6 +567,16 @@ const SubHistoryComponent = () => {
           <DialogContent>
             {dialogType === "judges" && (
               <>
+                <Box sx={{ display: "flex", justifyContent: "end" }}>
+                  <Button
+                    variant="contained"
+                    sx={{ textTransform: "none" }}
+                    onClick={EditJudges}
+                  >
+                    Edit
+                  </Button>
+                </Box>
+
                 <Box
                   sx={{
                     display: "flex",
@@ -423,7 +602,7 @@ const SubHistoryComponent = () => {
                         alignItems: "center",
                         marginTop: "1rem",
                         padding: "0.5rem 3rem",
-                        backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white", // Alternate row color
+                        backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white",
                       }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -442,78 +621,207 @@ const SubHistoryComponent = () => {
                 )}
               </>
             )}
-
             {dialogType === "participants" && (
               <>
-                <>
-                  {contestParticipants.length === 0 ? (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minHeight: "20vh",
-                      }}
-                    >
-                      <Typography
-                        sx={{ fontWeight: "600", fontSize: "1.5rem" }}
-                      >
-                        No participants found.
-                      </Typography>
-                    </Box>
-                  ) : (
-                    contestParticipants.map((participant, index) => {
-                      let fieldsValues = {};
+                {contestParticipants.length === 0 ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      minHeight: "20vh",
+                    }}
+                  >
+                    <Typography sx={{ fontWeight: "600", fontSize: "1.5rem" }}>
+                      No participants found.
+                    </Typography>
+                  </Box>
+                ) : (
+                  contestParticipants.map((participant, index) => {
+                    let fieldsValues = {};
+                    try {
+                      const jsonString = participant.fields_values
+                        .replace(/^\"/, "") // remove starting double quote
+                        .replace(/\"$/, "") // remove ending double quote
+                        .replace(/\\"/g, '"') // replace \" with "
+                        .replace(/\\\\/g, "\\"); // replace \\ with \
 
-                      try {
-                        const jsonString = participant.fields_values
-                          .replace(/^\"/, "") // remove starting double quote
-                          .replace(/\"$/, "") // remove ending double quote
-                          .replace(/\\"/g, '"') // replace \" with "
-                          .replace(/\\\\/g, "\\"); // replace \\ with \
-
-                        fieldsValues = JSON.parse(jsonString);
-                      } catch (error) {
-                        console.error("Error parsing fields_values:", error);
-                      }
-
-                      return (
-                        <Box key={index} sx={{}}>
-                          <Typography sx={{ marginLeft: "1rem" }}>
-                            Participant ID : {participant.id}
-                          </Typography>
-                          <Box>
-                            {Object.keys(fieldsValues).map(
-                              (key, innerIndex) => (
-                                <Box
-                                  key={innerIndex}
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "start",
-                                    marginBottom: "0.5rem",
-                                  }}
-                                >
-                                  <Typography
-                                    sx={{ marginLeft: "1rem", fontWeight: 600 }}
-                                  >
-                                    {key}
-                                  </Typography>
-                                  <Typography sx={{ marginLeft: "1rem" }}>
-                                    {fieldsValues[key]}
+                      fieldsValues = JSON.parse(jsonString);
+                    } catch (error) {
+                      console.error("Error parsing fields_values:", error);
+                    }
+                    return (
+                      <Box key={index} sx={{}}>
+                        <Typography>
+                          Participant ID : {participant.id}
+                        </Typography>
+                        <Box>
+                          {Object.keys(fieldsValues).map((key) => {
+                            const value = fieldsValues[key];
+                            return (
+                              <div
+                                key={key}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  marginBottom: "0.5rem",
+                                }}
+                              >
+                                <Box>
+                                  <Typography sx={{ fontWeight: 600 }}>
+                                    {key}:
                                   </Typography>
                                 </Box>
-                              )
-                            )}
-                            <Divider />
-                            <br />
-                          </Box>
+                                {typeof value === "string" &&
+                                value.startsWith("data:image") ? (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <img
+                                      src={value}
+                                      alt={key}
+                                      style={{
+                                        width: "25%",
+                                        height: "25%",
+                                        display: "block",
+                                        // marginBottom: "0.5rem",
+                                      }}
+                                    />
+                                  </Box>
+                                ) : (
+                                  <Typography
+                                    variant="h4"
+                                    sx={{
+                                      color: "black",
+                                      fontFamily: "Roboto",
+                                      fontSize: { xs: "14px", md: "16px" },
+
+                                      lineHeight: "16px",
+                                      // marginBottom: "0.5rem",
+                                    }}
+                                  >
+                                    {value}
+                                  </Typography>
+                                )}
+                              </div>
+                            );
+                          })}
+
+                          <Divider />
+                          <br />
                         </Box>
-                      );
-                    })
-                  )}
-                </>
+                      </Box>
+                    );
+                  })
+                )}
               </>
             )}
+            {/* {dialogType === "participants" && (
+              <>
+                {contestParticipants.length === 0 ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      minHeight: "20vh",
+                    }}
+                  >
+                    <Typography sx={{ fontWeight: "600", fontSize: "1.5rem" }}>
+                      No participants found.
+                    </Typography>
+                  </Box>
+                ) : (
+                  contestParticipants.map((participant, index) => {
+                    let fieldsValues = {};
+                    try {
+                      const jsonString = participant.fields_values
+                        .replace(/^\"/, "") // remove starting double quote
+                        .replace(/\"$/, "") // remove ending double quote
+                        .replace(/\\"/g, '"') // replace \" with "
+                        .replace(/\\\\/g, "\\"); // replace \\ with \
+
+                      fieldsValues = JSON.parse(jsonString);
+                    } catch (error) {
+                      console.error("Error parsing fields_values:", error);
+                    }
+                    return (
+                      <Box key={index} sx={{}}>
+                        <Typography>
+                          Participant ID : {participant.id}
+                        </Typography>
+                        <Box>
+                          {Object.keys(fieldsValues).map((key) => {
+                            const value = fieldsValues[key];
+                            return (
+                              <div
+                                key={key}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  marginBottom: "0.5rem",
+                                }}
+                              >
+                                <Box>
+                                  <Typography sx={{ fontWeight: 600 }}>
+                                    {key}:
+                                  </Typography>
+                                </Box>
+                                {typeof value === "string" &&
+                                value.startsWith("data:image") ? (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <img
+                                      src={value}
+                                      alt={key}
+                                      style={{
+                                        width: "25%",
+                                        height: "25%",
+                                        display: "block",
+                                        // marginBottom: "0.5rem",
+                                      }}
+                                    />
+                                  </Box>
+                                ) : (
+                                  <Typography
+                                    variant="h4"
+                                    sx={{
+                                      color: "black",
+                                      fontFamily: "Roboto",
+                                      fontSize: { xs: "14px", md: "16px" },
+
+                                      lineHeight: "16px",
+                                      // marginBottom: "0.5rem",
+                                    }}
+                                  >
+                                    {value}
+                                  </Typography>
+                                )}
+                              </div>
+                            );
+                          })}
+
+                          <Divider />
+                          <br />
+                        </Box>
+                      </Box>
+                    );
+                  })
+                )}
+                }) )}
+              </>
+            )} */}
 
             {dialogType === "results" && (
               <>

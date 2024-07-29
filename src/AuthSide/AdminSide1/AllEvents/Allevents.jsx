@@ -108,7 +108,7 @@ const Allevents = () => {
     >
       <Box sx={{ padding: isSmall ? "2rem 10%" : "2rem 0%" }}>
         <Typography variant="h4" align="center" gutterBottom>
-          All Events
+          All Conventions
         </Typography>
 
         <TableContainer

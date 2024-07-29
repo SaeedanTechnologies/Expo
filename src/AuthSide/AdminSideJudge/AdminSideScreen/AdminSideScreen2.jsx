@@ -101,7 +101,7 @@ const AdminSideScreen2 = () => {
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            minHeight: "100vh",
+            minHeight: "100%",
             width: "100%",
             position: "absolute",
             top: 0,
@@ -160,20 +160,10 @@ const AdminSideScreen2 = () => {
                   textAlign: "center",
                 }}
               >
-                <Avatar
-                  src={contestResults[0].participant.fields_values.Upload}
-                  alt={parseFieldsValues(
-                    contestResults[0].participant.fields_values
-                  )}
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    marginBottom: "10px",
-                  }}
-                />
+                {/* <Avatar src={contestResults[0].participant.fields_values.Upload} alt={parseFieldsValues(contestResults[0].participant.fields_values)} style={{ width: '100px', height: '100px', marginBottom: '10px' }} /> */}
 
                 <Box sx={{ position: "relative", display: "inline-flex" }}>
-                  <ShieldIcon sx={{ color: "green", fontSize: 30 }} />
+                  <ShieldIcon sx={{ color: "green", fontSize: 60 }} />
                   <Typography
                     sx={{
                       position: "absolute",
@@ -187,6 +177,15 @@ const AdminSideScreen2 = () => {
                     1
                   </Typography>
                 </Box>
+
+                <Typography
+                  variant="body1"
+                  sx={{ fontSize: "2rem", color: "white", textAlign: "center" }}
+                >
+                  {parseFieldsValues(
+                    contestResults[0].participant.fields_values
+                  )}
+                </Typography>
 
                 <Typography
                   variant="body1"
@@ -224,19 +223,12 @@ const AdminSideScreen2 = () => {
                   alignItems: "center",
                 }}
               >
-                <Avatar
-                  src={result.participant.fields_values.Upload}
-                  alt={parseFieldsValues(result.participant.fields_values)}
-                  style={{
-                    width: "70px",
-                    height: "70px",
-                    marginBottom: "10px",
-                  }}
-                />
+                {/*
+    <Avatar src={result.participant.fields_values.Upload} alt={parseFieldsValues(result.participant.fields_values)} style={{ width: '70px', height: '70px', marginBottom: '10px' }} /> */}
 
                 <Box sx={{ position: "relative", display: "inline-flex" }}>
                   <ShieldIcon
-                    sx={{ color: index === 0 ? "red" : "grey", fontSize: 30 }}
+                    sx={{ color: index === 0 ? "red" : "grey", fontSize: 60 }}
                   />
                   <Typography
                     sx={{
