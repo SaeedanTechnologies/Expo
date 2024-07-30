@@ -62,6 +62,9 @@ const TestingApi = () => {
           setScoreCard(scoreCard);
           setParticipantName(scoreCard.current_participant_name);
           setShowParticipantId(response.data.original.participant_sequence_id);
+          console.log(participantData, 'ddddddddddd');
+
+
 
           setFormFields(mappedFields);
           setJudgeId(scoreCard.judge_id);
@@ -89,7 +92,7 @@ const TestingApi = () => {
     const channel1 = pusher.subscribe(`scorecard-updates${id}`);
     channel1.bind("App\\Events\\ScoreCardUpdated", function (data) {
       setParticipantName(data?.scorecard?.current_participant_name);
-      setShowParticipantId(data?.scorecard?.current_participant_id);
+      setShowParticipantId(data?.scorecard?.participant_data?.participant_sequence_id);
       setParticipantId(data?.scorecard?.current_participant_id);
       const mappedFields = data?.scorecard?.fields.map((item) => ({
         id: item.name,
@@ -195,9 +198,9 @@ const TestingApi = () => {
     } else {
       setSubmitDisabled(false);
     }
-    console.log(submitDisabled, "ssssssssssssssss");
+    // console.log(submitDisabled, "ssssssssssssssss");
   }, [judgeIdAPI, judge_id_redux, participantId]);
-  console.log(participantId, "ggggggggggggggggggggggg");
+  // console.log(participantId, "ggggggggggggggggggggggg");
   return (
     <Box
       sx={{

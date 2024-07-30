@@ -177,14 +177,6 @@ const AdminSideScreen2 = () => {
                   </Typography>
                 </Box>
 
-                <Typography
-                  variant="body1"
-                  sx={{ fontSize: "2rem", color: "white", textAlign: "center" }}
-                >
-                  {parseFieldsValues(
-                    contestResults[0].participant.fields_values
-                  )}
-                </Typography>
 
                 <Typography
                   variant="body1"

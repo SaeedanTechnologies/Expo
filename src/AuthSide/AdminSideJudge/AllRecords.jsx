@@ -69,15 +69,20 @@ const AllRecords = () => {
           }, {});
 
 
+          // const maxScore = Object.keys(scoreCount)
+          //   .filter(score => scoreCount[score] > 1)
+          //   .map(score => parseFloat(score));
+
+          
           const maxScore = Object.keys(scoreCount)
-            .filter(score => scoreCount[score] > 1)
-            .map(score => parseFloat(score));
+          .filter(score => scoreCount[score] > 1)
+          .map(score => (score));
 
 
           const tiedParticipants = firstSixRecords
             .filter(record => maxScore.includes(record.total_score))
             .map(record => record.participant_id);
-
+console.log(tiedParticipants, 'hhah')
           setSelectedParticipants(tiedParticipants);
         }
       } catch (error) {

@@ -514,10 +514,10 @@ const AdminOperator = () => {
                       })();
 
                       // Get the scores for the current participant
-                      const participantFieldScores = fieldScores.filter(
+                      const participantFieldScores = fieldScores?.filter(
                         (val) =>
-                          val.participant_id === score.participant_id &&
-                          val.judge_id === score.judge.id
+                          val.participant_id === score?.participant_id &&
+                          val.judge_id === score?.judge.id
                       );
 
                       return (
@@ -527,7 +527,7 @@ const AdminOperator = () => {
                           </Typography>
 
                           <Box>
-                            {participantFieldScores.map(
+                            {participantFieldScores?.map(
                               (fieldScore, scoreIndex) => (
                                 <Box key={scoreIndex}>
                                   <Box
@@ -545,7 +545,7 @@ const AdminOperator = () => {
                                         fontWeight: 600,
                                       }}
                                     >
-                                      {fieldScore.field_name}
+                                      {fieldScore?.field_name}
                                     </Typography>
                                     <Typography
                                       variant="h5"
@@ -555,7 +555,7 @@ const AdminOperator = () => {
                                         fontWeight: 600,
                                       }}
                                     >
-                                      {fieldScore.total_score.toFixed(2)}
+                                      {fieldScore?.total_score}
                                     </Typography>
                                   </Box>
                                 </Box>
@@ -574,7 +574,7 @@ const AdminOperator = () => {
                             <Typography>Total</Typography>
                             <Typography>
                               {score.total_score
-                                ? score.total_score.toFixed(2)
+                                ? score.total_score
                                 : "No Score"}
                             </Typography>
                           </Box>
