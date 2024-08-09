@@ -36,36 +36,33 @@ const PublicScreen = () => {
   const [data, setData] = useState([]);
   const [voted, setVoted] = useState([]);
   const [participantScore, setParticipantScore] = useState([]);
+  const [score_status, setScoreStatus] = useState("");
 
-console.log(voted, 'dddddddddddddddddddd')
+  // console.log(voted, "dddddddddddddddddddd");
 
   const [publicScreenValue, setPublicScreenValue] = useState("");
   const [status, setStatus] = useState([]);
   const [isPublished, setIsPublished] = useState(false);
   const [isOk, setIsOk] = useState(false);
 
-  console.log(isPublished, "status code");
+  // console.log(isPublished, "status code");
 
   useEffect(() => {
     const storedValue = localStorage.getItem("public-screen");
-    console.log(storedValue, "storedValue");
+    // console.log(storedValue, "storedValue");
     if (storedValue) {
       setPublicScreenValue(storedValue);
     }
   }, []);
 
-
-
-
-
   useEffect(() => {
     const fetchContestData = async () => {
       try {
         const result = await dispatch(getBehindScreen(id));
-
-        // console.log(result.data.data.total_scores_by_participant, "dddsdhdgd");
-setVoted(result.data.data.scores_by_judge)
-setParticipantScore(result.data.data.total_scores_by_participant)
+        setScoreStatus(result?.data?.data?.totalScoreStatus);
+        // console.log(result?.data?.data?.totalScoreStatus, "RESSSSSSSSSSSSSSSSSSSS");
+        setVoted(result.data.data.scores_by_judge);
+        setParticipantScore(result.data.data.total_scores_by_participant);
 
         setIsPublished(result?.data?.data?.status || false);
         setJudges(result?.data?.data?.judges || []);
@@ -88,7 +85,7 @@ setParticipantScore(result.data.data.total_scores_by_participant)
         setAllJudges(result?.data?.data?.participants || []);
         setLoading(false);
       } catch (err) {
-        console.log("jdhfsdjhf");
+        // console.log("jdhfsdjhf");
         setLoading(false); // End loading
       }
     };
@@ -106,7 +103,7 @@ setParticipantScore(result.data.data.total_scores_by_participant)
     setParticipants(participants);
   }, [participants]);
 
-  console.log(participants)
+  // console.log(participants);
 
   // console.log(participants, "sdhdjd");
   if (loading) {
@@ -129,8 +126,6 @@ setParticipantScore(result.data.data.total_scores_by_participant)
     image?.length > 0 && image[0]?.file_url ? image[0]?.file_url : defaultImage;
   const isVideo = backgroundMedia && backgroundMedia.endsWith(".mp4");
 
-
-
   const allTotal = data?.total_scores_by_participant;
   const participantId = participants[0]?.id;
   const totalScoress = allTotal[participantId];
@@ -146,7 +141,6 @@ setParticipantScore(result.data.data.total_scores_by_participant)
   filteredScores?.forEach((score) => {
     totalSingleScore += score?.total_score;
   });
-
 
   return (
     <>
@@ -186,7 +180,7 @@ setParticipantScore(result.data.data.total_scores_by_participant)
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                minHeight: '100%',
+                minHeight: "100%",
                 width: "100%",
                 position: "absolute",
                 top: 0,
@@ -236,7 +230,7 @@ setParticipantScore(result.data.data.total_scores_by_participant)
                           width: "100%",
                         }}
                       >
-                       Name : {participants[0]?.name}
+                        Name : {participants[0]?.name}
                       </Typography>
                       <Typography
                         variant="h5"
@@ -254,9 +248,7 @@ setParticipantScore(result.data.data.total_scores_by_participant)
                           backgroundColor: "#7c8385",
                           width: "100%",
                         }}
-                      >
-
-                      </Typography>
+                      ></Typography>
                     </Box>
                   </Box>
                 </Grid>
@@ -270,19 +262,19 @@ setParticipantScore(result.data.data.total_scores_by_participant)
 
                       return (
                         <Grid item xs={12} sm={6} md={3} key={index}>
-                          <Card sx={{
-
-border: `4px solid ${
-     scores.some(
-      (s) =>
-     s.judge_id === judge.id &&
-        s.participant_id === allJudges[0]?.id
-
-    )
-        ? "green"
-        : "red"
-    }`
-                          }}>
+                          <Card
+                            sx={{
+                              border: `4px solid ${
+                                scores.some(
+                                  (s) =>
+                                    s.judge_id === judge.id &&
+                                    s.participant_id === allJudges[0]?.id
+                                )
+                                  ? "green"
+                                  : "red"
+                              }`,
+                            }}
+                          >
                             <Box>
                               <img
                                 src={judge?.profile_picture}
@@ -291,8 +283,7 @@ border: `4px solid ${
                                 height={"200rem"}
                                 style={{
                                   objectFit: "cover",
-                                  objectPosition: "top"
-
+                                  objectPosition: "top",
                                 }}
                               />
                               <Typography
@@ -318,34 +309,36 @@ border: `4px solid ${
                                     )
                                     .map((score, scoreIndex) => (
                                       <Box key={scoreIndex}>
-                                        <Box
-                                          sx={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                            padding: "0.2rem",
-                                          }}
-                                        >
-                                          <Typography
-                                            variant="subtitle1"
+                                        {!score_status && (
+                                          <Box
                                             sx={{
-                                              fontSize: "0.9rem",
-                                              fontWeight: 600,
+                                              display: "flex",
+                                              justifyContent: "space-between",
+                                              alignItems: "center",
+                                              padding: "0.2rem",
                                             }}
                                           >
-                                            {score?.field_name}
-                                          </Typography>
-                                          <Typography
-                                            variant="h5"
-                                            sx={{
-                                              fontSize: "0.9rem",
-                                              color: "black",
-                                              fontWeight: 600,
-                                            }}
-                                          >
-                                            {score?.total_score.toFixed(2)}
-                                          </Typography>
-                                        </Box>
+                                            <Typography
+                                              variant="subtitle1"
+                                              sx={{
+                                                fontSize: "0.9rem",
+                                                fontWeight: 600,
+                                              }}
+                                            >
+                                              {score?.field_name}
+                                            </Typography>
+                                            <Typography
+                                              variant="h5"
+                                              sx={{
+                                                fontSize: "0.9rem",
+                                                color: "black",
+                                                fontWeight: 600,
+                                              }}
+                                            >
+                                              {score?.total_score.toFixed(2)}
+                                            </Typography>
+                                          </Box>
+                                        )}
                                       </Box>
                                     ))}
                                   <Divider />
@@ -402,7 +395,7 @@ border: `4px solid ${
                                     padding: "0.5rem",
                                   }}
                                 >
-                                Waiting
+                                  Waiting
                                 </Typography>
                               )}
                             </Box>
@@ -416,7 +409,7 @@ border: `4px solid ${
             </Box>
           ) : (
             <>
-            <Box
+              <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -452,11 +445,11 @@ border: `4px solid ${
                             fontSize: "1.2rem",
                             textAlign: "center",
                             color: "white",
-                           
+
                             width: "100%",
                           }}
                         >
-                        Name :  {participants[0]?.name}
+                          Name : {participants[0]?.name}
                         </Typography>
                         <Typography
                           variant="h5"
@@ -474,9 +467,7 @@ border: `4px solid ${
                             // backgroundColor: "#7c8385",
                             width: "100%",
                           }}
-                        >
-
-                        </Typography>
+                        ></Typography>
                       </Box>
                     </Box>
                   </Grid>
@@ -484,8 +475,6 @@ border: `4px solid ${
                   <Grid item xs={12} sm={9} md={9.5}>
                     <Grid container spacing={2}>
                       {judges?.map((judge, index) => {
-
-
                         const participantScore = scores?.find(
                           (score) =>
                             score?.participant_id === participants[0]?.id
@@ -493,17 +482,19 @@ border: `4px solid ${
 
                         return (
                           <Grid item xs={12} sm={6} md={3} key={index}>
-                          <Card sx={{border: `4px solid ${
-     scores.some(
-      (s) =>
-     s.judge_id === judge.id &&
-        s.participant_id === allJudges[0]?.id
-
-    )
-        ? "green"
-        : "red"
-    }`,}}>
-
+                            <Card
+                              sx={{
+                                border: `4px solid ${
+                                  scores.some(
+                                    (s) =>
+                                      s.judge_id === judge.id &&
+                                      s.participant_id === allJudges[0]?.id
+                                  )
+                                    ? "green"
+                                    : "red"
+                                }`,
+                              }}
+                            >
                               <Box>
                                 <img
                                   src={judge?.profile_picture}
@@ -512,8 +503,7 @@ border: `4px solid ${
                                   height={"200rem"}
                                   style={{
                                     objectFit: "cover",
-                                     objectPosition: "top"
-
+                                    objectPosition: "top",
                                   }}
                                 />
                                 <Typography
@@ -528,33 +518,32 @@ border: `4px solid ${
                                   {judge?.name}
                                 </Typography>
                                 {scores.some(
-      (s) =>
-        s.judge_id === judge.id &&
-        s.participant_id === allJudges[0]?.id
-
-    ) ? ( // Checking if judge_id matches voted_id
-        <Typography
-          variant="body1"
-          sx={{
-            textAlign: "center",
-            padding: "0.5rem",
-            color: "green", // Example styling for the text
-            fontWeight: "bold", // Example styling for the text
-          }}
-        >
-          Voted
-        </Typography>
-      ) : (
-        <Typography
-          variant="body1"
-          sx={{
-            textAlign: "center",
-            padding: "0.5rem",
-          }}
-        >
-          Waiting
-        </Typography>
-      )}
+                                  (s) =>
+                                    s.judge_id === judge.id &&
+                                    s.participant_id === allJudges[0]?.id
+                                ) ? ( // Checking if judge_id matches voted_id
+                                  <Typography
+                                    variant="body1"
+                                    sx={{
+                                      textAlign: "center",
+                                      padding: "0.5rem",
+                                      color: "green", // Example styling for the text
+                                      fontWeight: "bold", // Example styling for the text
+                                    }}
+                                  >
+                                    Voted
+                                  </Typography>
+                                ) : (
+                                  <Typography
+                                    variant="body1"
+                                    sx={{
+                                      textAlign: "center",
+                                      padding: "0.5rem",
+                                    }}
+                                  >
+                                    Waiting
+                                  </Typography>
+                                )}
                               </Box>
                             </Card>
                           </Grid>

@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import MyTextField from "../../page/components/MyTextField";
-import { Box, Typography, Snackbar, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Snackbar,
+  CircularProgress,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 import MyButton from "../../page/components/MyButton";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +24,15 @@ const AddContent = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [loading, setLoading] = useState(false); // Corrected state variable name
   const dispatch = useDispatch();
-  const cont_name = useSelector((state) => state.stepper.contest_name);
+  const cont_name = useSelector(
+    (state) => state.stepper.contest_name.contestName
+  );
+  const r_value = useSelector((state) => state.stepper.contest_name.status);
+  const [value, setValue] = React.useState(false);
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
   const handleContestNameChange = (event) => {
     setContestName(event.target.value);
     setError("");
@@ -22,6 +40,9 @@ const AddContent = () => {
   useEffect(() => {
     if (cont_name) {
       setContestName(cont_name);
+    }
+    if (r_value) {
+      setValue(r_value);
     }
   }, []);
   const handleSubmit = async () => {
@@ -33,16 +54,20 @@ const AddContent = () => {
       setLoading(false);
       return;
     }
+    const values = {
+      contestName: contestName,
+      status: value,
+    };
     dispatch({
       type: "CONT_NAME",
-      payload: contestName,
+      payload: values,
     });
 
     // Simulating async operation with a timeout
     await new Promise((resolve) => setTimeout(resolve, 2000)); // Replace with your actual async operation
 
     // Example navigation
-    navigate("/admin/add-registration", { state: { contestName } });
+    navigate("/admin/add-registration", { state: { values } });
 
     setLoading(false); // This should be outside of the if block as well
   };
@@ -106,6 +131,28 @@ const AddContent = () => {
             error={!!error}
             helperText={error}
           />
+          <FormControl>
+            <FormLabel id="demo-controlled-radio-buttons-group">
+              Gender
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={value}
+              onChange={handleChange}
+            >
+              <FormControlLabel
+                value="true"
+                control={<Radio />}
+                label="Show only total score"
+              />
+              <FormControlLabel
+                value="false"
+                control={<Radio />}
+                label="Show total score and score by role"
+              />
+            </RadioGroup>
+          </FormControl>
         </Box>
         <MyButton
           onClick={handleSubmit}
