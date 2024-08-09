@@ -20,9 +20,9 @@ import PushBack from "../../components/PushBack/PushBack";
 const AddRegistration = () => {
   // debugger;
   const navigate = useNavigate();
-  const location = useLocation();
-  const { contestName } = location.state || {};
-  const name = contestName;
+  const { state } = useLocation();
+  const name = state?.values?.contestName;
+  const status = state?.values?.status;
   const dispatch = useDispatch();
   const expo_id = localStorage.getItem("expo_id");
   const token = localStorage.getItem("token");
@@ -141,6 +141,7 @@ const AddRegistration = () => {
         expo_id: expo_id,
         id: cont_id ? cont_id : "",
         name: name,
+        total_score_status: status,
         start_date_time: dayjs(startDate)
           .add(startTime.hour(), "hour")
           .add(startTime.minute(), "minute")
@@ -186,6 +187,7 @@ const AddRegistration = () => {
       localStorage.setItem("end_date_time", responseData.payload.end_date_time);
       console.log("API response:", responseData.payload.end_date_time);
     } catch (error) {
+      isLoading(false);
       console.error("Error:", error);
     }
   };
