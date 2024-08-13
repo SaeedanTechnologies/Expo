@@ -133,7 +133,7 @@ const AddContent = () => {
           />
           <FormControl>
             <FormLabel id="demo-controlled-radio-buttons-group">
-              Gender
+              Select Total Score
             </FormLabel>
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"

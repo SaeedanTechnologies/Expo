@@ -42,6 +42,8 @@ import { useSelector } from "react-redux";
 import AllHistory from "./AuthSide/AllHistory";
 import SubHistoryComponent from "./AuthSide/SubHistoryComponent";
 import OTPVerify from "./AuthSide/AdminSide1/EmailVerify/OTPVerify";
+import SendEmailForgotPassword from "./AuthSide/AdminSide1/ForgetPassword/SendEmailForgotPassword";
+import NewPasswordSet from "./AuthSide/AdminSide1/ForgetPassword/NewPasswordSet";
 export default function Router() {
   const isAuthenticated = useSelector((state) => state.admin.isAuthenticated);
   let element = useRoutes([
@@ -107,6 +109,12 @@ export default function Router() {
       path: "links",
       element: <Links />,
     },
+
+    {
+      path: "send-email",
+      element: <SendEmailForgotPassword />,
+    },
+
     {
       path: "upload-file/:id",
       element: <UploadVideo />,
@@ -187,6 +195,11 @@ export default function Router() {
     {
       path: "admin-login",
       element: <AdminLoginForm />,
+    },
+
+    {
+      path: "new-password/:token",
+      element: <NewPasswordSet />,
     },
     {
       path: "all-events",

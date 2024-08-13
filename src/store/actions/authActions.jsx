@@ -76,6 +76,33 @@ export const otpConfirmation = (otp) => async (dispatch) => {
 
 
 
+export const sendEmail = ({email}) => async (dispatch) => {
+  try {
+
+    const res = await api.post("password/email", {email});
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+export const resetPassword = ({email, token,  password, password_confirmation}) => async (dispatch) => {
+  try {
+
+    const res = await api.post("password/reset", { email, token, password, password_confirmation });
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+
 
 export const logout = () => async (dispatch) => {
   try {

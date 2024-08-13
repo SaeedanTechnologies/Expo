@@ -191,13 +191,35 @@ const AdminLoginForm = () => {
               />
             </Grid>
           </Grid>
+          
+          <br/>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+
+          
+            <Link to="/send-email" style={{ textDecoration: "none" }}>
+              <Typography
+                sx={{
+                  color: theme.palette.primary.main,
+                  marginLeft: "0.5rem",
+                }}
+              >
+                Forgot Password
+              </Typography>
+            </Link>
+          </Box>
+
+
+
+
+
           {/* Submit Button */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 2, mb: 2 }}
             disabled={loading}
           >
             {loading ? <CircularProgress size={24} /> : "Sign In"}
